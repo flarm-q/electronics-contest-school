@@ -1,5 +1,6 @@
 #include "stm32f10x.h"
 #include "sys.h" 
+#include "oled.h"
 #define TRIG PAout(3) //输出端口
 #define ECHO PAin(2)  //输入端口
 int overcount=0;      //记录定时器溢出次数
@@ -48,7 +49,7 @@ void TIM3_Int_Init()
 //		NVIC_InitStructure.NVIC_IRQChannelSubPriority = 3;
 //		NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
 //		NVIC_Init(&NVIC_InitStructure);
-
+			
 		TIM_Cmd(TIM3, DISABLE);
 }
 //测距函数

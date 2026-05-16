@@ -2,10 +2,11 @@
 ..\obj\oled.o: ..\HARDWARE\OLED\oled.h
 ..\obj\oled.o: ..\SYSTEM\sys\sys.h
 ..\obj\oled.o: ..\USER\stm32f10x.h
-..\obj\oled.o: D:\keil5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\core_cm3.h
-..\obj\oled.o: D:\keil5\ARM\ARMCC\Bin\..\include\stdint.h
-..\obj\oled.o: D:\keil5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\cmsis_compiler.h
-..\obj\oled.o: D:\keil5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\cmsis_armcc.h
+..\obj\oled.o: D:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\core_cm3.h
+..\obj\oled.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+..\obj\oled.o: D:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_version.h
+..\obj\oled.o: D:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_compiler.h
+..\obj\oled.o: D:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_armcc.h
 ..\obj\oled.o: ..\USER\system_stm32f10x.h
 ..\obj\oled.o: ..\USER\stm32f10x_conf.h
 ..\obj\oled.o: ..\STM32F10x_FWLib\inc\stm32f10x_adc.h
@@ -35,7 +36,7 @@
 ..\obj\oled.o: ..\SYSTEM\delay\delay.h
 ..\obj\oled.o: ..\SYSTEM\sys\sys.h
 ..\obj\oled.o: ..\SYSTEM\usart\usart.h
-..\obj\oled.o: D:\keil5\ARM\ARMCC\Bin\..\include\stdio.h
+..\obj\oled.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 ..\obj\oled.o: ..\HARDWARE\MPU6050\eMPL\inv_mpu.h
 ..\obj\oled.o: ..\HARDWARE\MPU6050\eMPL\inv_mpu_dmp_motion_driver.h
 ..\obj\oled.o: ..\HARDWARE\MPU6050\mpu6050.h
@@ -48,7 +49,7 @@
 ..\obj\oled.o: ..\HARDWARE\PWM\pwm.h
 ..\obj\oled.o: ..\HARDWARE\USART3\usart3.h
 ..\obj\oled.o: ..\HARDWARE\TRACKING\tracking.h
-..\obj\oled.o: D:\keil5\ARM\ARMCC\Bin\..\include\string.h
-..\obj\oled.o: D:\keil5\ARM\ARMCC\Bin\..\include\stdlib.h
-..\obj\oled.o: D:\keil5\ARM\ARMCC\Bin\..\include\math.h
+..\obj\oled.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+..\obj\oled.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+..\obj\oled.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 ..\obj\oled.o: ..\HARDWARE\OLED\oledfont.h

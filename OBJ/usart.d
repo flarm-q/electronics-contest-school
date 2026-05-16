@@ -1,12 +1,13 @@
 ..\obj\usart.o: ..\SYSTEM\usart\usart.c
 ..\obj\usart.o: ..\SYSTEM\usart\usart.h
-..\obj\usart.o: D:\keil5\ARM\ARMCC\Bin\..\include\stdio.h
+..\obj\usart.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 ..\obj\usart.o: ..\SYSTEM\sys\sys.h
 ..\obj\usart.o: ..\USER\stm32f10x.h
-..\obj\usart.o: D:\keil5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\core_cm3.h
-..\obj\usart.o: D:\keil5\ARM\ARMCC\Bin\..\include\stdint.h
-..\obj\usart.o: D:\keil5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\cmsis_compiler.h
-..\obj\usart.o: D:\keil5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\cmsis_armcc.h
+..\obj\usart.o: D:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\core_cm3.h
+..\obj\usart.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+..\obj\usart.o: D:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_version.h
+..\obj\usart.o: D:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_compiler.h
+..\obj\usart.o: D:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_armcc.h
 ..\obj\usart.o: ..\USER\system_stm32f10x.h
 ..\obj\usart.o: ..\USER\stm32f10x_conf.h
 ..\obj\usart.o: ..\STM32F10x_FWLib\inc\stm32f10x_adc.h
@@ -41,7 +42,7 @@
 ..\obj\usart.o: ..\HARDWARE\MPU6050\mpu6050.h
 ..\obj\usart.o: ..\HARDWARE\MPU6050\mpuiic.h
 ..\obj\usart.o: ..\HARDWARE\OLED\oled.h
-..\obj\usart.o: D:\keil5\ARM\ARMCC\Bin\..\include\stdlib.h
+..\obj\usart.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 ..\obj\usart.o: ..\HARDWARE\CONTROL\control.h
 ..\obj\usart.o: ..\HARDWARE\ENCODER\encoder.h
 ..\obj\usart.o: ..\HARDWARE\EXTI\exti.h
@@ -49,5 +50,5 @@
 ..\obj\usart.o: ..\HARDWARE\PWM\pwm.h
 ..\obj\usart.o: ..\HARDWARE\USART3\usart3.h
 ..\obj\usart.o: ..\HARDWARE\TRACKING\tracking.h
-..\obj\usart.o: D:\keil5\ARM\ARMCC\Bin\..\include\string.h
-..\obj\usart.o: D:\keil5\ARM\ARMCC\Bin\..\include\math.h
+..\obj\usart.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+..\obj\usart.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h

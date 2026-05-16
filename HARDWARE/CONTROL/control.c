@@ -8,7 +8,7 @@ float Target_Speed=0;	//ÆÚÍûËÙ¶È£¨¸©Ñö£©¡£---¶ş´Î¿ª·¢½Ó¿Ú£¬ÓÃÓÚ¿ØÖÆĞ¡³µÇ°½øºóÍË¼
 float Turn_Speed=0;		//ÆÚÍûËÙ¶È£¨Æ«º½£©
 
 float 
-	Vertical_Kp=-400,//Ö±Á¢»·KP¡¢KD
+	Vertical_Kp=-430,//Ö±Á¢»·KP¡¢KD
 	Vertical_Kd=-1.92;//-1.7;
 float 
 	Velocity_Kp=-0.44,//ËÙ¶È»·KP¡¢KI

@@ -117,9 +117,9 @@ int main(void)
   while(1)	
 	{
 		
-		OLED_Float(3,70,Pitch,1);
-		OLED_Num3(8,4,Tracking_GetError());// 显示当前巡线偏差，负值偏左，正值偏右。
-		OLED_Num3(8,5,(int)((Encoder_Left+Encoder_Right)*2.38));		
+		OLED_Float(1,70,Pitch,1);
+		OLED_Num3(8,2,Tracking_GetError());// 显示当前巡线偏差，负值偏左，正值偏右。
+		OLED_Num3(5,3,(int)((Encoder_Left+Encoder_Right)*2.38));		
 	} 	
 }
 

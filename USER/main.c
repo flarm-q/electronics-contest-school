@@ -1,7 +1,7 @@
 #include "stm32f10x.h"
 #include "sys.h" 
 #include "oled.h"
-#define TRACKING_START_DELAY_MS 3000
+#define TRACKING_START_DELAY_MS 5000
 #define TRIG PAout(3) // 超声波触发引脚输出
 #define ECHO PAin(2)  // 超声波回响引脚输入
 int overcount=0;      // 记录定时器溢出次数
@@ -96,8 +96,8 @@ int main(void)
 	NVIC_Config();
 	uart1_init(115200);	
 
-    uart3_init(9600);// 串口3波特率9600  
-    Tracking_Usart2_Init(115200);// 巡线模块使用USART2：PA2(TX)、PA3(RX)，超声波测距已关闭以避免引脚冲突
+	uart3_init(9600);// 串口3波特率9600  
+	Tracking_Usart2_Init(115200);// 巡线模块使用USART2：PA2(TX)、PA3(RX)，超声波测距已关闭以避免引脚冲突
 
 	OLED_Init();
 	OLED_Clear();

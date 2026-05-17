@@ -1,6 +1,7 @@
 #include "stm32f10x.h"
 #include "sys.h" 
 #include "oled.h"
+#define TRACKING_START_DELAY_MS 3000
 #define TRIG PAout(3) //输出端口
 #define ECHO PAin(2)  //输入端口
 int overcount=0;      //记录定时器溢出次数
@@ -113,6 +114,8 @@ int main(void)
 	OLED_ShowString(0,1,"jiao du:",12);
 	OLED_ShowString(0,2,"track:",12);
 	OLED_ShowString(0,3,"sd:",12);
+	/* 上电后先只保持直立，等待姿态稳定 3 秒，再开启巡线模块数据上报。 */
+	delay_ms(TRACKING_START_DELAY_MS);
 	Tracking_SendControlData(0,0,1);// 请求八路巡线模块持续发送数字量帧：$D,x1:0,...,x8:0#。
   while(1)	
 	{

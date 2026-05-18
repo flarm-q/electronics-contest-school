@@ -7,7 +7,8 @@
  * 八路巡线模块使用串口协议接入：
  *   1. PA2  -> USART2_TX，给巡线模块发送配置命令。
  *   2. PA3  -> USART2_RX，接收巡线模块回传的数据帧。
- *   3. 参考工程协议为 "$D,x1:0,x2:0,...,x8:0#"，0/1 表示每一路红外状态。
+ *   3. 支持数字量帧 "$D,x1:0,...,x8:0#" 和模拟量帧 "$A,..."。
+ *      当前工程优先使用模拟量帧，通过加权中心法计算巡线偏差。
  *
  * 注意：PA2/PA3 原工程被超声波 TRIG/ECHO 占用。本工程已按需求关闭超声波测距，
  * 因此 PA2/PA3 专用于八路巡线，避免引脚冲突。
@@ -16,6 +17,9 @@
 
 /* 最新一次解析出的 8 路数字量，数组下标 0~7 对应 x1~x8。 */
 extern volatile u8 Tracking_IR_Data[TRACKING_IR_NUM];
+
+/* 最新一次解析出的 8 路模拟量，数组下标 0~7 对应 x1~x8。 */
+extern volatile u16 Tracking_Analog_Data[TRACKING_IR_NUM];
 
 /* USART2 收到并成功解析一帧数字量数据后置 1，可用于调试或主循环显示。 */
 extern volatile u8 Tracking_New_Package_Flag;

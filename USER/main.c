@@ -1,7 +1,10 @@
 #include "stm32f10x.h"
 #include "sys.h" 
 #include "oled.h"
-#define TRACKING_START_DELAY_MS 8000
+#include "usart.h"
+#include "tracking.h"
+#define TRACKING_START_DELAY_MS 10000
+#define USART1_PRINT_PERIOD_MS 100
 #define TRIG PAout(3) // 超声波触发引脚输出
 #define ECHO PAin(2)  // 超声波回响引脚输入
 int overcount=0;      // 记录定时器溢出次数
@@ -116,13 +119,18 @@ int main(void)
 	OLED_ShowString(0,3,"sd:",12);
     /* 上电后先保持直立，等待姿态稳定3秒，再开启巡线模块数据上报。 */
 	delay_ms(TRACKING_START_DELAY_MS);
-    Tracking_SendControlData(0,0,1);// 请求巡线模块持续发送数字量数据帧：$D,x1:0,...,x8:0#
+    Tracking_SendControlData(0,1,0);// 请求巡线模块持续发送模拟量数据帧：$A,...#
   while(1)	
 	{
-		
 		OLED_Float(1,70,Pitch,1);
         OLED_Num3(8,2,Tracking_GetError());// 显示当前巡线偏差，负值偏左，正值偏右
-		OLED_Num3(5,3,(int)((Encoder_Left+Encoder_Right)*2.38));		
+		OLED_Num3(5,3,(int)((Encoder_Left+Encoder_Right)*2.38));
+
+		printf("Pitch=%.2f Roll=%.2f Yaw=%.2f Track=%d Left=%d Right=%d A=[%u,%u,%u,%u,%u,%u,%u,%u]\r\n",
+		       Pitch, Roll, Yaw, Tracking_GetError(), Encoder_Left, Encoder_Right,
+		       Tracking_Analog_Data[0], Tracking_Analog_Data[1], Tracking_Analog_Data[2], Tracking_Analog_Data[3],
+		       Tracking_Analog_Data[4], Tracking_Analog_Data[5], Tracking_Analog_Data[6], Tracking_Analog_Data[7]);
+		delay_ms(USART1_PRINT_PERIOD_MS);
 	} 	
 }
 

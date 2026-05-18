@@ -5,21 +5,26 @@
 #define TRACKING_PACKAGE_SIZE 100
 
 /* 巡线时给速度环的目标速度。数值越大越快，调试时建议先小后大。 */
-#define TRACKING_SPEED -5
+#define TRACKING_SPEED -8
+
+/* 模拟量巡线的加权中心参数。 */
+#define TRACKING_CENTER_SCALE 100	// 后调
+#define TRACKING_ANALOG_THRESHOLD 80  // 先调
 
 /*
  * 巡线转向参数，移植自参考工程 app_tracking.c。
  * KP 决定压线纠偏力度，KI 用于很小的长期偏差补偿，KD 使用陀螺仪 Z 轴抑制转向震荡。
  */
-#define TRACKING_TURN_KP 100
+#define TRACKING_TURN_KP 400
 #define TRACKING_TURN_KI 0.0f
-#define TRACKING_TURN_KD 0.0f
+#define TRACKING_TURN_KD 0.10f
 
 /* control.c 中的速度目标，巡线模式下由 Tracking_SetSpeed() 接管。 */
 extern float Target_Speed;
 
 /* 8 路数字量缓存：0 表示该路检测到黑线，1 表示未检测到黑线。 */
 volatile u8 Tracking_IR_Data[TRACKING_IR_NUM];
+volatile u16 Tracking_Analog_Data[TRACKING_IR_NUM];
 volatile u8 Tracking_New_Package_Flag = 0;
 
 /* 串口接收状态缓存，只在 USART2 中断和解析函数内部使用。 */
@@ -31,6 +36,7 @@ static volatile u8 tracking_active = 0;
 
 /* 当前巡线偏差，负数代表线偏左，正数代表线偏右。 */
 static int tracking_error = 0;
+static const int tracking_weights[TRACKING_IR_NUM] = {-350, -250, -150, -50, 50, 150, 250, 350};
 
 static void Tracking_SendU8(u8 ch)
 {
@@ -44,6 +50,18 @@ static void Tracking_SendArrayU8(u8 *buffer, u16 length)
 	{
 		Tracking_SendU8(*buffer++);
 	}
+}
+
+static u16 Tracking_ParseU16(const char *text)
+{
+	u16 value = 0;
+
+	while((*text >= '0') && (*text <= '9'))
+	{
+		value = (u16)(value * 10 + (u16)(*text - '0'));
+		text++;
+	}
+	return value;
 }
 
 static void Tracking_ParseDigitalData(void)
@@ -63,6 +81,40 @@ static void Tracking_ParseDigitalData(void)
 	for(i = 0; i < TRACKING_IR_NUM; i++)
 	{
 		Tracking_IR_Data[i] = tracking_new_package[6 + i * 5] - '0';
+	}
+
+	tracking_active = 1;
+	Tracking_New_Package_Flag = 1;
+	memset(tracking_new_package, 0, TRACKING_PACKAGE_SIZE);
+}
+
+static void Tracking_ParseAnalogData(void)
+{
+	const char *cursor = (const char *)tracking_new_package;
+	u8 index = 0;
+
+	if(tracking_new_package[1] != 'A')
+	{
+		return;
+	}
+
+	while((*cursor != '\0') && (index < TRACKING_IR_NUM))
+	{
+		if((*cursor >= '0') && (*cursor <= '9'))
+		{
+			Tracking_Analog_Data[index++] = Tracking_ParseU16(cursor);
+			while((*cursor >= '0') && (*cursor <= '9'))
+			{
+				cursor++;
+			}
+			continue;
+		}
+		cursor++;
+	}
+
+	if(index < TRACKING_IR_NUM)
+	{
+		return;
 	}
 
 	tracking_active = 1;
@@ -111,7 +163,7 @@ void Tracking_SendControlData(u8 adjust, u8 analogData, u8 digitalData)
 	 *   adjust=1     请求模块校准
 	 *   analogData=1 请求模拟量数据
 	 *   digitalData=1 请求数字量数据
-	 * 当前只需要数字量，所以 main.c 中发送 Tracking_SendControlData(0,0,1)。
+	 * 当前巡线优先使用模拟量，所以 main.c 中发送 Tracking_SendControlData(0,1,0)。
 	 */
 	send_buf[1] = adjust ? '1' : '0';
 	send_buf[3] = analogData ? '1' : '0';
@@ -147,7 +199,14 @@ void Tracking_DealUsart(u8 rxtemp)
 		step = 0;
 		memcpy(tracking_new_package, tracking_rx_buff, TRACKING_PACKAGE_SIZE);
 		memset(tracking_rx_buff, 0, TRACKING_PACKAGE_SIZE);
-		Tracking_ParseDigitalData();
+		if(tracking_new_package[1] == 'A')
+		{
+			Tracking_ParseAnalogData();
+		}
+		else
+		{
+			Tracking_ParseDigitalData();
+		}
 		return;
 	}
 
@@ -172,38 +231,46 @@ void Tracking_SetSpeed(void)
 
 int Tracking_GetError(void)
 {
-	/*
-	 * x1 在最左侧，x8 在最右侧。
-	 * 参考工程定义：0 表示压线，1 表示未压线。
-	 * 输出偏差范围大致为 -5~5，绝对值越大表示偏离中心越严重。
-	 */
-	u8 x1 = Tracking_IR_Data[0];
-	u8 x2 = Tracking_IR_Data[1];
-	u8 x3 = Tracking_IR_Data[2];
-	u8 x4 = Tracking_IR_Data[3];
-	u8 x5 = Tracking_IR_Data[4];
-	u8 x6 = Tracking_IR_Data[5];
-	u8 x7 = Tracking_IR_Data[6];
-	u8 x8 = Tracking_IR_Data[7];
+	u8 i;
+	u32 weighted_sum = 0;
+	u32 strength_sum = 0;
+	u16 min_value = Tracking_Analog_Data[0];
+	u16 max_value = Tracking_Analog_Data[0];
 
-	if(x1 == 0 && x3 == 0 && x4 == 0 && x5 == 0 && x8 == 0) tracking_error = 0;
-	else if((x1 == 0 || x2 == 0) && x8 == 1) tracking_error = -5;
-	else if((x7 == 0 || x8 == 0) && x1 == 1) tracking_error = 5;
-	else if(x1 == 1 && x2 == 1 && x3 == 1 && x4 == 0 && x5 == 1 && x6 == 1 && x7 == 1 && x8 == 1) tracking_error = -1;
-	else if(x1 == 1 && x2 == 1 && x3 == 0 && x4 == 0 && x5 == 1 && x6 == 1 && x7 == 1 && x8 == 1) tracking_error = -2;
-	else if(x1 == 1 && x2 == 1 && x3 == 0 && x4 == 1 && x5 == 1 && x6 == 1 && x7 == 1 && x8 == 1) tracking_error = -2;
-	else if(x1 == 1 && x2 == 0 && x3 == 1 && x4 == 1 && x5 == 1 && x6 == 1 && x7 == 1 && x8 == 1) tracking_error = -3;
-	else if(x1 == 1 && x2 == 0 && x3 == 0 && x4 == 1 && x5 == 1 && x6 == 1 && x7 == 1 && x8 == 1) tracking_error = -3;
-	else if(x1 == 0 && x2 == 1 && x3 == 1 && x4 == 1 && x5 == 1 && x6 == 1 && x7 == 1 && x8 == 1) tracking_error = -4;
-	else if(x1 == 0 && x2 == 0 && x3 == 1 && x4 == 1 && x5 == 1 && x6 == 1 && x7 == 1 && x8 == 1) tracking_error = -4;
-	else if(x1 == 1 && x2 == 1 && x3 == 1 && x4 == 1 && x5 == 0 && x6 == 1 && x7 == 1 && x8 == 1) tracking_error = 1;
-	else if(x1 == 1 && x2 == 1 && x3 == 1 && x4 == 1 && x5 == 0 && x6 == 0 && x7 == 1 && x8 == 1) tracking_error = 2;
-	else if(x1 == 1 && x2 == 1 && x3 == 1 && x4 == 1 && x5 == 1 && x6 == 0 && x7 == 1 && x8 == 1) tracking_error = 2;
-	else if(x1 == 1 && x2 == 1 && x3 == 1 && x4 == 1 && x5 == 1 && x6 == 0 && x7 == 0 && x8 == 1) tracking_error = 3;
-	else if(x1 == 1 && x2 == 1 && x3 == 1 && x4 == 1 && x5 == 1 && x6 == 1 && x7 == 0 && x8 == 1) tracking_error = 3;
-	else if(x1 == 1 && x2 == 1 && x3 == 1 && x4 == 1 && x5 == 1 && x6 == 1 && x7 == 0 && x8 == 0) tracking_error = 4;
-	else if(x1 == 1 && x2 == 1 && x3 == 1 && x4 == 1 && x5 == 1 && x6 == 1 && x7 == 1 && x8 == 0) tracking_error = 4;
-	else if(x1 == 1 && x3 == 1 && x4 == 0 && x5 == 0 && x6 == 1 && x8 == 1) tracking_error = 0;
+	for(i = 0; i < TRACKING_IR_NUM; i++)
+	{
+		if(Tracking_Analog_Data[i] < min_value)
+		{
+			min_value = Tracking_Analog_Data[i];
+		}
+		if(Tracking_Analog_Data[i] > max_value)
+		{
+			max_value = Tracking_Analog_Data[i];
+		}
+	}
+
+	for(i = 0; i < TRACKING_IR_NUM; i++)
+	{
+		u16 strength = (u16)(max_value - Tracking_Analog_Data[i]);
+
+		if(strength <= TRACKING_ANALOG_THRESHOLD)
+		{
+			strength = 0;
+		}
+		else
+		{
+			strength = (u16)(strength - TRACKING_ANALOG_THRESHOLD);
+		}
+
+		strength_sum += strength;
+		weighted_sum += (u32)(strength * (u16)(tracking_weights[i] + 400));
+	}
+
+	if(strength_sum > 0)
+	{
+		int weighted_center = (int)(weighted_sum / strength_sum) - 400;
+		tracking_error = weighted_center / TRACKING_CENTER_SCALE;
+	}
 
 	return tracking_error;
 }

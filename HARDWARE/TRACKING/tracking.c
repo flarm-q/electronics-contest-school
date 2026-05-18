@@ -5,13 +5,13 @@
 #define TRACKING_PACKAGE_SIZE 100
 
 /* 巡线时给速度环的目标速度。数值越大越快，调试时建议先小后大。 */
-#define TRACKING_SPEED 15
+#define TRACKING_SPEED -5
 
 /*
  * 巡线转向参数，移植自参考工程 app_tracking.c。
  * KP 决定压线纠偏力度，KI 用于很小的长期偏差补偿，KD 使用陀螺仪 Z 轴抑制转向震荡。
  */
-#define TRACKING_TURN_KP 270
+#define TRACKING_TURN_KP 100
 #define TRACKING_TURN_KI 0.0f
 #define TRACKING_TURN_KD 0.0f
 

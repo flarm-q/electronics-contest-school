@@ -1,7 +1,7 @@
 #include "stm32f10x.h"
 #include "sys.h" 
 #include "oled.h"
-#define TRACKING_START_DELAY_MS 5000
+#define TRACKING_START_DELAY_MS 8000
 #define TRIG PAout(3) // 超声波触发引脚输出
 #define ECHO PAin(2)  // 超声波回响引脚输入
 int overcount=0;      // 记录定时器溢出次数

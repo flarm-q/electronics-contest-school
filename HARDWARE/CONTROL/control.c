@@ -3,7 +3,7 @@
 /* 机械中值。
  * 如果车体存在静态前倾或后仰，需要通过这里微调，让平衡点更准确。
  */
-float Med_Angle = 0;
+float Med_Angle = 0.5;
 
 /* 高层控制目标：
  * Target_Speed 控制前后速度

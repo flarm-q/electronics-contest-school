@@ -12,8 +12,8 @@
  * KP 决定压线纠偏力度，KI 用于很小的长期偏差补偿，KD 使用陀螺仪 Z 轴抑制转向震荡。
  */
 #define TRACKING_TURN_KP 270
-#define TRACKING_TURN_KI 0.01f
-#define TRACKING_TURN_KD 0.15f
+#define TRACKING_TURN_KI 0.0f
+#define TRACKING_TURN_KD 0.0f
 
 /* control.c 中的速度目标，巡线模式下由 Tracking_SetSpeed() 接管。 */
 extern float Target_Speed;

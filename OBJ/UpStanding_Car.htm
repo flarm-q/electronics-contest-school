@@ -3,7 +3,7 @@
 <title>Static Call Graph - [..\OBJ\UpStanding_Car.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image ..\OBJ\UpStanding_Car.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Tue May 19 21:25:21 2026
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Tue May 19 21:43:41 2026
 <BR><P>
 <H3>Maximum Stack Usage =        472 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -1668,8 +1668,8 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[21]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EXTI9_5_IRQHandler
 </UL>
 
-<P><STRONG><a name="[54]"></a>Tracking_GetError</STRONG> (Thumb, 180 bytes, Stack size 64 bytes, tracking.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 84<LI>Call Chain = Tracking_GetError &rArr; Tracking_GetPriorityError
+<P><STRONG><a name="[54]"></a>Tracking_GetError</STRONG> (Thumb, 166 bytes, Stack size 40 bytes, tracking.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = Tracking_GetError &rArr; Tracking_GetPriorityError
 </UL>
 <BR>[Calls]<UL><LI><a href="#[12f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Tracking_GetPriorityError
 </UL>
@@ -1677,8 +1677,8 @@ Global Symbols
 <LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Tracking_TurnPD
 </UL>
 
-<P><STRONG><a name="[104]"></a>Tracking_TurnPD</STRONG> (Thumb, 180 bytes, Stack size 32 bytes, tracking.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 116<LI>Call Chain = Tracking_TurnPD &rArr; Tracking_GetError &rArr; Tracking_GetPriorityError
+<P><STRONG><a name="[104]"></a>Tracking_TurnPD</STRONG> (Thumb, 184 bytes, Stack size 32 bytes, tracking.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = Tracking_TurnPD &rArr; Tracking_GetError &rArr; Tracking_GetPriorityError
 </UL>
 <BR>[Calls]<UL><LI><a href="#[9e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fadd
 <LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_cfrcmple
@@ -1691,7 +1691,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[21]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EXTI9_5_IRQHandler
 </UL>
 
-<P><STRONG><a name="[68]"></a>Tracking_SetPidByName</STRONG> (Thumb, 64 bytes, Stack size 16 bytes, tracking.o(.text))
+<P><STRONG><a name="[68]"></a>Tracking_SetPidByName</STRONG> (Thumb, 174 bytes, Stack size 16 bytes, tracking.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = Tracking_SetPidByName &rArr; strcmp
 </UL>
 <BR>[Calls]<UL><LI><a href="#[65]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strcmp
@@ -3272,8 +3272,8 @@ Local Symbols
 <BR>[Called By]<UL><LI><a href="#[12d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Tracking_DealUsart
 </UL>
 
-<P><STRONG><a name="[12f]"></a>Tracking_GetPriorityError</STRONG> (Thumb, 628 bytes, Stack size 20 bytes, tracking.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 20<LI>Call Chain = Tracking_GetPriorityError
+<P><STRONG><a name="[12f]"></a>Tracking_GetPriorityError</STRONG> (Thumb, 62 bytes, Stack size 8 bytes, tracking.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = Tracking_GetPriorityError
 </UL>
 <BR>[Called By]<UL><LI><a href="#[54]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Tracking_GetError
 </UL>

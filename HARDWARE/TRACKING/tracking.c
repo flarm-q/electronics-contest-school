@@ -85,8 +85,8 @@ static u8 tracking_has_line = 0;
  * 最终得到的平均值越负，说明黑线越偏左；
  * 越正，说明黑线越偏右。
  */
-static const int tracking_weights[TRACKING_IR_NUM] = {-4, -3, -2, -1, 1, 2, 3, 4};
-static int Tracking_GetPriorityError(u8 x1, u8 x2, u8 x3, u8 x4, u8 x5, u8 x6, u8 x7, u8 x8);
+static const int tracking_core_weights[4] = {-3, -1, 1, 3};
+static int Tracking_GetPriorityError(u8 x3, u8 x4, u8 x5, u8 x6);
 
 /* 发送单字节到巡线模块。 */
 static void Tracking_SendU8(u8 ch)
@@ -300,19 +300,21 @@ int Tracking_GetError(void)
 	u8 i;
 	int weighted_sum = 0;
 	u8 hit_count = 0;
-	u8 x1 = Tracking_IR_Data[0];
-	u8 x2 = Tracking_IR_Data[1];
 	u8 x3 = Tracking_IR_Data[2];
 	u8 x4 = Tracking_IR_Data[3];
 	u8 x5 = Tracking_IR_Data[4];
 	u8 x6 = Tracking_IR_Data[5];
-	u8 x7 = Tracking_IR_Data[6];
-	u8 x8 = Tracking_IR_Data[7];
+	u8 core_data[4];
+
+	core_data[0] = x3;
+	core_data[1] = x4;
+	core_data[2] = x5;
+	core_data[3] = x6;
 
 	tracking_has_line = 0;
-	for(i = 0; i < TRACKING_IR_NUM; i++)
+	for(i = 0; i < 4; i++)
 	{
-		if(Tracking_IR_Data[i] == 0)
+		if(core_data[i] == 0)
 		{
 			tracking_has_line = 1;
 			break;
@@ -324,21 +326,23 @@ int Tracking_GetError(void)
 		return tracking_error;
 	}
 
-	tracking_error = Tracking_GetPriorityError(x1, x2, x3, x4, x5, x6, x7, x8);
-	if(tracking_error == 99)
+	tracking_error = Tracking_GetPriorityError(x3, x4, x5, x6);
+	if(tracking_error != 99)
 	{
-		for(i = 0; i < TRACKING_IR_NUM; i++)
+		return tracking_error;
+	}
+
+	for(i = 0; i < 4; i++)
+	{
+		if(core_data[i] == 0)
 		{
-			if(Tracking_IR_Data[i] == 0)
-			{
-				weighted_sum += tracking_weights[i];
-				hit_count++;
-			}
+			weighted_sum += tracking_core_weights[i];
+			hit_count++;
 		}
-		if(hit_count > 0)
-		{
-			tracking_error = weighted_sum / hit_count;
-		}
+	}
+	if(hit_count > 0)
+	{
+		tracking_error = weighted_sum / hit_count;
 	}
 
 	return tracking_error;
@@ -380,64 +384,38 @@ int Tracking_TurnPD(int gyro_z)
 	}
 
 	/* 当前车体混控方向与巡线误差正负定义相反，这里统一反相输出。 */
-	return (int)((err * Tracking_Turn_Kp + integral * Tracking_Turn_Ki + gyro_z * Tracking_Turn_Kd));
+	return (int)(-(err * Tracking_Turn_Kp + integral * Tracking_Turn_Ki + gyro_z * Tracking_Turn_Kd));
 }
 
-static int Tracking_GetPriorityError(u8 x1, u8 x2, u8 x3, u8 x4, u8 x5, u8 x6, u8 x7, u8 x8)
+static int Tracking_GetPriorityError(u8 x3, u8 x4, u8 x5, u8 x6)
 {
-	if(x1 == 0 && x3 == 0 && x4 == 0 && x5 == 0 && x8 == 0)
+	if(x4 == 0 && x5 == 0)
 	{
 		return 0;
 	}
-	if((x1 == 0 || x2 == 0) && x8 == 1)
-	{
-		return -5;
-	}
-	if((x7 == 0 || x8 == 0) && x1 == 1)
-	{
-		return 5;
-	}
-	if(x1 == 1 && x2 == 1 && x3 == 1 && x4 == 0 && x5 == 1 && x6 == 1 && x7 == 1 && x8 == 1)
-	{
-		return -1;
-	}
-	if((x1 == 1 && x2 == 1 && x3 == 0 && x4 == 0 && x5 == 1 && x6 == 1 && x7 == 1 && x8 == 1) ||
-	   (x1 == 1 && x2 == 1 && x3 == 0 && x4 == 1 && x5 == 1 && x6 == 1 && x7 == 1 && x8 == 1))
+	if(x3 == 0 && x4 == 0)
 	{
 		return -2;
 	}
-	if((x1 == 1 && x2 == 0 && x3 == 1 && x4 == 1 && x5 == 1 && x6 == 1 && x7 == 1 && x8 == 1) ||
-	   (x1 == 1 && x2 == 0 && x3 == 0 && x4 == 1 && x5 == 1 && x6 == 1 && x7 == 1 && x8 == 1))
-	{
-		return -3;
-	}
-	if((x1 == 0 && x2 == 1 && x3 == 1 && x4 == 1 && x5 == 1 && x6 == 1 && x7 == 1 && x8 == 1) ||
-	   (x1 == 0 && x2 == 0 && x3 == 1 && x4 == 1 && x5 == 1 && x6 == 1 && x7 == 1 && x8 == 1))
-	{
-		return -4;
-	}
-	if(x1 == 1 && x2 == 1 && x3 == 1 && x4 == 1 && x5 == 0 && x6 == 1 && x7 == 1 && x8 == 1)
-	{
-		return 1;
-	}
-	if((x1 == 1 && x2 == 1 && x3 == 1 && x4 == 1 && x5 == 0 && x6 == 0 && x7 == 1 && x8 == 1) ||
-	   (x1 == 1 && x2 == 1 && x3 == 1 && x4 == 1 && x5 == 1 && x6 == 0 && x7 == 1 && x8 == 1))
+	if(x5 == 0 && x6 == 0)
 	{
 		return 2;
 	}
-	if((x1 == 1 && x2 == 1 && x3 == 1 && x4 == 1 && x5 == 1 && x6 == 0 && x7 == 0 && x8 == 1) ||
-	   (x1 == 1 && x2 == 1 && x3 == 1 && x4 == 1 && x5 == 1 && x6 == 1 && x7 == 0 && x8 == 1))
+	if(x4 == 0)
+	{
+		return -1;
+	}
+	if(x5 == 0)
+	{
+		return 1;
+	}
+	if(x3 == 0)
+	{
+		return -3;
+	}
+	if(x6 == 0)
 	{
 		return 3;
-	}
-	if((x1 == 1 && x2 == 1 && x3 == 1 && x4 == 1 && x5 == 1 && x6 == 1 && x7 == 0 && x8 == 0) ||
-	   (x1 == 1 && x2 == 1 && x3 == 1 && x4 == 1 && x5 == 1 && x6 == 1 && x7 == 1 && x8 == 0))
-	{
-		return 4;
-	}
-	if(x1 == 1 && x3 == 1 && x4 == 0 && x5 == 0 && x6 == 1 && x8 == 1)
-	{
-		return 0;
 	}
 	return 99;
 }

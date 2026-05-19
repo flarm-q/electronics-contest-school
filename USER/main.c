@@ -1,129 +1,55 @@
 #include "stm32f10x.h"
-#include "sys.h" 
+#include "sys.h"
 #include "oled.h"
 #include "usart.h"
 #include "tracking.h"
+
 #define TRACKING_START_DELAY_MS 10000
 #define USART1_PRINT_PERIOD_MS 100
-#define TRIG PAout(3) // ³¬Éù²¨´¥·¢Òı½ÅÊä³ö
-#define ECHO PAin(2)  // ³¬Éù²¨»ØÏìÒı½ÅÊäÈë
-int overcount=0;      // ¼ÇÂ¼¶¨Ê±Æ÷Òç³ö´ÎÊı
-int length;
 
-float Pitch,Roll,Yaw;                        // ×ËÌ¬½Ç
-short gyrox,gyroy,gyroz;                // ÍÓÂİÒÇ½ÇËÙ¶È
-short aacx,aacy,aacz;                        // ¼ÓËÙ¶ÈÊı¾İ
-int Encoder_Left,Encoder_Right;    // ×óÓÒ±àÂëÆ÷ËÙ¶È
+float Pitch,Roll,Yaw;                    // å§¿æ€è§’
+short gyrox,gyroy,gyroz;                 // é™€èºä»ªè§’é€Ÿåº¦
+short aacx,aacy,aacz;                    // åŠ é€Ÿåº¦æ•°æ®
+int Encoder_Left,Encoder_Right;          // å·¦å³ç¼–ç å™¨é€Ÿåº¦
 
-int PWM_MAX=7200,PWM_MIN=-7200;    // PWMÏŞ·ù
-int MOTO1,MOTO2;                                // µç»úÊä³öÁ¿
+int PWM_MAX=7200,PWM_MIN=-7200;          // PWMé™å¹…
+int MOTO1,MOTO2;                         // ç”µæœºè¾“å‡ºé‡
 
 extern int Vertical_out,Velocity_out,Turn_out;
-void TIM3_Int_Init()
-{
-		GPIO_InitTypeDef GPIO_InitStruct;
-		TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
-//		NVIC_InitTypeDef NVIC_InitStructure;
 
-        RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, ENABLE); // Ê¹ÄÜTIM3Ê±ÖÓ
-		RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
-			
-		
-        GPIO_InitStruct.GPIO_Mode=GPIO_Mode_Out_PP;// ÅäÖÃÎªÍÆÍìÊä³ö
-		GPIO_InitStruct.GPIO_Pin=GPIO_Pin_3;
-		GPIO_InitStruct.GPIO_Speed=GPIO_Speed_50MHz;
-		GPIO_Init(GPIOA,&GPIO_InitStruct);
-
-		GPIO_InitStruct.GPIO_Mode=GPIO_Mode_IN_FLOATING;
-		GPIO_InitStruct.GPIO_Pin=GPIO_Pin_2;
-		GPIO_Init(GPIOA,&GPIO_InitStruct);
-	
-        // TIM3»ù´¡¼ÆÊ±³õÊ¼»¯
-        TIM_TimeBaseStructure.TIM_Period = 999; // ×Ô¶¯ÖØ×°Öµ ARR
-        TIM_TimeBaseStructure.TIM_Prescaler =7199; // Ô¤·ÖÆµÏµÊı PSC
-		TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;
-        TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up; // ÏòÉÏ¼ÆÊıÄ£Ê½
-		TIM_TimeBaseInit(TIM3, &TIM_TimeBaseStructure);
-
-//        TIM_ITConfig(TIM3,TIM_IT_Update,ENABLE );// Ê¹ÄÜTIM3¸üĞÂÖĞ¶Ï
-//        // ÖĞ¶ÏÓÅÏÈ¼¶ÅäÖÃ
-//		NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
-//		NVIC_InitStructure.NVIC_IRQChannel = TIM3_IRQn;
-//		NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
-//		NVIC_InitStructure.NVIC_IRQChannelSubPriority = 3;
-//		NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-//		NVIC_Init(&NVIC_InitStructure);
-			
-		TIM_Cmd(TIM3, DISABLE);
-}
-// ³¬Éù²¨²â¾àº¯Êı
-int Senor_Using() // ·µ»ØÕûĞÍ¾àÀëÖµ
-{
-		unsigned int sum=0;
-		unsigned int tim;
-		unsigned int i=0;
-		unsigned int length;
-		u16 cnt_i=0;
-        while(i!=3)        // Á¬Ğø²âÁ¿3´ÎºóÈ¡Æ½¾ùÖµ
-		{
-            TRIG=1;          // À­¸ß´¥·¢ĞÅºÅ
-            delay_us(20);    // ±£³Ö¸ßµçÆ½20us
-            TRIG=0;          // µÈ´ı»ØÏìĞÅºÅ
-			cnt_i=0;
-			while(ECHO==0){cnt_i++;delay_us(20);if(cnt_i>2000)
-            {TRIG=1;          // ³¬Ê±ºóÖØĞÂ´¥·¢Ò»´Î
-            delay_us(20);    // ±£³Ö´¥·¢Âö³å¿í¶È
-            TRIG=0;cnt_i=0;          }} // ¼ì²âµ½»ØÏìºó¿ªÊ¼¼ÆÊ±
-			TIM_Cmd(TIM3,ENABLE);
-			
-            i+=1;                     // Íê³ÉÒ»´Î²âÁ¿ºó¼ÆÊı¼Ó1
-			
-            while(ECHO==1);    // µÈ´ı»ØÏìĞÅºÅ½áÊø
-            TIM_Cmd(TIM3,DISABLE);    // ¹Ø±Õ¶¨Ê±Æ÷
-			
-            tim=TIM_GetCounter(TIM3);         // ¶ÁÈ¡TIM3µ±Ç°¼ÆÊıÖµ
-            length=(tim*100)/58.0; // ¸ù¾İ»ØÏìÊ±¼ä»»Ëã¾àÀë
-			if(length>300)length=300;
-			sum=length+sum;
-            TIM3->CNT=0; // ÇåÁãTIM3¼ÆÊıÆ÷
-            overcount=0;                                                                // ÇåÁãÒç³ö´ÎÊı
-			delay_ms(100);
-		}
-		length=sum/3;
-        return length; // ·µ»ØÆ½¾ù¾àÀë
-}
-
-int main(void)	
+int main(void)
 {
 	delay_init();
 	NVIC_Config();
-	uart1_init(115200);	
+	uart1_init(9600);
 
-	uart3_init(9600);// ´®¿Ú3²¨ÌØÂÊ9600  
-	Tracking_Usart2_Init(115200);// Ñ²ÏßÄ£¿éÊ¹ÓÃUSART2£ºPA2(TX)¡¢PA3(RX)£¬³¬Éù²¨²â¾àÒÑ¹Ø±ÕÒÔ±ÜÃâÒı½Å³åÍ»
+	uart3_init(9600); // ä¸²å£3æ³¢ç‰¹ç‡9600
+	Tracking_Usart2_Init(115200); // å·¡çº¿æ¨¡å—ä½¿ç”¨USART2ï¼šPA2(TX)ã€PA3(RX)ï¼Œè¶…å£°æ³¢æµ‹è·å·²å…³é—­ä»¥é¿å…å¼•è„šå†²çª
 
 	OLED_Init();
 	OLED_Clear();
-	
+
 	MPU_Init();
 	mpu_dmp_init();
 	MPU6050_EXTI_Init();
-	
+
 	Encoder_TIM2_Init();
 	Encoder_TIM4_Init();
 	Motor_Init();
 	PWM_Init_TIM1(0,7199);
-	
+
 	OLED_ShowString(0,1,"jiao du:",12);
 	OLED_ShowString(0,2,"track:",12);
 	OLED_ShowString(0,3,"sd:",12);
-    /* ÉÏµçºóÏÈ±£³ÖÖ±Á¢£¬µÈ´ı×ËÌ¬ÎÈ¶¨3Ãë£¬ÔÙ¿ªÆôÑ²ÏßÄ£¿éÊı¾İÉÏ±¨¡£ */
+
+	/* ä¸Šç”µåå…ˆä¿æŒç›´ç«‹ï¼Œç­‰å¾…å§¿æ€ç¨³å®š10ç§’ï¼Œå†å¼€å¯å·¡çº¿æ¨¡å—æ•°æ®ä¸ŠæŠ¥ã€‚ */
 	delay_ms(TRACKING_START_DELAY_MS);
-    Tracking_SendControlData(0,1,0);// ÇëÇóÑ²ÏßÄ£¿é³ÖĞø·¢ËÍÄ£ÄâÁ¿Êı¾İÖ¡£º$A,...#
-  while(1)	
+	Tracking_SendControlData(0,1,0); // è¯·æ±‚å·¡çº¿æ¨¡å—æŒç»­å‘é€æ¨¡æ‹Ÿé‡æ•°æ®å¸§ï¼š$A,...#
+
+	while(1)
 	{
 		OLED_Float(1,70,Pitch,1);
-        OLED_Num3(8,2,Tracking_GetError());// ÏÔÊ¾µ±Ç°Ñ²ÏßÆ«²î£¬¸ºÖµÆ«×ó£¬ÕıÖµÆ«ÓÒ
+		OLED_Num3(8,2,Tracking_GetError()); // æ˜¾ç¤ºå½“å‰å·¡çº¿åå·®ï¼Œè´Ÿå€¼åå·¦ï¼Œæ­£å€¼åå³
 		OLED_Num3(5,3,(int)((Encoder_Left+Encoder_Right)*2.38));
 
 		printf("Pitch=%.2f Roll=%.2f Yaw=%.2f Track=%d Left=%d Right=%d A=[%u,%u,%u,%u,%u,%u,%u,%u]\r\n",
@@ -131,14 +57,5 @@ int main(void)
 		       Tracking_Analog_Data[0], Tracking_Analog_Data[1], Tracking_Analog_Data[2], Tracking_Analog_Data[3],
 		       Tracking_Analog_Data[4], Tracking_Analog_Data[5], Tracking_Analog_Data[6], Tracking_Analog_Data[7]);
 		delay_ms(USART1_PRINT_PERIOD_MS);
-	} 	
+	}
 }
-
-//void TIM3_IRQHandler(void)
-//{
-//        if (TIM_GetITStatus(TIM3,TIM_IT_Update)!= RESET) // ¼ì²éÊÇ·ñ·¢ÉúTIM3¸üĞÂÖĞ¶Ï
-//		{
-//            TIM_ClearITPendingBit(TIM3, TIM_IT_Update );   // Çå³ı¸üĞÂÖĞ¶Ï±êÖ¾
-//			overcount++;
-//		}
-//}

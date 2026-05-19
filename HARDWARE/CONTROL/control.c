@@ -64,7 +64,7 @@ float Turn_Speed = 0;
  * 1. 这几个参数之间是耦合的，不能孤立地只看一个数值
  * 2. 直立环没调稳之前，速度环和转向环的任何优化意义都不大
  */
-float Vertical_Kp = -430;
+float Vertical_Kp = -500;
 float Vertical_Kd = -1.92f;
 float Velocity_Kp = -0.44f;
 float Velocity_Ki = -0.0022f;

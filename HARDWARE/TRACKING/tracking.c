@@ -19,7 +19,7 @@
  * 当前是负值，表示按照本工程现有编码器/电机方向定义，
  * 巡线前进应当使用这个符号方向。
  */
-#define TRACKING_SPEED -15
+#define TRACKING_SPEED -1
 #define TRACKING_ERROR_MIDDLE 0
 #define TRACKING_INTEGRAL_LIMIT 100.0f
 
@@ -30,9 +30,9 @@
  * 2. Ki 用于累计长期偏差
  * 3. Kd 这里直接利用陀螺仪 Z 轴角速度做阻尼项
  */
-float Tracking_Turn_Kp = 270;
-float Tracking_Turn_Ki = 0.01f;
-float Tracking_Turn_Kd = 0.15f;
+float Tracking_Turn_Kp = 410;
+float Tracking_Turn_Ki = 0.0f;
+float Tracking_Turn_Kd = 0.0f;
 
 /* 来自主控制模块的全局速度目标。 */
 extern float Target_Speed;
@@ -379,7 +379,8 @@ int Tracking_TurnPD(int gyro_z)
 		integral = -TRACKING_INTEGRAL_LIMIT;
 	}
 
-	return (int)(err * Tracking_Turn_Kp + integral * Tracking_Turn_Ki + gyro_z * Tracking_Turn_Kd);
+	/* 当前车体混控方向与巡线误差正负定义相反，这里统一反相输出。 */
+	return (int)((err * Tracking_Turn_Kp + integral * Tracking_Turn_Ki + gyro_z * Tracking_Turn_Kd));
 }
 
 static int Tracking_GetPriorityError(u8 x1, u8 x2, u8 x3, u8 x4, u8 x5, u8 x6, u8 x7, u8 x8)

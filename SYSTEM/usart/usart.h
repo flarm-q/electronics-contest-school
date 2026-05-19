@@ -4,8 +4,9 @@
 #include "sys.h" 
 
 
-void uart1_init(u32 bound);					//´®¿Ú1³õÊ¼»¯º¯Êı
-void USART1_IRQHandler(void);     	//´®¿Ú1ÖĞ¶Ï·şÎñ³ÌĞò
+void uart1_init(u32 bound);					//ä¸²å£1åˆå§‹åŒ–å‡½æ•°
+void USART1_IRQHandler(void);     	//ä¸²å£1ä¸­æ–­æœåŠ¡ç¨‹åº
+void USART1_ProcessCommand(void);
 #endif
 
 

@@ -3,12 +3,36 @@
         {
             "name": "Win32",
             "includePath": [
+                "${workspaceFolder}/USER",
+                "${workspaceFolder}/SYSTEM/delay",
+                "${workspaceFolder}/SYSTEM/sys",
+                "${workspaceFolder}/SYSTEM/usart",
+                "${workspaceFolder}/CORE",
+                "${workspaceFolder}/STM32F10x_FWLib/inc",
+                "${workspaceFolder}/HARDWARE/CONTROL",
+                "${workspaceFolder}/HARDWARE/ENCODER",
+                "${workspaceFolder}/HARDWARE/EXTI",
+                "${workspaceFolder}/HARDWARE/K230",
+                "${workspaceFolder}/HARDWARE/MOTOR",
+                "${workspaceFolder}/HARDWARE/MPU6050",
+                "${workspaceFolder}/HARDWARE/MPU6050/eMPL",
+                "${workspaceFolder}/HARDWARE/OLED",
+                "${workspaceFolder}/HARDWARE/PWM",
+                "${workspaceFolder}/HARDWARE/TRACKING",
+                "${workspaceFolder}/HARDWARE/USART3",
                 "${workspaceFolder}/**"
             ],
+            "browse": {
+                "path": [
+                    "${workspaceFolder}/USER",
+                    "${workspaceFolder}/SYSTEM",
+                    "${workspaceFolder}/CORE",
+                    "${workspaceFolder}/STM32F10x_FWLib/inc",
+                    "${workspaceFolder}/HARDWARE"
+                ],
+                "limitSymbolsToIncludedHeaders": true
+            },
             "defines": [
-                "_DEBUG",
-                "UNICODE",
-                "_UNICODE",
                 "STM32F10X_MD",
                 "USE_STDPERIPH_DRIVER"
             ],

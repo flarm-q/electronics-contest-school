@@ -1,6 +1,6 @@
 Dependencies for Project 'UpStanding_Car', Target 'UpStanding_Car': (DO NOT MODIFY !)
 CompilerVersion: 5060750::V5.06 update 6 (build 750)::.\ARMCC
-F (.\main.c)(0x6A0C019E)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\STM32F10x_FWLib\inc -I ..\USER -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\SYSTEM\usart -I ..\HARDWARE\MPU6050 -I ..\HARDWARE\MPU6050\eMPL -I ..\HARDWARE\OLED -I ..\HARDWARE\CONTROL -I ..\HARDWARE\ENCODER -I ..\HARDWARE\EXTI -I ..\HARDWARE\MOTOR -I ..\HARDWARE\PWM -I ..\HARDWARE\USART3 -I ..\HARDWARE\SENSOR -I ..\HARDWARE\TRACKING-I.\RTE\_UpStanding_Car-ID:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-ID:\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="542" -DSTM32F10X_MD -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER-o ..\obj\main.o --omf_browse ..\obj\main.crf --depend ..\obj\main.d)
+F (.\main.c)(0x6A0C128F)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\STM32F10x_FWLib\inc -I ..\USER -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\SYSTEM\usart -I ..\HARDWARE\MPU6050 -I ..\HARDWARE\MPU6050\eMPL -I ..\HARDWARE\OLED -I ..\HARDWARE\CONTROL -I ..\HARDWARE\ENCODER -I ..\HARDWARE\EXTI -I ..\HARDWARE\MOTOR -I ..\HARDWARE\PWM -I ..\HARDWARE\USART3 -I ..\HARDWARE\SENSOR -I ..\HARDWARE\TRACKING-I.\RTE\_UpStanding_Car-ID:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-ID:\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="542" -DSTM32F10X_MD -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER-o ..\obj\main.o --omf_browse ..\obj\main.crf --depend ..\obj\main.d)
 I (stm32f10x.h)(0x673F26C8)
 I (D:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\core_cm3.h)(0x6A05B744)
 I (D:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5CEB79E2)
@@ -35,21 +35,21 @@ I (..\STM32F10x_FWLib\inc\stm32f10x_wwdg.h)(0x673F26C8)
 I (..\STM32F10x_FWLib\inc\misc.h)(0x673F26C8)
 I (..\SYSTEM\sys\sys.h)(0x6A046EB7)
 I (..\SYSTEM\delay\delay.h)(0x673F26C8)
-I (..\SYSTEM\usart\usart.h)(0x673F26C8)
+I (..\SYSTEM\usart\usart.h)(0x6A0C03B1)
 I (D:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5CEB79E2)
-I (..\HARDWARE\MPU6050\eMPL\inv_mpu.h)(0x673F26C4)
-I (..\HARDWARE\MPU6050\eMPL\inv_mpu_dmp_motion_driver.h)(0x673F26C4)
-I (..\HARDWARE\MPU6050\mpu6050.h)(0x673F26C4)
-I (..\HARDWARE\MPU6050\mpuiic.h)(0x673F26C4)
-I (..\HARDWARE\OLED\oled.h)(0x673F26C4)
+I (..\HARDWARE\MPU6050\eMPL\inv_mpu.h)(0x6A0C05A9)
+I (..\HARDWARE\MPU6050\eMPL\inv_mpu_dmp_motion_driver.h)(0x6A0C05A9)
+I (..\HARDWARE\MPU6050\mpu6050.h)(0x6A0C05A9)
+I (..\HARDWARE\MPU6050\mpuiic.h)(0x6A0C05A9)
+I (..\HARDWARE\OLED\oled.h)(0x6A0C05A9)
 I (D:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5CEB79E2)
-I (..\HARDWARE\CONTROL\control.h)(0x673F26C4)
-I (..\HARDWARE\ENCODER\encoder.h)(0x673F26C4)
-I (..\HARDWARE\EXTI\exti.h)(0x673F26C4)
-I (..\HARDWARE\MOTOR\motor.h)(0x673F26C4)
-I (..\HARDWARE\PWM\pwm.h)(0x673F26C4)
-I (..\HARDWARE\USART3\usart3.h)(0x6A093ECB)
-I (..\HARDWARE\TRACKING\tracking.h)(0x6A0BF802)
+I (..\HARDWARE\CONTROL\control.h)(0x6A0C1156)
+I (..\HARDWARE\ENCODER\encoder.h)(0x6A0C05A9)
+I (..\HARDWARE\EXTI\exti.h)(0x6A0C05A9)
+I (..\HARDWARE\MOTOR\motor.h)(0x6A0C05A9)
+I (..\HARDWARE\PWM\pwm.h)(0x6A0C05A9)
+I (..\HARDWARE\USART3\usart3.h)(0x6A0C05A9)
+I (..\HARDWARE\TRACKING\tracking.h)(0x6A0C0F23)
 I (D:\Keil_v5\ARM\ARMCC\include\string.h)(0x5CEB79E2)
 I (D:\Keil_v5\ARM\ARMCC\include\math.h)(0x5CEB79D6)
 F (.\stm32f10x_it.c)(0x673F26C8)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\STM32F10x_FWLib\inc -I ..\USER -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\SYSTEM\usart -I ..\HARDWARE\MPU6050 -I ..\HARDWARE\MPU6050\eMPL -I ..\HARDWARE\OLED -I ..\HARDWARE\CONTROL -I ..\HARDWARE\ENCODER -I ..\HARDWARE\EXTI -I ..\HARDWARE\MOTOR -I ..\HARDWARE\PWM -I ..\HARDWARE\USART3 -I ..\HARDWARE\SENSOR -I ..\HARDWARE\TRACKING-I.\RTE\_UpStanding_Car-ID:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-ID:\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="542" -DSTM32F10X_MD -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER-o ..\obj\stm32f10x_it.o --omf_browse ..\obj\stm32f10x_it.crf --depend ..\obj\stm32f10x_it.d)
@@ -154,24 +154,24 @@ I (..\STM32F10x_FWLib\inc\stm32f10x_tim.h)(0x673F26C8)
 I (..\STM32F10x_FWLib\inc\stm32f10x_usart.h)(0x673F26C8)
 I (..\STM32F10x_FWLib\inc\stm32f10x_wwdg.h)(0x673F26C8)
 I (..\STM32F10x_FWLib\inc\misc.h)(0x673F26C8)
-I (..\SYSTEM\usart\usart.h)(0x673F26C8)
+I (..\SYSTEM\usart\usart.h)(0x6A0C03B1)
 I (D:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5CEB79E2)
-I (..\HARDWARE\MPU6050\eMPL\inv_mpu.h)(0x673F26C4)
-I (..\HARDWARE\MPU6050\eMPL\inv_mpu_dmp_motion_driver.h)(0x673F26C4)
-I (..\HARDWARE\MPU6050\mpu6050.h)(0x673F26C4)
-I (..\HARDWARE\MPU6050\mpuiic.h)(0x673F26C4)
-I (..\HARDWARE\OLED\oled.h)(0x673F26C4)
+I (..\HARDWARE\MPU6050\eMPL\inv_mpu.h)(0x6A0C05A9)
+I (..\HARDWARE\MPU6050\eMPL\inv_mpu_dmp_motion_driver.h)(0x6A0C05A9)
+I (..\HARDWARE\MPU6050\mpu6050.h)(0x6A0C05A9)
+I (..\HARDWARE\MPU6050\mpuiic.h)(0x6A0C05A9)
+I (..\HARDWARE\OLED\oled.h)(0x6A0C05A9)
 I (D:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5CEB79E2)
-I (..\HARDWARE\CONTROL\control.h)(0x673F26C4)
-I (..\HARDWARE\ENCODER\encoder.h)(0x673F26C4)
-I (..\HARDWARE\EXTI\exti.h)(0x673F26C4)
-I (..\HARDWARE\MOTOR\motor.h)(0x673F26C4)
-I (..\HARDWARE\PWM\pwm.h)(0x673F26C4)
-I (..\HARDWARE\USART3\usart3.h)(0x6A093ECB)
-I (..\HARDWARE\TRACKING\tracking.h)(0x6A0BF802)
+I (..\HARDWARE\CONTROL\control.h)(0x6A0C1156)
+I (..\HARDWARE\ENCODER\encoder.h)(0x6A0C05A9)
+I (..\HARDWARE\EXTI\exti.h)(0x6A0C05A9)
+I (..\HARDWARE\MOTOR\motor.h)(0x6A0C05A9)
+I (..\HARDWARE\PWM\pwm.h)(0x6A0C05A9)
+I (..\HARDWARE\USART3\usart3.h)(0x6A0C05A9)
+I (..\HARDWARE\TRACKING\tracking.h)(0x6A0C0F23)
 I (D:\Keil_v5\ARM\ARMCC\include\string.h)(0x5CEB79E2)
 I (D:\Keil_v5\ARM\ARMCC\include\math.h)(0x5CEB79D6)
-F (..\SYSTEM\sys\sys.c)(0x6A047025)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\STM32F10x_FWLib\inc -I ..\USER -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\SYSTEM\usart -I ..\HARDWARE\MPU6050 -I ..\HARDWARE\MPU6050\eMPL -I ..\HARDWARE\OLED -I ..\HARDWARE\CONTROL -I ..\HARDWARE\ENCODER -I ..\HARDWARE\EXTI -I ..\HARDWARE\MOTOR -I ..\HARDWARE\PWM -I ..\HARDWARE\USART3 -I ..\HARDWARE\SENSOR -I ..\HARDWARE\TRACKING-I.\RTE\_UpStanding_Car-ID:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-ID:\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="542" -DSTM32F10X_MD -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER-o ..\obj\sys.o --omf_browse ..\obj\sys.crf --depend ..\obj\sys.d)
+F (..\SYSTEM\sys\sys.c)(0x6A0C03B1)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\STM32F10x_FWLib\inc -I ..\USER -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\SYSTEM\usart -I ..\HARDWARE\MPU6050 -I ..\HARDWARE\MPU6050\eMPL -I ..\HARDWARE\OLED -I ..\HARDWARE\CONTROL -I ..\HARDWARE\ENCODER -I ..\HARDWARE\EXTI -I ..\HARDWARE\MOTOR -I ..\HARDWARE\PWM -I ..\HARDWARE\USART3 -I ..\HARDWARE\SENSOR -I ..\HARDWARE\TRACKING-I.\RTE\_UpStanding_Car-ID:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-ID:\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="542" -DSTM32F10X_MD -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER-o ..\obj\sys.o --omf_browse ..\obj\sys.crf --depend ..\obj\sys.d)
 I (..\SYSTEM\sys\sys.h)(0x6A046EB7)
 I (..\USER\stm32f10x.h)(0x673F26C8)
 I (D:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\core_cm3.h)(0x6A05B744)
@@ -205,25 +205,25 @@ I (..\STM32F10x_FWLib\inc\stm32f10x_usart.h)(0x673F26C8)
 I (..\STM32F10x_FWLib\inc\stm32f10x_wwdg.h)(0x673F26C8)
 I (..\STM32F10x_FWLib\inc\misc.h)(0x673F26C8)
 I (..\SYSTEM\delay\delay.h)(0x673F26C8)
-I (..\SYSTEM\usart\usart.h)(0x673F26C8)
+I (..\SYSTEM\usart\usart.h)(0x6A0C03B1)
 I (D:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5CEB79E2)
-I (..\HARDWARE\MPU6050\eMPL\inv_mpu.h)(0x673F26C4)
-I (..\HARDWARE\MPU6050\eMPL\inv_mpu_dmp_motion_driver.h)(0x673F26C4)
-I (..\HARDWARE\MPU6050\mpu6050.h)(0x673F26C4)
-I (..\HARDWARE\MPU6050\mpuiic.h)(0x673F26C4)
-I (..\HARDWARE\OLED\oled.h)(0x673F26C4)
+I (..\HARDWARE\MPU6050\eMPL\inv_mpu.h)(0x6A0C05A9)
+I (..\HARDWARE\MPU6050\eMPL\inv_mpu_dmp_motion_driver.h)(0x6A0C05A9)
+I (..\HARDWARE\MPU6050\mpu6050.h)(0x6A0C05A9)
+I (..\HARDWARE\MPU6050\mpuiic.h)(0x6A0C05A9)
+I (..\HARDWARE\OLED\oled.h)(0x6A0C05A9)
 I (D:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5CEB79E2)
-I (..\HARDWARE\CONTROL\control.h)(0x673F26C4)
-I (..\HARDWARE\ENCODER\encoder.h)(0x673F26C4)
-I (..\HARDWARE\EXTI\exti.h)(0x673F26C4)
-I (..\HARDWARE\MOTOR\motor.h)(0x673F26C4)
-I (..\HARDWARE\PWM\pwm.h)(0x673F26C4)
-I (..\HARDWARE\USART3\usart3.h)(0x6A093ECB)
-I (..\HARDWARE\TRACKING\tracking.h)(0x6A0BF802)
+I (..\HARDWARE\CONTROL\control.h)(0x6A0C1156)
+I (..\HARDWARE\ENCODER\encoder.h)(0x6A0C05A9)
+I (..\HARDWARE\EXTI\exti.h)(0x6A0C05A9)
+I (..\HARDWARE\MOTOR\motor.h)(0x6A0C05A9)
+I (..\HARDWARE\PWM\pwm.h)(0x6A0C05A9)
+I (..\HARDWARE\USART3\usart3.h)(0x6A0C05A9)
+I (..\HARDWARE\TRACKING\tracking.h)(0x6A0C0F23)
 I (D:\Keil_v5\ARM\ARMCC\include\string.h)(0x5CEB79E2)
 I (D:\Keil_v5\ARM\ARMCC\include\math.h)(0x5CEB79D6)
-F (..\SYSTEM\usart\usart.c)(0x6A05B7A7)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\STM32F10x_FWLib\inc -I ..\USER -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\SYSTEM\usart -I ..\HARDWARE\MPU6050 -I ..\HARDWARE\MPU6050\eMPL -I ..\HARDWARE\OLED -I ..\HARDWARE\CONTROL -I ..\HARDWARE\ENCODER -I ..\HARDWARE\EXTI -I ..\HARDWARE\MOTOR -I ..\HARDWARE\PWM -I ..\HARDWARE\USART3 -I ..\HARDWARE\SENSOR -I ..\HARDWARE\TRACKING-I.\RTE\_UpStanding_Car-ID:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-ID:\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="542" -DSTM32F10X_MD -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER-o ..\obj\usart.o --omf_browse ..\obj\usart.crf --depend ..\obj\usart.d)
-I (..\SYSTEM\usart\usart.h)(0x673F26C8)
+F (..\SYSTEM\usart\usart.c)(0x6A0C1156)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\STM32F10x_FWLib\inc -I ..\USER -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\SYSTEM\usart -I ..\HARDWARE\MPU6050 -I ..\HARDWARE\MPU6050\eMPL -I ..\HARDWARE\OLED -I ..\HARDWARE\CONTROL -I ..\HARDWARE\ENCODER -I ..\HARDWARE\EXTI -I ..\HARDWARE\MOTOR -I ..\HARDWARE\PWM -I ..\HARDWARE\USART3 -I ..\HARDWARE\SENSOR -I ..\HARDWARE\TRACKING-I.\RTE\_UpStanding_Car-ID:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-ID:\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="542" -DSTM32F10X_MD -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER-o ..\obj\usart.o --omf_browse ..\obj\usart.crf --depend ..\obj\usart.d)
+I (..\SYSTEM\usart\usart.h)(0x6A0C03B1)
 I (D:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5CEB79E2)
 I (..\SYSTEM\sys\sys.h)(0x6A046EB7)
 I (..\USER\stm32f10x.h)(0x673F26C8)
@@ -258,23 +258,23 @@ I (..\STM32F10x_FWLib\inc\stm32f10x_usart.h)(0x673F26C8)
 I (..\STM32F10x_FWLib\inc\stm32f10x_wwdg.h)(0x673F26C8)
 I (..\STM32F10x_FWLib\inc\misc.h)(0x673F26C8)
 I (..\SYSTEM\delay\delay.h)(0x673F26C8)
-I (..\HARDWARE\MPU6050\eMPL\inv_mpu.h)(0x673F26C4)
-I (..\HARDWARE\MPU6050\eMPL\inv_mpu_dmp_motion_driver.h)(0x673F26C4)
-I (..\HARDWARE\MPU6050\mpu6050.h)(0x673F26C4)
-I (..\HARDWARE\MPU6050\mpuiic.h)(0x673F26C4)
-I (..\HARDWARE\OLED\oled.h)(0x673F26C4)
+I (..\HARDWARE\MPU6050\eMPL\inv_mpu.h)(0x6A0C05A9)
+I (..\HARDWARE\MPU6050\eMPL\inv_mpu_dmp_motion_driver.h)(0x6A0C05A9)
+I (..\HARDWARE\MPU6050\mpu6050.h)(0x6A0C05A9)
+I (..\HARDWARE\MPU6050\mpuiic.h)(0x6A0C05A9)
+I (..\HARDWARE\OLED\oled.h)(0x6A0C05A9)
 I (D:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5CEB79E2)
-I (..\HARDWARE\CONTROL\control.h)(0x673F26C4)
-I (..\HARDWARE\ENCODER\encoder.h)(0x673F26C4)
-I (..\HARDWARE\EXTI\exti.h)(0x673F26C4)
-I (..\HARDWARE\MOTOR\motor.h)(0x673F26C4)
-I (..\HARDWARE\PWM\pwm.h)(0x673F26C4)
-I (..\HARDWARE\USART3\usart3.h)(0x6A093ECB)
-I (..\HARDWARE\TRACKING\tracking.h)(0x6A0BF802)
+I (..\HARDWARE\CONTROL\control.h)(0x6A0C1156)
+I (..\HARDWARE\ENCODER\encoder.h)(0x6A0C05A9)
+I (..\HARDWARE\EXTI\exti.h)(0x6A0C05A9)
+I (..\HARDWARE\MOTOR\motor.h)(0x6A0C05A9)
+I (..\HARDWARE\PWM\pwm.h)(0x6A0C05A9)
+I (..\HARDWARE\USART3\usart3.h)(0x6A0C05A9)
+I (..\HARDWARE\TRACKING\tracking.h)(0x6A0C0F23)
 I (D:\Keil_v5\ARM\ARMCC\include\string.h)(0x5CEB79E2)
 I (D:\Keil_v5\ARM\ARMCC\include\math.h)(0x5CEB79D6)
-F (..\HARDWARE\MPU6050\mpuiic.c)(0x673F26C4)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\STM32F10x_FWLib\inc -I ..\USER -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\SYSTEM\usart -I ..\HARDWARE\MPU6050 -I ..\HARDWARE\MPU6050\eMPL -I ..\HARDWARE\OLED -I ..\HARDWARE\CONTROL -I ..\HARDWARE\ENCODER -I ..\HARDWARE\EXTI -I ..\HARDWARE\MOTOR -I ..\HARDWARE\PWM -I ..\HARDWARE\USART3 -I ..\HARDWARE\SENSOR -I ..\HARDWARE\TRACKING-I.\RTE\_UpStanding_Car-ID:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-ID:\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="542" -DSTM32F10X_MD -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER-o ..\obj\mpuiic.o --omf_browse ..\obj\mpuiic.crf --depend ..\obj\mpuiic.d)
-I (..\HARDWARE\MPU6050\mpuiic.h)(0x673F26C4)
+F (..\HARDWARE\MPU6050\mpuiic.c)(0x6A0C05A9)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\STM32F10x_FWLib\inc -I ..\USER -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\SYSTEM\usart -I ..\HARDWARE\MPU6050 -I ..\HARDWARE\MPU6050\eMPL -I ..\HARDWARE\OLED -I ..\HARDWARE\CONTROL -I ..\HARDWARE\ENCODER -I ..\HARDWARE\EXTI -I ..\HARDWARE\MOTOR -I ..\HARDWARE\PWM -I ..\HARDWARE\USART3 -I ..\HARDWARE\SENSOR -I ..\HARDWARE\TRACKING-I.\RTE\_UpStanding_Car-ID:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-ID:\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="542" -DSTM32F10X_MD -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER-o ..\obj\mpuiic.o --omf_browse ..\obj\mpuiic.crf --depend ..\obj\mpuiic.d)
+I (..\HARDWARE\MPU6050\mpuiic.h)(0x6A0C05A9)
 I (..\SYSTEM\sys\sys.h)(0x6A046EB7)
 I (..\USER\stm32f10x.h)(0x673F26C8)
 I (D:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\core_cm3.h)(0x6A05B744)
@@ -308,25 +308,25 @@ I (..\STM32F10x_FWLib\inc\stm32f10x_usart.h)(0x673F26C8)
 I (..\STM32F10x_FWLib\inc\stm32f10x_wwdg.h)(0x673F26C8)
 I (..\STM32F10x_FWLib\inc\misc.h)(0x673F26C8)
 I (..\SYSTEM\delay\delay.h)(0x673F26C8)
-I (..\SYSTEM\usart\usart.h)(0x673F26C8)
+I (..\SYSTEM\usart\usart.h)(0x6A0C03B1)
 I (D:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5CEB79E2)
-I (..\HARDWARE\MPU6050\eMPL\inv_mpu.h)(0x673F26C4)
-I (..\HARDWARE\MPU6050\eMPL\inv_mpu_dmp_motion_driver.h)(0x673F26C4)
-I (..\HARDWARE\MPU6050\mpu6050.h)(0x673F26C4)
-I (..\HARDWARE\OLED\oled.h)(0x673F26C4)
+I (..\HARDWARE\MPU6050\eMPL\inv_mpu.h)(0x6A0C05A9)
+I (..\HARDWARE\MPU6050\eMPL\inv_mpu_dmp_motion_driver.h)(0x6A0C05A9)
+I (..\HARDWARE\MPU6050\mpu6050.h)(0x6A0C05A9)
+I (..\HARDWARE\OLED\oled.h)(0x6A0C05A9)
 I (D:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5CEB79E2)
-I (..\HARDWARE\CONTROL\control.h)(0x673F26C4)
-I (..\HARDWARE\ENCODER\encoder.h)(0x673F26C4)
-I (..\HARDWARE\EXTI\exti.h)(0x673F26C4)
-I (..\HARDWARE\MOTOR\motor.h)(0x673F26C4)
-I (..\HARDWARE\PWM\pwm.h)(0x673F26C4)
-I (..\HARDWARE\USART3\usart3.h)(0x6A093ECB)
-I (..\HARDWARE\TRACKING\tracking.h)(0x6A0BF802)
+I (..\HARDWARE\CONTROL\control.h)(0x6A0C1156)
+I (..\HARDWARE\ENCODER\encoder.h)(0x6A0C05A9)
+I (..\HARDWARE\EXTI\exti.h)(0x6A0C05A9)
+I (..\HARDWARE\MOTOR\motor.h)(0x6A0C05A9)
+I (..\HARDWARE\PWM\pwm.h)(0x6A0C05A9)
+I (..\HARDWARE\USART3\usart3.h)(0x6A0C05A9)
+I (..\HARDWARE\TRACKING\tracking.h)(0x6A0C0F23)
 I (D:\Keil_v5\ARM\ARMCC\include\string.h)(0x5CEB79E2)
 I (D:\Keil_v5\ARM\ARMCC\include\math.h)(0x5CEB79D6)
-F (..\HARDWARE\MPU6050\mpu6050.c)(0x673F26C4)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\STM32F10x_FWLib\inc -I ..\USER -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\SYSTEM\usart -I ..\HARDWARE\MPU6050 -I ..\HARDWARE\MPU6050\eMPL -I ..\HARDWARE\OLED -I ..\HARDWARE\CONTROL -I ..\HARDWARE\ENCODER -I ..\HARDWARE\EXTI -I ..\HARDWARE\MOTOR -I ..\HARDWARE\PWM -I ..\HARDWARE\USART3 -I ..\HARDWARE\SENSOR -I ..\HARDWARE\TRACKING-I.\RTE\_UpStanding_Car-ID:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-ID:\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="542" -DSTM32F10X_MD -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER-o ..\obj\mpu6050.o --omf_browse ..\obj\mpu6050.crf --depend ..\obj\mpu6050.d)
-I (..\HARDWARE\MPU6050\mpu6050.h)(0x673F26C4)
-I (..\HARDWARE\MPU6050\mpuiic.h)(0x673F26C4)
+F (..\HARDWARE\MPU6050\mpu6050.c)(0x6A0C05A9)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\STM32F10x_FWLib\inc -I ..\USER -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\SYSTEM\usart -I ..\HARDWARE\MPU6050 -I ..\HARDWARE\MPU6050\eMPL -I ..\HARDWARE\OLED -I ..\HARDWARE\CONTROL -I ..\HARDWARE\ENCODER -I ..\HARDWARE\EXTI -I ..\HARDWARE\MOTOR -I ..\HARDWARE\PWM -I ..\HARDWARE\USART3 -I ..\HARDWARE\SENSOR -I ..\HARDWARE\TRACKING-I.\RTE\_UpStanding_Car-ID:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-ID:\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="542" -DSTM32F10X_MD -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER-o ..\obj\mpu6050.o --omf_browse ..\obj\mpu6050.crf --depend ..\obj\mpu6050.d)
+I (..\HARDWARE\MPU6050\mpu6050.h)(0x6A0C05A9)
+I (..\HARDWARE\MPU6050\mpuiic.h)(0x6A0C05A9)
 I (..\SYSTEM\sys\sys.h)(0x6A046EB7)
 I (..\USER\stm32f10x.h)(0x673F26C8)
 I (D:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\core_cm3.h)(0x6A05B744)
@@ -360,28 +360,28 @@ I (..\STM32F10x_FWLib\inc\stm32f10x_usart.h)(0x673F26C8)
 I (..\STM32F10x_FWLib\inc\stm32f10x_wwdg.h)(0x673F26C8)
 I (..\STM32F10x_FWLib\inc\misc.h)(0x673F26C8)
 I (..\SYSTEM\delay\delay.h)(0x673F26C8)
-I (..\SYSTEM\usart\usart.h)(0x673F26C8)
+I (..\SYSTEM\usart\usart.h)(0x6A0C03B1)
 I (D:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5CEB79E2)
-I (..\HARDWARE\MPU6050\eMPL\inv_mpu.h)(0x673F26C4)
-I (..\HARDWARE\MPU6050\eMPL\inv_mpu_dmp_motion_driver.h)(0x673F26C4)
-I (..\HARDWARE\OLED\oled.h)(0x673F26C4)
+I (..\HARDWARE\MPU6050\eMPL\inv_mpu.h)(0x6A0C05A9)
+I (..\HARDWARE\MPU6050\eMPL\inv_mpu_dmp_motion_driver.h)(0x6A0C05A9)
+I (..\HARDWARE\OLED\oled.h)(0x6A0C05A9)
 I (D:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5CEB79E2)
-I (..\HARDWARE\CONTROL\control.h)(0x673F26C4)
-I (..\HARDWARE\ENCODER\encoder.h)(0x673F26C4)
-I (..\HARDWARE\EXTI\exti.h)(0x673F26C4)
-I (..\HARDWARE\MOTOR\motor.h)(0x673F26C4)
-I (..\HARDWARE\PWM\pwm.h)(0x673F26C4)
-I (..\HARDWARE\USART3\usart3.h)(0x6A093ECB)
-I (..\HARDWARE\TRACKING\tracking.h)(0x6A0BF802)
+I (..\HARDWARE\CONTROL\control.h)(0x6A0C1156)
+I (..\HARDWARE\ENCODER\encoder.h)(0x6A0C05A9)
+I (..\HARDWARE\EXTI\exti.h)(0x6A0C05A9)
+I (..\HARDWARE\MOTOR\motor.h)(0x6A0C05A9)
+I (..\HARDWARE\PWM\pwm.h)(0x6A0C05A9)
+I (..\HARDWARE\USART3\usart3.h)(0x6A0C05A9)
+I (..\HARDWARE\TRACKING\tracking.h)(0x6A0C0F23)
 I (D:\Keil_v5\ARM\ARMCC\include\string.h)(0x5CEB79E2)
 I (D:\Keil_v5\ARM\ARMCC\include\math.h)(0x5CEB79D6)
-F (..\HARDWARE\MPU6050\eMPL\inv_mpu.c)(0x673F26C4)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\STM32F10x_FWLib\inc -I ..\USER -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\SYSTEM\usart -I ..\HARDWARE\MPU6050 -I ..\HARDWARE\MPU6050\eMPL -I ..\HARDWARE\OLED -I ..\HARDWARE\CONTROL -I ..\HARDWARE\ENCODER -I ..\HARDWARE\EXTI -I ..\HARDWARE\MOTOR -I ..\HARDWARE\PWM -I ..\HARDWARE\USART3 -I ..\HARDWARE\SENSOR -I ..\HARDWARE\TRACKING-I.\RTE\_UpStanding_Car-ID:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-ID:\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="542" -DSTM32F10X_MD -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER-o ..\obj\inv_mpu.o --omf_browse ..\obj\inv_mpu.crf --depend ..\obj\inv_mpu.d)
+F (..\HARDWARE\MPU6050\eMPL\inv_mpu.c)(0x6A0C05A9)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\STM32F10x_FWLib\inc -I ..\USER -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\SYSTEM\usart -I ..\HARDWARE\MPU6050 -I ..\HARDWARE\MPU6050\eMPL -I ..\HARDWARE\OLED -I ..\HARDWARE\CONTROL -I ..\HARDWARE\ENCODER -I ..\HARDWARE\EXTI -I ..\HARDWARE\MOTOR -I ..\HARDWARE\PWM -I ..\HARDWARE\USART3 -I ..\HARDWARE\SENSOR -I ..\HARDWARE\TRACKING-I.\RTE\_UpStanding_Car-ID:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-ID:\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="542" -DSTM32F10X_MD -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER-o ..\obj\inv_mpu.o --omf_browse ..\obj\inv_mpu.crf --depend ..\obj\inv_mpu.d)
 I (D:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5CEB79E2)
 I (D:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5CEB79E2)
 I (D:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5CEB79E2)
 I (D:\Keil_v5\ARM\ARMCC\include\string.h)(0x5CEB79E2)
 I (D:\Keil_v5\ARM\ARMCC\include\math.h)(0x5CEB79D6)
-I (..\HARDWARE\MPU6050\eMPL\inv_mpu.h)(0x673F26C4)
+I (..\HARDWARE\MPU6050\eMPL\inv_mpu.h)(0x6A0C05A9)
 I (..\USER\stm32f10x.h)(0x673F26C8)
 I (D:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\core_cm3.h)(0x6A05B744)
 I (D:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_version.h)(0x6A05B744)
@@ -412,27 +412,27 @@ I (..\STM32F10x_FWLib\inc\stm32f10x_tim.h)(0x673F26C8)
 I (..\STM32F10x_FWLib\inc\stm32f10x_usart.h)(0x673F26C8)
 I (..\STM32F10x_FWLib\inc\stm32f10x_wwdg.h)(0x673F26C8)
 I (..\STM32F10x_FWLib\inc\misc.h)(0x673F26C8)
-I (..\HARDWARE\MPU6050\eMPL\inv_mpu_dmp_motion_driver.h)(0x673F26C4)
-I (..\HARDWARE\MPU6050\mpu6050.h)(0x673F26C4)
-I (..\HARDWARE\MPU6050\mpuiic.h)(0x673F26C4)
+I (..\HARDWARE\MPU6050\eMPL\inv_mpu_dmp_motion_driver.h)(0x6A0C05A9)
+I (..\HARDWARE\MPU6050\mpu6050.h)(0x6A0C05A9)
+I (..\HARDWARE\MPU6050\mpuiic.h)(0x6A0C05A9)
 I (..\SYSTEM\sys\sys.h)(0x6A046EB7)
 I (..\SYSTEM\delay\delay.h)(0x673F26C8)
-I (..\SYSTEM\usart\usart.h)(0x673F26C8)
-I (..\HARDWARE\OLED\oled.h)(0x673F26C4)
-I (..\HARDWARE\CONTROL\control.h)(0x673F26C4)
-I (..\HARDWARE\ENCODER\encoder.h)(0x673F26C4)
-I (..\HARDWARE\EXTI\exti.h)(0x673F26C4)
-I (..\HARDWARE\MOTOR\motor.h)(0x673F26C4)
-I (..\HARDWARE\PWM\pwm.h)(0x673F26C4)
-I (..\HARDWARE\USART3\usart3.h)(0x6A093ECB)
-I (..\HARDWARE\TRACKING\tracking.h)(0x6A0BF802)
-F (..\HARDWARE\MPU6050\eMPL\inv_mpu_dmp_motion_driver.c)(0x673F26C4)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\STM32F10x_FWLib\inc -I ..\USER -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\SYSTEM\usart -I ..\HARDWARE\MPU6050 -I ..\HARDWARE\MPU6050\eMPL -I ..\HARDWARE\OLED -I ..\HARDWARE\CONTROL -I ..\HARDWARE\ENCODER -I ..\HARDWARE\EXTI -I ..\HARDWARE\MOTOR -I ..\HARDWARE\PWM -I ..\HARDWARE\USART3 -I ..\HARDWARE\SENSOR -I ..\HARDWARE\TRACKING-I.\RTE\_UpStanding_Car-ID:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-ID:\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="542" -DSTM32F10X_MD -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER-o ..\obj\inv_mpu_dmp_motion_driver.o --omf_browse ..\obj\inv_mpu_dmp_motion_driver.crf --depend ..\obj\inv_mpu_dmp_motion_driver.d)
+I (..\SYSTEM\usart\usart.h)(0x6A0C03B1)
+I (..\HARDWARE\OLED\oled.h)(0x6A0C05A9)
+I (..\HARDWARE\CONTROL\control.h)(0x6A0C1156)
+I (..\HARDWARE\ENCODER\encoder.h)(0x6A0C05A9)
+I (..\HARDWARE\EXTI\exti.h)(0x6A0C05A9)
+I (..\HARDWARE\MOTOR\motor.h)(0x6A0C05A9)
+I (..\HARDWARE\PWM\pwm.h)(0x6A0C05A9)
+I (..\HARDWARE\USART3\usart3.h)(0x6A0C05A9)
+I (..\HARDWARE\TRACKING\tracking.h)(0x6A0C0F23)
+F (..\HARDWARE\MPU6050\eMPL\inv_mpu_dmp_motion_driver.c)(0x6A0C05A9)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\STM32F10x_FWLib\inc -I ..\USER -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\SYSTEM\usart -I ..\HARDWARE\MPU6050 -I ..\HARDWARE\MPU6050\eMPL -I ..\HARDWARE\OLED -I ..\HARDWARE\CONTROL -I ..\HARDWARE\ENCODER -I ..\HARDWARE\EXTI -I ..\HARDWARE\MOTOR -I ..\HARDWARE\PWM -I ..\HARDWARE\USART3 -I ..\HARDWARE\SENSOR -I ..\HARDWARE\TRACKING-I.\RTE\_UpStanding_Car-ID:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-ID:\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="542" -DSTM32F10X_MD -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER-o ..\obj\inv_mpu_dmp_motion_driver.o --omf_browse ..\obj\inv_mpu_dmp_motion_driver.crf --depend ..\obj\inv_mpu_dmp_motion_driver.d)
 I (D:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5CEB79E2)
 I (D:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5CEB79E2)
 I (D:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5CEB79E2)
 I (D:\Keil_v5\ARM\ARMCC\include\string.h)(0x5CEB79E2)
 I (D:\Keil_v5\ARM\ARMCC\include\math.h)(0x5CEB79D6)
-I (..\HARDWARE\MPU6050\eMPL\inv_mpu.h)(0x673F26C4)
+I (..\HARDWARE\MPU6050\eMPL\inv_mpu.h)(0x6A0C05A9)
 I (..\USER\stm32f10x.h)(0x673F26C8)
 I (D:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\core_cm3.h)(0x6A05B744)
 I (D:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_version.h)(0x6A05B744)
@@ -463,76 +463,24 @@ I (..\STM32F10x_FWLib\inc\stm32f10x_tim.h)(0x673F26C8)
 I (..\STM32F10x_FWLib\inc\stm32f10x_usart.h)(0x673F26C8)
 I (..\STM32F10x_FWLib\inc\stm32f10x_wwdg.h)(0x673F26C8)
 I (..\STM32F10x_FWLib\inc\misc.h)(0x673F26C8)
-I (..\HARDWARE\MPU6050\eMPL\inv_mpu_dmp_motion_driver.h)(0x673F26C4)
-I (..\HARDWARE\MPU6050\eMPL\dmpKey.h)(0x673F26C4)
-I (..\HARDWARE\MPU6050\eMPL\dmpmap.h)(0x673F26C4)
-I (..\SYSTEM\usart\usart.h)(0x673F26C8)
+I (..\HARDWARE\MPU6050\eMPL\inv_mpu_dmp_motion_driver.h)(0x6A0C05A9)
+I (..\HARDWARE\MPU6050\eMPL\dmpKey.h)(0x6A0C05A9)
+I (..\HARDWARE\MPU6050\eMPL\dmpmap.h)(0x6A0C05A9)
+I (..\SYSTEM\usart\usart.h)(0x6A0C03B1)
 I (..\SYSTEM\sys\sys.h)(0x6A046EB7)
 I (..\SYSTEM\delay\delay.h)(0x673F26C8)
-I (..\HARDWARE\MPU6050\mpu6050.h)(0x673F26C4)
-I (..\HARDWARE\MPU6050\mpuiic.h)(0x673F26C4)
-I (..\HARDWARE\OLED\oled.h)(0x673F26C4)
-I (..\HARDWARE\CONTROL\control.h)(0x673F26C4)
-I (..\HARDWARE\ENCODER\encoder.h)(0x673F26C4)
-I (..\HARDWARE\EXTI\exti.h)(0x673F26C4)
-I (..\HARDWARE\MOTOR\motor.h)(0x673F26C4)
-I (..\HARDWARE\PWM\pwm.h)(0x673F26C4)
-I (..\HARDWARE\USART3\usart3.h)(0x6A093ECB)
-I (..\HARDWARE\TRACKING\tracking.h)(0x6A0BF802)
-F (..\HARDWARE\OLED\oled.c)(0x673F26C4)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\STM32F10x_FWLib\inc -I ..\USER -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\SYSTEM\usart -I ..\HARDWARE\MPU6050 -I ..\HARDWARE\MPU6050\eMPL -I ..\HARDWARE\OLED -I ..\HARDWARE\CONTROL -I ..\HARDWARE\ENCODER -I ..\HARDWARE\EXTI -I ..\HARDWARE\MOTOR -I ..\HARDWARE\PWM -I ..\HARDWARE\USART3 -I ..\HARDWARE\SENSOR -I ..\HARDWARE\TRACKING-I.\RTE\_UpStanding_Car-ID:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-ID:\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="542" -DSTM32F10X_MD -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER-o ..\obj\oled.o --omf_browse ..\obj\oled.crf --depend ..\obj\oled.d)
-I (..\HARDWARE\OLED\oled.h)(0x673F26C4)
-I (..\SYSTEM\sys\sys.h)(0x6A046EB7)
-I (..\USER\stm32f10x.h)(0x673F26C8)
-I (D:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\core_cm3.h)(0x6A05B744)
-I (D:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5CEB79E2)
-I (D:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_version.h)(0x6A05B744)
-I (D:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_compiler.h)(0x6A05B744)
-I (D:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_armcc.h)(0x6A05B744)
-I (..\USER\system_stm32f10x.h)(0x673F26C8)
-I (..\USER\stm32f10x_conf.h)(0x673F26C8)
-I (..\STM32F10x_FWLib\inc\stm32f10x_adc.h)(0x673F26C8)
-I (..\STM32F10x_FWLib\inc\stm32f10x_bkp.h)(0x673F26C8)
-I (..\STM32F10x_FWLib\inc\stm32f10x_can.h)(0x673F26C8)
-I (..\STM32F10x_FWLib\inc\stm32f10x_cec.h)(0x673F26C8)
-I (..\STM32F10x_FWLib\inc\stm32f10x_crc.h)(0x673F26C8)
-I (..\STM32F10x_FWLib\inc\stm32f10x_dac.h)(0x673F26C8)
-I (..\STM32F10x_FWLib\inc\stm32f10x_dbgmcu.h)(0x673F26C8)
-I (..\STM32F10x_FWLib\inc\stm32f10x_dma.h)(0x673F26C8)
-I (..\STM32F10x_FWLib\inc\stm32f10x_exti.h)(0x673F26C8)
-I (..\STM32F10x_FWLib\inc\stm32f10x_flash.h)(0x673F26C8)
-I (..\STM32F10x_FWLib\inc\stm32f10x_fsmc.h)(0x673F26C8)
-I (..\STM32F10x_FWLib\inc\stm32f10x_gpio.h)(0x673F26C8)
-I (..\STM32F10x_FWLib\inc\stm32f10x_i2c.h)(0x673F26C8)
-I (..\STM32F10x_FWLib\inc\stm32f10x_iwdg.h)(0x673F26C8)
-I (..\STM32F10x_FWLib\inc\stm32f10x_pwr.h)(0x673F26C8)
-I (..\STM32F10x_FWLib\inc\stm32f10x_rcc.h)(0x673F26C8)
-I (..\STM32F10x_FWLib\inc\stm32f10x_rtc.h)(0x673F26C8)
-I (..\STM32F10x_FWLib\inc\stm32f10x_sdio.h)(0x673F26C8)
-I (..\STM32F10x_FWLib\inc\stm32f10x_spi.h)(0x673F26C8)
-I (..\STM32F10x_FWLib\inc\stm32f10x_tim.h)(0x673F26C8)
-I (..\STM32F10x_FWLib\inc\stm32f10x_usart.h)(0x673F26C8)
-I (..\STM32F10x_FWLib\inc\stm32f10x_wwdg.h)(0x673F26C8)
-I (..\STM32F10x_FWLib\inc\misc.h)(0x673F26C8)
-I (..\SYSTEM\delay\delay.h)(0x673F26C8)
-I (..\SYSTEM\usart\usart.h)(0x673F26C8)
-I (D:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5CEB79E2)
-I (..\HARDWARE\MPU6050\eMPL\inv_mpu.h)(0x673F26C4)
-I (..\HARDWARE\MPU6050\eMPL\inv_mpu_dmp_motion_driver.h)(0x673F26C4)
-I (..\HARDWARE\MPU6050\mpu6050.h)(0x673F26C4)
-I (..\HARDWARE\MPU6050\mpuiic.h)(0x673F26C4)
-I (..\HARDWARE\CONTROL\control.h)(0x673F26C4)
-I (..\HARDWARE\ENCODER\encoder.h)(0x673F26C4)
-I (..\HARDWARE\EXTI\exti.h)(0x673F26C4)
-I (..\HARDWARE\MOTOR\motor.h)(0x673F26C4)
-I (..\HARDWARE\PWM\pwm.h)(0x673F26C4)
-I (..\HARDWARE\USART3\usart3.h)(0x6A093ECB)
-I (..\HARDWARE\TRACKING\tracking.h)(0x6A0BF802)
-I (D:\Keil_v5\ARM\ARMCC\include\string.h)(0x5CEB79E2)
-I (D:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5CEB79E2)
-I (D:\Keil_v5\ARM\ARMCC\include\math.h)(0x5CEB79D6)
-I (..\HARDWARE\OLED\oledfont.h)(0x673F26C4)
-F (..\HARDWARE\CONTROL\control.c)(0x6A0BF2DD)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\STM32F10x_FWLib\inc -I ..\USER -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\SYSTEM\usart -I ..\HARDWARE\MPU6050 -I ..\HARDWARE\MPU6050\eMPL -I ..\HARDWARE\OLED -I ..\HARDWARE\CONTROL -I ..\HARDWARE\ENCODER -I ..\HARDWARE\EXTI -I ..\HARDWARE\MOTOR -I ..\HARDWARE\PWM -I ..\HARDWARE\USART3 -I ..\HARDWARE\SENSOR -I ..\HARDWARE\TRACKING-I.\RTE\_UpStanding_Car-ID:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-ID:\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="542" -DSTM32F10X_MD -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER-o ..\obj\control.o --omf_browse ..\obj\control.crf --depend ..\obj\control.d)
-I (..\HARDWARE\CONTROL\control.h)(0x673F26C4)
+I (..\HARDWARE\MPU6050\mpu6050.h)(0x6A0C05A9)
+I (..\HARDWARE\MPU6050\mpuiic.h)(0x6A0C05A9)
+I (..\HARDWARE\OLED\oled.h)(0x6A0C05A9)
+I (..\HARDWARE\CONTROL\control.h)(0x6A0C1156)
+I (..\HARDWARE\ENCODER\encoder.h)(0x6A0C05A9)
+I (..\HARDWARE\EXTI\exti.h)(0x6A0C05A9)
+I (..\HARDWARE\MOTOR\motor.h)(0x6A0C05A9)
+I (..\HARDWARE\PWM\pwm.h)(0x6A0C05A9)
+I (..\HARDWARE\USART3\usart3.h)(0x6A0C05A9)
+I (..\HARDWARE\TRACKING\tracking.h)(0x6A0C0F23)
+F (..\HARDWARE\OLED\oled.c)(0x6A0C05A9)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\STM32F10x_FWLib\inc -I ..\USER -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\SYSTEM\usart -I ..\HARDWARE\MPU6050 -I ..\HARDWARE\MPU6050\eMPL -I ..\HARDWARE\OLED -I ..\HARDWARE\CONTROL -I ..\HARDWARE\ENCODER -I ..\HARDWARE\EXTI -I ..\HARDWARE\MOTOR -I ..\HARDWARE\PWM -I ..\HARDWARE\USART3 -I ..\HARDWARE\SENSOR -I ..\HARDWARE\TRACKING-I.\RTE\_UpStanding_Car-ID:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-ID:\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="542" -DSTM32F10X_MD -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER-o ..\obj\oled.o --omf_browse ..\obj\oled.crf --depend ..\obj\oled.d)
+I (..\HARDWARE\OLED\oled.h)(0x6A0C05A9)
 I (..\SYSTEM\sys\sys.h)(0x6A046EB7)
 I (..\USER\stm32f10x.h)(0x673F26C8)
 I (D:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\core_cm3.h)(0x6A05B744)
@@ -566,24 +514,25 @@ I (..\STM32F10x_FWLib\inc\stm32f10x_usart.h)(0x673F26C8)
 I (..\STM32F10x_FWLib\inc\stm32f10x_wwdg.h)(0x673F26C8)
 I (..\STM32F10x_FWLib\inc\misc.h)(0x673F26C8)
 I (..\SYSTEM\delay\delay.h)(0x673F26C8)
-I (..\SYSTEM\usart\usart.h)(0x673F26C8)
+I (..\SYSTEM\usart\usart.h)(0x6A0C03B1)
 I (D:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5CEB79E2)
-I (..\HARDWARE\MPU6050\eMPL\inv_mpu.h)(0x673F26C4)
-I (..\HARDWARE\MPU6050\eMPL\inv_mpu_dmp_motion_driver.h)(0x673F26C4)
-I (..\HARDWARE\MPU6050\mpu6050.h)(0x673F26C4)
-I (..\HARDWARE\MPU6050\mpuiic.h)(0x673F26C4)
-I (..\HARDWARE\OLED\oled.h)(0x673F26C4)
-I (D:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5CEB79E2)
-I (..\HARDWARE\ENCODER\encoder.h)(0x673F26C4)
-I (..\HARDWARE\EXTI\exti.h)(0x673F26C4)
-I (..\HARDWARE\MOTOR\motor.h)(0x673F26C4)
-I (..\HARDWARE\PWM\pwm.h)(0x673F26C4)
-I (..\HARDWARE\USART3\usart3.h)(0x6A093ECB)
-I (..\HARDWARE\TRACKING\tracking.h)(0x6A0BF802)
+I (..\HARDWARE\MPU6050\eMPL\inv_mpu.h)(0x6A0C05A9)
+I (..\HARDWARE\MPU6050\eMPL\inv_mpu_dmp_motion_driver.h)(0x6A0C05A9)
+I (..\HARDWARE\MPU6050\mpu6050.h)(0x6A0C05A9)
+I (..\HARDWARE\MPU6050\mpuiic.h)(0x6A0C05A9)
+I (..\HARDWARE\CONTROL\control.h)(0x6A0C1156)
+I (..\HARDWARE\ENCODER\encoder.h)(0x6A0C05A9)
+I (..\HARDWARE\EXTI\exti.h)(0x6A0C05A9)
+I (..\HARDWARE\MOTOR\motor.h)(0x6A0C05A9)
+I (..\HARDWARE\PWM\pwm.h)(0x6A0C05A9)
+I (..\HARDWARE\USART3\usart3.h)(0x6A0C05A9)
+I (..\HARDWARE\TRACKING\tracking.h)(0x6A0C0F23)
 I (D:\Keil_v5\ARM\ARMCC\include\string.h)(0x5CEB79E2)
+I (D:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5CEB79E2)
 I (D:\Keil_v5\ARM\ARMCC\include\math.h)(0x5CEB79D6)
-F (..\HARDWARE\ENCODER\encoder.c)(0x673F26C4)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\STM32F10x_FWLib\inc -I ..\USER -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\SYSTEM\usart -I ..\HARDWARE\MPU6050 -I ..\HARDWARE\MPU6050\eMPL -I ..\HARDWARE\OLED -I ..\HARDWARE\CONTROL -I ..\HARDWARE\ENCODER -I ..\HARDWARE\EXTI -I ..\HARDWARE\MOTOR -I ..\HARDWARE\PWM -I ..\HARDWARE\USART3 -I ..\HARDWARE\SENSOR -I ..\HARDWARE\TRACKING-I.\RTE\_UpStanding_Car-ID:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-ID:\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="542" -DSTM32F10X_MD -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER-o ..\obj\encoder.o --omf_browse ..\obj\encoder.crf --depend ..\obj\encoder.d)
-I (..\HARDWARE\ENCODER\encoder.h)(0x673F26C4)
+I (..\HARDWARE\OLED\oledfont.h)(0x6A0C05A9)
+F (..\HARDWARE\CONTROL\control.c)(0x6A0C1156)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\STM32F10x_FWLib\inc -I ..\USER -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\SYSTEM\usart -I ..\HARDWARE\MPU6050 -I ..\HARDWARE\MPU6050\eMPL -I ..\HARDWARE\OLED -I ..\HARDWARE\CONTROL -I ..\HARDWARE\ENCODER -I ..\HARDWARE\EXTI -I ..\HARDWARE\MOTOR -I ..\HARDWARE\PWM -I ..\HARDWARE\USART3 -I ..\HARDWARE\SENSOR -I ..\HARDWARE\TRACKING-I.\RTE\_UpStanding_Car-ID:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-ID:\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="542" -DSTM32F10X_MD -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER-o ..\obj\control.o --omf_browse ..\obj\control.crf --depend ..\obj\control.d)
+I (..\HARDWARE\CONTROL\control.h)(0x6A0C1156)
 I (..\SYSTEM\sys\sys.h)(0x6A046EB7)
 I (..\USER\stm32f10x.h)(0x673F26C8)
 I (D:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\core_cm3.h)(0x6A05B744)
@@ -617,24 +566,24 @@ I (..\STM32F10x_FWLib\inc\stm32f10x_usart.h)(0x673F26C8)
 I (..\STM32F10x_FWLib\inc\stm32f10x_wwdg.h)(0x673F26C8)
 I (..\STM32F10x_FWLib\inc\misc.h)(0x673F26C8)
 I (..\SYSTEM\delay\delay.h)(0x673F26C8)
-I (..\SYSTEM\usart\usart.h)(0x673F26C8)
+I (..\SYSTEM\usart\usart.h)(0x6A0C03B1)
 I (D:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5CEB79E2)
-I (..\HARDWARE\MPU6050\eMPL\inv_mpu.h)(0x673F26C4)
-I (..\HARDWARE\MPU6050\eMPL\inv_mpu_dmp_motion_driver.h)(0x673F26C4)
-I (..\HARDWARE\MPU6050\mpu6050.h)(0x673F26C4)
-I (..\HARDWARE\MPU6050\mpuiic.h)(0x673F26C4)
-I (..\HARDWARE\OLED\oled.h)(0x673F26C4)
+I (..\HARDWARE\MPU6050\eMPL\inv_mpu.h)(0x6A0C05A9)
+I (..\HARDWARE\MPU6050\eMPL\inv_mpu_dmp_motion_driver.h)(0x6A0C05A9)
+I (..\HARDWARE\MPU6050\mpu6050.h)(0x6A0C05A9)
+I (..\HARDWARE\MPU6050\mpuiic.h)(0x6A0C05A9)
+I (..\HARDWARE\OLED\oled.h)(0x6A0C05A9)
 I (D:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5CEB79E2)
-I (..\HARDWARE\CONTROL\control.h)(0x673F26C4)
-I (..\HARDWARE\EXTI\exti.h)(0x673F26C4)
-I (..\HARDWARE\MOTOR\motor.h)(0x673F26C4)
-I (..\HARDWARE\PWM\pwm.h)(0x673F26C4)
-I (..\HARDWARE\USART3\usart3.h)(0x6A093ECB)
-I (..\HARDWARE\TRACKING\tracking.h)(0x6A0BF802)
+I (..\HARDWARE\ENCODER\encoder.h)(0x6A0C05A9)
+I (..\HARDWARE\EXTI\exti.h)(0x6A0C05A9)
+I (..\HARDWARE\MOTOR\motor.h)(0x6A0C05A9)
+I (..\HARDWARE\PWM\pwm.h)(0x6A0C05A9)
+I (..\HARDWARE\USART3\usart3.h)(0x6A0C05A9)
+I (..\HARDWARE\TRACKING\tracking.h)(0x6A0C0F23)
 I (D:\Keil_v5\ARM\ARMCC\include\string.h)(0x5CEB79E2)
 I (D:\Keil_v5\ARM\ARMCC\include\math.h)(0x5CEB79D6)
-F (..\HARDWARE\EXTI\exti.c)(0x673F26C4)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\STM32F10x_FWLib\inc -I ..\USER -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\SYSTEM\usart -I ..\HARDWARE\MPU6050 -I ..\HARDWARE\MPU6050\eMPL -I ..\HARDWARE\OLED -I ..\HARDWARE\CONTROL -I ..\HARDWARE\ENCODER -I ..\HARDWARE\EXTI -I ..\HARDWARE\MOTOR -I ..\HARDWARE\PWM -I ..\HARDWARE\USART3 -I ..\HARDWARE\SENSOR -I ..\HARDWARE\TRACKING-I.\RTE\_UpStanding_Car-ID:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-ID:\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="542" -DSTM32F10X_MD -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER-o ..\obj\exti.o --omf_browse ..\obj\exti.crf --depend ..\obj\exti.d)
-I (..\HARDWARE\EXTI\exti.h)(0x673F26C4)
+F (..\HARDWARE\ENCODER\encoder.c)(0x6A0C05A9)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\STM32F10x_FWLib\inc -I ..\USER -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\SYSTEM\usart -I ..\HARDWARE\MPU6050 -I ..\HARDWARE\MPU6050\eMPL -I ..\HARDWARE\OLED -I ..\HARDWARE\CONTROL -I ..\HARDWARE\ENCODER -I ..\HARDWARE\EXTI -I ..\HARDWARE\MOTOR -I ..\HARDWARE\PWM -I ..\HARDWARE\USART3 -I ..\HARDWARE\SENSOR -I ..\HARDWARE\TRACKING-I.\RTE\_UpStanding_Car-ID:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-ID:\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="542" -DSTM32F10X_MD -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER-o ..\obj\encoder.o --omf_browse ..\obj\encoder.crf --depend ..\obj\encoder.d)
+I (..\HARDWARE\ENCODER\encoder.h)(0x6A0C05A9)
 I (..\SYSTEM\sys\sys.h)(0x6A046EB7)
 I (..\USER\stm32f10x.h)(0x673F26C8)
 I (D:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\core_cm3.h)(0x6A05B744)
@@ -668,24 +617,24 @@ I (..\STM32F10x_FWLib\inc\stm32f10x_usart.h)(0x673F26C8)
 I (..\STM32F10x_FWLib\inc\stm32f10x_wwdg.h)(0x673F26C8)
 I (..\STM32F10x_FWLib\inc\misc.h)(0x673F26C8)
 I (..\SYSTEM\delay\delay.h)(0x673F26C8)
-I (..\SYSTEM\usart\usart.h)(0x673F26C8)
+I (..\SYSTEM\usart\usart.h)(0x6A0C03B1)
 I (D:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5CEB79E2)
-I (..\HARDWARE\MPU6050\eMPL\inv_mpu.h)(0x673F26C4)
-I (..\HARDWARE\MPU6050\eMPL\inv_mpu_dmp_motion_driver.h)(0x673F26C4)
-I (..\HARDWARE\MPU6050\mpu6050.h)(0x673F26C4)
-I (..\HARDWARE\MPU6050\mpuiic.h)(0x673F26C4)
-I (..\HARDWARE\OLED\oled.h)(0x673F26C4)
+I (..\HARDWARE\MPU6050\eMPL\inv_mpu.h)(0x6A0C05A9)
+I (..\HARDWARE\MPU6050\eMPL\inv_mpu_dmp_motion_driver.h)(0x6A0C05A9)
+I (..\HARDWARE\MPU6050\mpu6050.h)(0x6A0C05A9)
+I (..\HARDWARE\MPU6050\mpuiic.h)(0x6A0C05A9)
+I (..\HARDWARE\OLED\oled.h)(0x6A0C05A9)
 I (D:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5CEB79E2)
-I (..\HARDWARE\CONTROL\control.h)(0x673F26C4)
-I (..\HARDWARE\ENCODER\encoder.h)(0x673F26C4)
-I (..\HARDWARE\MOTOR\motor.h)(0x673F26C4)
-I (..\HARDWARE\PWM\pwm.h)(0x673F26C4)
-I (..\HARDWARE\USART3\usart3.h)(0x6A093ECB)
-I (..\HARDWARE\TRACKING\tracking.h)(0x6A0BF802)
+I (..\HARDWARE\CONTROL\control.h)(0x6A0C1156)
+I (..\HARDWARE\EXTI\exti.h)(0x6A0C05A9)
+I (..\HARDWARE\MOTOR\motor.h)(0x6A0C05A9)
+I (..\HARDWARE\PWM\pwm.h)(0x6A0C05A9)
+I (..\HARDWARE\USART3\usart3.h)(0x6A0C05A9)
+I (..\HARDWARE\TRACKING\tracking.h)(0x6A0C0F23)
 I (D:\Keil_v5\ARM\ARMCC\include\string.h)(0x5CEB79E2)
 I (D:\Keil_v5\ARM\ARMCC\include\math.h)(0x5CEB79D6)
-F (..\HARDWARE\MOTOR\motor.c)(0x673F2BC8)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\STM32F10x_FWLib\inc -I ..\USER -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\SYSTEM\usart -I ..\HARDWARE\MPU6050 -I ..\HARDWARE\MPU6050\eMPL -I ..\HARDWARE\OLED -I ..\HARDWARE\CONTROL -I ..\HARDWARE\ENCODER -I ..\HARDWARE\EXTI -I ..\HARDWARE\MOTOR -I ..\HARDWARE\PWM -I ..\HARDWARE\USART3 -I ..\HARDWARE\SENSOR -I ..\HARDWARE\TRACKING-I.\RTE\_UpStanding_Car-ID:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-ID:\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="542" -DSTM32F10X_MD -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER-o ..\obj\motor.o --omf_browse ..\obj\motor.crf --depend ..\obj\motor.d)
-I (..\HARDWARE\MOTOR\motor.h)(0x673F26C4)
+F (..\HARDWARE\EXTI\exti.c)(0x6A0C05A9)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\STM32F10x_FWLib\inc -I ..\USER -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\SYSTEM\usart -I ..\HARDWARE\MPU6050 -I ..\HARDWARE\MPU6050\eMPL -I ..\HARDWARE\OLED -I ..\HARDWARE\CONTROL -I ..\HARDWARE\ENCODER -I ..\HARDWARE\EXTI -I ..\HARDWARE\MOTOR -I ..\HARDWARE\PWM -I ..\HARDWARE\USART3 -I ..\HARDWARE\SENSOR -I ..\HARDWARE\TRACKING-I.\RTE\_UpStanding_Car-ID:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-ID:\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="542" -DSTM32F10X_MD -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER-o ..\obj\exti.o --omf_browse ..\obj\exti.crf --depend ..\obj\exti.d)
+I (..\HARDWARE\EXTI\exti.h)(0x6A0C05A9)
 I (..\SYSTEM\sys\sys.h)(0x6A046EB7)
 I (..\USER\stm32f10x.h)(0x673F26C8)
 I (D:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\core_cm3.h)(0x6A05B744)
@@ -719,24 +668,24 @@ I (..\STM32F10x_FWLib\inc\stm32f10x_usart.h)(0x673F26C8)
 I (..\STM32F10x_FWLib\inc\stm32f10x_wwdg.h)(0x673F26C8)
 I (..\STM32F10x_FWLib\inc\misc.h)(0x673F26C8)
 I (..\SYSTEM\delay\delay.h)(0x673F26C8)
-I (..\SYSTEM\usart\usart.h)(0x673F26C8)
+I (..\SYSTEM\usart\usart.h)(0x6A0C03B1)
 I (D:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5CEB79E2)
-I (..\HARDWARE\MPU6050\eMPL\inv_mpu.h)(0x673F26C4)
-I (..\HARDWARE\MPU6050\eMPL\inv_mpu_dmp_motion_driver.h)(0x673F26C4)
-I (..\HARDWARE\MPU6050\mpu6050.h)(0x673F26C4)
-I (..\HARDWARE\MPU6050\mpuiic.h)(0x673F26C4)
-I (..\HARDWARE\OLED\oled.h)(0x673F26C4)
+I (..\HARDWARE\MPU6050\eMPL\inv_mpu.h)(0x6A0C05A9)
+I (..\HARDWARE\MPU6050\eMPL\inv_mpu_dmp_motion_driver.h)(0x6A0C05A9)
+I (..\HARDWARE\MPU6050\mpu6050.h)(0x6A0C05A9)
+I (..\HARDWARE\MPU6050\mpuiic.h)(0x6A0C05A9)
+I (..\HARDWARE\OLED\oled.h)(0x6A0C05A9)
 I (D:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5CEB79E2)
-I (..\HARDWARE\CONTROL\control.h)(0x673F26C4)
-I (..\HARDWARE\ENCODER\encoder.h)(0x673F26C4)
-I (..\HARDWARE\EXTI\exti.h)(0x673F26C4)
-I (..\HARDWARE\PWM\pwm.h)(0x673F26C4)
-I (..\HARDWARE\USART3\usart3.h)(0x6A093ECB)
-I (..\HARDWARE\TRACKING\tracking.h)(0x6A0BF802)
+I (..\HARDWARE\CONTROL\control.h)(0x6A0C1156)
+I (..\HARDWARE\ENCODER\encoder.h)(0x6A0C05A9)
+I (..\HARDWARE\MOTOR\motor.h)(0x6A0C05A9)
+I (..\HARDWARE\PWM\pwm.h)(0x6A0C05A9)
+I (..\HARDWARE\USART3\usart3.h)(0x6A0C05A9)
+I (..\HARDWARE\TRACKING\tracking.h)(0x6A0C0F23)
 I (D:\Keil_v5\ARM\ARMCC\include\string.h)(0x5CEB79E2)
 I (D:\Keil_v5\ARM\ARMCC\include\math.h)(0x5CEB79D6)
-F (..\HARDWARE\PWM\pwm.c)(0x673F26C4)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\STM32F10x_FWLib\inc -I ..\USER -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\SYSTEM\usart -I ..\HARDWARE\MPU6050 -I ..\HARDWARE\MPU6050\eMPL -I ..\HARDWARE\OLED -I ..\HARDWARE\CONTROL -I ..\HARDWARE\ENCODER -I ..\HARDWARE\EXTI -I ..\HARDWARE\MOTOR -I ..\HARDWARE\PWM -I ..\HARDWARE\USART3 -I ..\HARDWARE\SENSOR -I ..\HARDWARE\TRACKING-I.\RTE\_UpStanding_Car-ID:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-ID:\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="542" -DSTM32F10X_MD -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER-o ..\obj\pwm.o --omf_browse ..\obj\pwm.crf --depend ..\obj\pwm.d)
-I (..\HARDWARE\PWM\pwm.h)(0x673F26C4)
+F (..\HARDWARE\MOTOR\motor.c)(0x6A0C05A9)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\STM32F10x_FWLib\inc -I ..\USER -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\SYSTEM\usart -I ..\HARDWARE\MPU6050 -I ..\HARDWARE\MPU6050\eMPL -I ..\HARDWARE\OLED -I ..\HARDWARE\CONTROL -I ..\HARDWARE\ENCODER -I ..\HARDWARE\EXTI -I ..\HARDWARE\MOTOR -I ..\HARDWARE\PWM -I ..\HARDWARE\USART3 -I ..\HARDWARE\SENSOR -I ..\HARDWARE\TRACKING-I.\RTE\_UpStanding_Car-ID:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-ID:\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="542" -DSTM32F10X_MD -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER-o ..\obj\motor.o --omf_browse ..\obj\motor.crf --depend ..\obj\motor.d)
+I (..\HARDWARE\MOTOR\motor.h)(0x6A0C05A9)
 I (..\SYSTEM\sys\sys.h)(0x6A046EB7)
 I (..\USER\stm32f10x.h)(0x673F26C8)
 I (D:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\core_cm3.h)(0x6A05B744)
@@ -770,24 +719,24 @@ I (..\STM32F10x_FWLib\inc\stm32f10x_usart.h)(0x673F26C8)
 I (..\STM32F10x_FWLib\inc\stm32f10x_wwdg.h)(0x673F26C8)
 I (..\STM32F10x_FWLib\inc\misc.h)(0x673F26C8)
 I (..\SYSTEM\delay\delay.h)(0x673F26C8)
-I (..\SYSTEM\usart\usart.h)(0x673F26C8)
+I (..\SYSTEM\usart\usart.h)(0x6A0C03B1)
 I (D:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5CEB79E2)
-I (..\HARDWARE\MPU6050\eMPL\inv_mpu.h)(0x673F26C4)
-I (..\HARDWARE\MPU6050\eMPL\inv_mpu_dmp_motion_driver.h)(0x673F26C4)
-I (..\HARDWARE\MPU6050\mpu6050.h)(0x673F26C4)
-I (..\HARDWARE\MPU6050\mpuiic.h)(0x673F26C4)
-I (..\HARDWARE\OLED\oled.h)(0x673F26C4)
+I (..\HARDWARE\MPU6050\eMPL\inv_mpu.h)(0x6A0C05A9)
+I (..\HARDWARE\MPU6050\eMPL\inv_mpu_dmp_motion_driver.h)(0x6A0C05A9)
+I (..\HARDWARE\MPU6050\mpu6050.h)(0x6A0C05A9)
+I (..\HARDWARE\MPU6050\mpuiic.h)(0x6A0C05A9)
+I (..\HARDWARE\OLED\oled.h)(0x6A0C05A9)
 I (D:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5CEB79E2)
-I (..\HARDWARE\CONTROL\control.h)(0x673F26C4)
-I (..\HARDWARE\ENCODER\encoder.h)(0x673F26C4)
-I (..\HARDWARE\EXTI\exti.h)(0x673F26C4)
-I (..\HARDWARE\MOTOR\motor.h)(0x673F26C4)
-I (..\HARDWARE\USART3\usart3.h)(0x6A093ECB)
-I (..\HARDWARE\TRACKING\tracking.h)(0x6A0BF802)
+I (..\HARDWARE\CONTROL\control.h)(0x6A0C1156)
+I (..\HARDWARE\ENCODER\encoder.h)(0x6A0C05A9)
+I (..\HARDWARE\EXTI\exti.h)(0x6A0C05A9)
+I (..\HARDWARE\PWM\pwm.h)(0x6A0C05A9)
+I (..\HARDWARE\USART3\usart3.h)(0x6A0C05A9)
+I (..\HARDWARE\TRACKING\tracking.h)(0x6A0C0F23)
 I (D:\Keil_v5\ARM\ARMCC\include\string.h)(0x5CEB79E2)
 I (D:\Keil_v5\ARM\ARMCC\include\math.h)(0x5CEB79D6)
-F (..\HARDWARE\USART3\usart3.c)(0x6A093ECB)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\STM32F10x_FWLib\inc -I ..\USER -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\SYSTEM\usart -I ..\HARDWARE\MPU6050 -I ..\HARDWARE\MPU6050\eMPL -I ..\HARDWARE\OLED -I ..\HARDWARE\CONTROL -I ..\HARDWARE\ENCODER -I ..\HARDWARE\EXTI -I ..\HARDWARE\MOTOR -I ..\HARDWARE\PWM -I ..\HARDWARE\USART3 -I ..\HARDWARE\SENSOR -I ..\HARDWARE\TRACKING-I.\RTE\_UpStanding_Car-ID:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-ID:\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="542" -DSTM32F10X_MD -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER-o ..\obj\usart3.o --omf_browse ..\obj\usart3.crf --depend ..\obj\usart3.d)
-I (..\HARDWARE\USART3\usart3.h)(0x6A093ECB)
+F (..\HARDWARE\PWM\pwm.c)(0x6A0C05A9)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\STM32F10x_FWLib\inc -I ..\USER -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\SYSTEM\usart -I ..\HARDWARE\MPU6050 -I ..\HARDWARE\MPU6050\eMPL -I ..\HARDWARE\OLED -I ..\HARDWARE\CONTROL -I ..\HARDWARE\ENCODER -I ..\HARDWARE\EXTI -I ..\HARDWARE\MOTOR -I ..\HARDWARE\PWM -I ..\HARDWARE\USART3 -I ..\HARDWARE\SENSOR -I ..\HARDWARE\TRACKING-I.\RTE\_UpStanding_Car-ID:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-ID:\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="542" -DSTM32F10X_MD -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER-o ..\obj\pwm.o --omf_browse ..\obj\pwm.crf --depend ..\obj\pwm.d)
+I (..\HARDWARE\PWM\pwm.h)(0x6A0C05A9)
 I (..\SYSTEM\sys\sys.h)(0x6A046EB7)
 I (..\USER\stm32f10x.h)(0x673F26C8)
 I (D:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\core_cm3.h)(0x6A05B744)
@@ -821,24 +770,75 @@ I (..\STM32F10x_FWLib\inc\stm32f10x_usart.h)(0x673F26C8)
 I (..\STM32F10x_FWLib\inc\stm32f10x_wwdg.h)(0x673F26C8)
 I (..\STM32F10x_FWLib\inc\misc.h)(0x673F26C8)
 I (..\SYSTEM\delay\delay.h)(0x673F26C8)
-I (..\SYSTEM\usart\usart.h)(0x673F26C8)
+I (..\SYSTEM\usart\usart.h)(0x6A0C03B1)
 I (D:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5CEB79E2)
-I (..\HARDWARE\MPU6050\eMPL\inv_mpu.h)(0x673F26C4)
-I (..\HARDWARE\MPU6050\eMPL\inv_mpu_dmp_motion_driver.h)(0x673F26C4)
-I (..\HARDWARE\MPU6050\mpu6050.h)(0x673F26C4)
-I (..\HARDWARE\MPU6050\mpuiic.h)(0x673F26C4)
-I (..\HARDWARE\OLED\oled.h)(0x673F26C4)
+I (..\HARDWARE\MPU6050\eMPL\inv_mpu.h)(0x6A0C05A9)
+I (..\HARDWARE\MPU6050\eMPL\inv_mpu_dmp_motion_driver.h)(0x6A0C05A9)
+I (..\HARDWARE\MPU6050\mpu6050.h)(0x6A0C05A9)
+I (..\HARDWARE\MPU6050\mpuiic.h)(0x6A0C05A9)
+I (..\HARDWARE\OLED\oled.h)(0x6A0C05A9)
 I (D:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5CEB79E2)
-I (..\HARDWARE\CONTROL\control.h)(0x673F26C4)
-I (..\HARDWARE\ENCODER\encoder.h)(0x673F26C4)
-I (..\HARDWARE\EXTI\exti.h)(0x673F26C4)
-I (..\HARDWARE\MOTOR\motor.h)(0x673F26C4)
-I (..\HARDWARE\PWM\pwm.h)(0x673F26C4)
-I (..\HARDWARE\TRACKING\tracking.h)(0x6A0BF802)
+I (..\HARDWARE\CONTROL\control.h)(0x6A0C1156)
+I (..\HARDWARE\ENCODER\encoder.h)(0x6A0C05A9)
+I (..\HARDWARE\EXTI\exti.h)(0x6A0C05A9)
+I (..\HARDWARE\MOTOR\motor.h)(0x6A0C05A9)
+I (..\HARDWARE\USART3\usart3.h)(0x6A0C05A9)
+I (..\HARDWARE\TRACKING\tracking.h)(0x6A0C0F23)
 I (D:\Keil_v5\ARM\ARMCC\include\string.h)(0x5CEB79E2)
 I (D:\Keil_v5\ARM\ARMCC\include\math.h)(0x5CEB79D6)
-F (..\HARDWARE\TRACKING\tracking.c)(0x6A0BFCE6)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\STM32F10x_FWLib\inc -I ..\USER -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\SYSTEM\usart -I ..\HARDWARE\MPU6050 -I ..\HARDWARE\MPU6050\eMPL -I ..\HARDWARE\OLED -I ..\HARDWARE\CONTROL -I ..\HARDWARE\ENCODER -I ..\HARDWARE\EXTI -I ..\HARDWARE\MOTOR -I ..\HARDWARE\PWM -I ..\HARDWARE\USART3 -I ..\HARDWARE\SENSOR -I ..\HARDWARE\TRACKING-I.\RTE\_UpStanding_Car-ID:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-ID:\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="542" -DSTM32F10X_MD -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER-o ..\obj\tracking.o --omf_browse ..\obj\tracking.crf --depend ..\obj\tracking.d)
-I (..\HARDWARE\TRACKING\tracking.h)(0x6A0BF802)
+F (..\HARDWARE\USART3\usart3.c)(0x6A0C05A9)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\STM32F10x_FWLib\inc -I ..\USER -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\SYSTEM\usart -I ..\HARDWARE\MPU6050 -I ..\HARDWARE\MPU6050\eMPL -I ..\HARDWARE\OLED -I ..\HARDWARE\CONTROL -I ..\HARDWARE\ENCODER -I ..\HARDWARE\EXTI -I ..\HARDWARE\MOTOR -I ..\HARDWARE\PWM -I ..\HARDWARE\USART3 -I ..\HARDWARE\SENSOR -I ..\HARDWARE\TRACKING-I.\RTE\_UpStanding_Car-ID:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-ID:\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="542" -DSTM32F10X_MD -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER-o ..\obj\usart3.o --omf_browse ..\obj\usart3.crf --depend ..\obj\usart3.d)
+I (..\HARDWARE\USART3\usart3.h)(0x6A0C05A9)
+I (..\SYSTEM\sys\sys.h)(0x6A046EB7)
+I (..\USER\stm32f10x.h)(0x673F26C8)
+I (D:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\core_cm3.h)(0x6A05B744)
+I (D:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5CEB79E2)
+I (D:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_version.h)(0x6A05B744)
+I (D:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_compiler.h)(0x6A05B744)
+I (D:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_armcc.h)(0x6A05B744)
+I (..\USER\system_stm32f10x.h)(0x673F26C8)
+I (..\USER\stm32f10x_conf.h)(0x673F26C8)
+I (..\STM32F10x_FWLib\inc\stm32f10x_adc.h)(0x673F26C8)
+I (..\STM32F10x_FWLib\inc\stm32f10x_bkp.h)(0x673F26C8)
+I (..\STM32F10x_FWLib\inc\stm32f10x_can.h)(0x673F26C8)
+I (..\STM32F10x_FWLib\inc\stm32f10x_cec.h)(0x673F26C8)
+I (..\STM32F10x_FWLib\inc\stm32f10x_crc.h)(0x673F26C8)
+I (..\STM32F10x_FWLib\inc\stm32f10x_dac.h)(0x673F26C8)
+I (..\STM32F10x_FWLib\inc\stm32f10x_dbgmcu.h)(0x673F26C8)
+I (..\STM32F10x_FWLib\inc\stm32f10x_dma.h)(0x673F26C8)
+I (..\STM32F10x_FWLib\inc\stm32f10x_exti.h)(0x673F26C8)
+I (..\STM32F10x_FWLib\inc\stm32f10x_flash.h)(0x673F26C8)
+I (..\STM32F10x_FWLib\inc\stm32f10x_fsmc.h)(0x673F26C8)
+I (..\STM32F10x_FWLib\inc\stm32f10x_gpio.h)(0x673F26C8)
+I (..\STM32F10x_FWLib\inc\stm32f10x_i2c.h)(0x673F26C8)
+I (..\STM32F10x_FWLib\inc\stm32f10x_iwdg.h)(0x673F26C8)
+I (..\STM32F10x_FWLib\inc\stm32f10x_pwr.h)(0x673F26C8)
+I (..\STM32F10x_FWLib\inc\stm32f10x_rcc.h)(0x673F26C8)
+I (..\STM32F10x_FWLib\inc\stm32f10x_rtc.h)(0x673F26C8)
+I (..\STM32F10x_FWLib\inc\stm32f10x_sdio.h)(0x673F26C8)
+I (..\STM32F10x_FWLib\inc\stm32f10x_spi.h)(0x673F26C8)
+I (..\STM32F10x_FWLib\inc\stm32f10x_tim.h)(0x673F26C8)
+I (..\STM32F10x_FWLib\inc\stm32f10x_usart.h)(0x673F26C8)
+I (..\STM32F10x_FWLib\inc\stm32f10x_wwdg.h)(0x673F26C8)
+I (..\STM32F10x_FWLib\inc\misc.h)(0x673F26C8)
+I (..\SYSTEM\delay\delay.h)(0x673F26C8)
+I (..\SYSTEM\usart\usart.h)(0x6A0C03B1)
+I (D:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5CEB79E2)
+I (..\HARDWARE\MPU6050\eMPL\inv_mpu.h)(0x6A0C05A9)
+I (..\HARDWARE\MPU6050\eMPL\inv_mpu_dmp_motion_driver.h)(0x6A0C05A9)
+I (..\HARDWARE\MPU6050\mpu6050.h)(0x6A0C05A9)
+I (..\HARDWARE\MPU6050\mpuiic.h)(0x6A0C05A9)
+I (..\HARDWARE\OLED\oled.h)(0x6A0C05A9)
+I (D:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5CEB79E2)
+I (..\HARDWARE\CONTROL\control.h)(0x6A0C1156)
+I (..\HARDWARE\ENCODER\encoder.h)(0x6A0C05A9)
+I (..\HARDWARE\EXTI\exti.h)(0x6A0C05A9)
+I (..\HARDWARE\MOTOR\motor.h)(0x6A0C05A9)
+I (..\HARDWARE\PWM\pwm.h)(0x6A0C05A9)
+I (..\HARDWARE\TRACKING\tracking.h)(0x6A0C0F23)
+I (D:\Keil_v5\ARM\ARMCC\include\string.h)(0x5CEB79E2)
+I (D:\Keil_v5\ARM\ARMCC\include\math.h)(0x5CEB79D6)
+F (..\HARDWARE\TRACKING\tracking.c)(0x6A0C1700)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\STM32F10x_FWLib\inc -I ..\USER -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\SYSTEM\usart -I ..\HARDWARE\MPU6050 -I ..\HARDWARE\MPU6050\eMPL -I ..\HARDWARE\OLED -I ..\HARDWARE\CONTROL -I ..\HARDWARE\ENCODER -I ..\HARDWARE\EXTI -I ..\HARDWARE\MOTOR -I ..\HARDWARE\PWM -I ..\HARDWARE\USART3 -I ..\HARDWARE\SENSOR -I ..\HARDWARE\TRACKING-I.\RTE\_UpStanding_Car-ID:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-ID:\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="542" -DSTM32F10X_MD -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER-o ..\obj\tracking.o --omf_browse ..\obj\tracking.crf --depend ..\obj\tracking.d)
+I (..\HARDWARE\TRACKING\tracking.h)(0x6A0C0F23)
 I (..\USER\stm32f10x.h)(0x673F26C8)
 I (D:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\core_cm3.h)(0x6A05B744)
 I (D:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5CEB79E2)

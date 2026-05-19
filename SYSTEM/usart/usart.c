@@ -1,11 +1,14 @@
 #include "usart.h"	  
+#include "control.h"
+#include "string.h"
+#include "stdlib.h"
 
 
 
-//¼ÓÈëÒÔÏÂ´úÂë,Ö§³Öprintfº¯Êý,¶ø²»ÐèÒªÑ¡Ôñuse MicroLIB
+//åŠ å…¥ä»¥ä¸‹ä»£ç ,æ”¯æŒprintfå‡½æ•°,è€Œä¸éœ€è¦é€‰æ‹©use MicroLIB
 #if 1
 #pragma import(__use_no_semihosting)             
-//±ê×¼¿âÐèÒªµÄÖ§³Öº¯Êý                 
+//æ ‡å‡†åº“éœ€è¦çš„æ”¯æŒå‡½æ•°                 
 struct __FILE 
 { 
 	int handle; 
@@ -13,21 +16,21 @@ struct __FILE
 }; 
 
 FILE __stdout;       
-//¶¨Òå_sys_exit()ÒÔ±ÜÃâÊ¹ÓÃ°ëÖ÷»úÄ£Ê½    
+//å®šä¹‰_sys_exit()ä»¥é¿å…ä½¿ç”¨åŠä¸»æœºæ¨¡å¼    
 void _sys_exit(int x) 
 { 
 	x = x; 
 } 
-//ÖØ¶¨Òåfputcº¯Êý 
+//é‡å®šä¹‰fputcå‡½æ•° 
 int fputc(int ch, FILE *f)
 {      
-	while((USART1->SR&0X40)==0);//Ñ­»··¢ËÍ,Ö±µ½·¢ËÍÍê±Ï   
+	while((USART1->SR&0X40)==0);//å¾ªçŽ¯å‘é€,ç›´åˆ°å‘é€å®Œæ¯•   
     USART1->DR = (u8) ch;      
 	return ch;
 }
 #endif 
 
-/*Ê¹ÓÃmicroLibµÄ·½·¨*/
+/*ä½¿ç”¨microLibçš„æ–¹æ³•*/
  /* 
 int fputc(int ch, FILE *f)
 {
@@ -45,16 +48,87 @@ int GetKey (void)  {
 }
 */
  
-u8 USART_RX_BUF[64];     //½ÓÊÕ»º³å,×î´ó64¸ö×Ö½Ú.
-//½ÓÊÕ×´Ì¬
-//bit7£¬½ÓÊÕÍê³É±êÖ¾
-//bit6£¬½ÓÊÕµ½0x0d
-//bit5~0£¬½ÓÊÕµ½µÄÓÐÐ§×Ö½ÚÊýÄ¿
-u8 USART_RX_STA=0;       //½ÓÊÕ×´Ì¬±ê¼Ç
+u8 USART_RX_BUF[64];     //æŽ¥æ”¶ç¼“å†²,æœ€å¤§64ä¸ªå­—èŠ‚.
+//æŽ¥æ”¶çŠ¶æ€
+//bit7ï¼ŒæŽ¥æ”¶å®Œæˆæ ‡å¿—
+//bit6ï¼ŒæŽ¥æ”¶åˆ°0x0d
+//bit5~0ï¼ŒæŽ¥æ”¶åˆ°çš„æœ‰æ•ˆå­—èŠ‚æ•°ç›®
+u8 USART_RX_STA=0;       //æŽ¥æ”¶çŠ¶æ€æ ‡è®°
+
+static void USART1_PrintPidValues(void)
+{
+	float vkp, vkd, skp, ski, rkp, rkd;
+	float tkp, tki, tkd;
+
+	Control_GetPidValues(&vkp, &vkd, &skp, &ski, &rkp, &rkd);
+	Tracking_GetPidValues(&tkp, &tki, &tkd);
+	printf("PID Vertical_Kp=%.4f Vertical_Kd=%.4f Velocity_Kp=%.4f Velocity_Ki=%.6f Turn_Kp=%.4f Turn_Kd=%.4f Tracking_Kp=%.4f Tracking_Ki=%.4f Tracking_Kd=%.4f\r\n",
+	       vkp, vkd, skp, ski, rkp, rkd, tkp, tki, tkd);
+}
+
+void USART1_ProcessCommand(void)
+{
+	char line[64];
+	char cmd[16];
+	char name[16];
+	float value;
+	u8 len;
+	u8 i;
+
+	if((USART_RX_STA & 0x80) == 0)
+	{
+		return;
+	}
+
+	len = USART_RX_STA & 0x3F;
+	if(len >= sizeof(line))
+	{
+		len = sizeof(line) - 1;
+	}
+
+	for(i = 0; i < len; i++)
+	{
+		line[i] = (char)USART_RX_BUF[i];
+	}
+	line[len] = '\0';
+	USART_RX_STA = 0;
+	memset(USART_RX_BUF, 0, sizeof(USART_RX_BUF));
+
+	if((strcmp(line, "GET PID") == 0) || (strcmp(line, "PID?") == 0))
+	{
+		USART1_PrintPidValues();
+		return;
+	}
+
+	if(strcmp(line, "HELP") == 0)
+	{
+		printf("CMD: SET VKP/VKD/SKP/SKI/RKP/RKD/TKP/TKI/TKD val | GET PID\r\n");
+		return;
+	}
+
+	if(sscanf(line, "%15s %15s %f", cmd, name, &value) == 3)
+	{
+		if(strcmp(cmd, "SET") == 0)
+		{
+			if(Control_SetPidByName(name, value) || Tracking_SetPidByName(name, value))
+			{
+				printf("OK %s=%.6f\r\n", name, value);
+				USART1_PrintPidValues();
+			}
+			else
+			{
+				printf("ERR Unknown PID name: %s\r\n", name);
+			}
+			return;
+		}
+	}
+
+	printf("ERR Invalid command. Type HELP\r\n");
+}
 
 void uart1_init(u32 bound)
 {
-	//GPIO¶Ë¿ÚÉèÖÃ
+	//GPIOç«¯å£è®¾ç½®
 	GPIO_InitTypeDef GPIO_InitStructure;
 	USART_InitTypeDef USART_InitStructure;
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1|RCC_APB2Periph_GPIOA|RCC_APB2Periph_AFIO, ENABLE);
@@ -67,40 +141,40 @@ void uart1_init(u32 bound)
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
 	GPIO_Init(GPIOA, &GPIO_InitStructure);  
-	//USART ³õÊ¼»¯ÉèÖÃ
-	USART_InitStructure.USART_BaudRate = bound;//Ò»°ãÉèÖÃÎª9600;
+	//USART åˆå§‹åŒ–è®¾ç½®
+	USART_InitStructure.USART_BaudRate = bound;//ä¸€èˆ¬è®¾ç½®ä¸º9600;
 	USART_InitStructure.USART_WordLength = USART_WordLength_8b;
 	USART_InitStructure.USART_StopBits = USART_StopBits_1;
 	USART_InitStructure.USART_Parity = USART_Parity_No;
 	USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
 	USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
 	USART_Init(USART1, &USART_InitStructure);
-	USART_ITConfig(USART1, USART_IT_RXNE, ENABLE);//¿ªÆôÖÐ¶Ï
-	USART_Cmd(USART1, ENABLE);                    //Ê¹ÄÜ´®¿Ú 
+	USART_ITConfig(USART1, USART_IT_RXNE, ENABLE);//å¼€å¯ä¸­æ–­
+	USART_Cmd(USART1, ENABLE);                    //ä½¿èƒ½ä¸²å£ 
 }
 
-void USART1_IRQHandler(void)                	//´®¿Ú1ÖÐ¶Ï·þÎñ³ÌÐò
+void USART1_IRQHandler(void)                	//ä¸²å£1ä¸­æ–­æœåŠ¡ç¨‹åº
 	{
 	u8 Res;
-	if(USART_GetITStatus(USART1, USART_IT_RXNE) != RESET)  //½ÓÊÕÖÐ¶Ï(½ÓÊÕµ½µÄÊý¾Ý±ØÐëÊÇ0x0d 0x0a½áÎ²)
+	if(USART_GetITStatus(USART1, USART_IT_RXNE) != RESET)  //æŽ¥æ”¶ä¸­æ–­(æŽ¥æ”¶åˆ°çš„æ•°æ®å¿…é¡»æ˜¯0x0d 0x0aç»“å°¾)
 		{
-		Res =USART_ReceiveData(USART1);//(USART1->DR);	//¶ÁÈ¡½ÓÊÕµ½µÄÊý¾Ý
+		Res =USART_ReceiveData(USART1);//(USART1->DR);	//è¯»å–æŽ¥æ”¶åˆ°çš„æ•°æ®
 		
-		if((USART_RX_STA&0x80)==0)//½ÓÊÕÎ´Íê³É
+		if((USART_RX_STA&0x80)==0)//æŽ¥æ”¶æœªå®Œæˆ
 			{
-			if(USART_RX_STA&0x40)//½ÓÊÕµ½ÁË0x0d
+			if(USART_RX_STA&0x40)//æŽ¥æ”¶åˆ°äº†0x0d
 				{
-				if(Res!=0x0a)USART_RX_STA=0;//½ÓÊÕ´íÎó,ÖØÐÂ¿ªÊ¼
-				else USART_RX_STA|=0x80;	//½ÓÊÕÍê³ÉÁË 
+				if(Res!=0x0a)USART_RX_STA=0;//æŽ¥æ”¶é”™è¯¯,é‡æ–°å¼€å§‹
+				else USART_RX_STA|=0x80;	//æŽ¥æ”¶å®Œæˆäº† 
 				}
-			else //»¹Ã»ÊÕµ½0X0D
+			else //è¿˜æ²¡æ”¶åˆ°0X0D
 				{	
 				if(Res==0x0d)USART_RX_STA|=0x40;
 				else
 					{
 					USART_RX_BUF[USART_RX_STA&0X3F]=Res ;
 					USART_RX_STA++;
-					if(USART_RX_STA>63)USART_RX_STA=0;//½ÓÊÕÊý¾Ý´íÎó,ÖØÐÂ¿ªÊ¼½ÓÊÕ	  
+					if(USART_RX_STA>63)USART_RX_STA=0;//æŽ¥æ”¶æ•°æ®é”™è¯¯,é‡æ–°å¼€å§‹æŽ¥æ”¶	  
 					}		 
 				}
 			}   		 

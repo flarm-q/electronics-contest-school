@@ -404,43 +404,54 @@ static int Tracking_GetPriorityError(void)
 	u8 x6 = Tracking_IR_Data[4];
 	u8 x7 = Tracking_IR_Data[5];
 
-	if(x4 == 0 && x5 == 0)
+	if(x3 == 0 || x4 == 0 && x5 == 0 || x6 == 0)
 	{
 		return 0;
 	}
-	if(x3 == 0 && x4 == 0)
-	{
-		return -2;
-	}
-	if(x5 == 0 && x6 == 0)
-	{
-		return 2;
-	}
-	if(x4 == 0)
-	{
-		return -1;
-	}
-	if(x5 == 0)
-	{
-		return 1;
-	}
-	if(x3 == 0)
+	else if(x3 == 0 && x4 == 0 && x2 == 1 && x5 == 1 && x6 == 1 && x7 == 1)
 	{
 		return -3;
 	}
-	if(x6 == 0)
+	else if(x2 == 0 && x3 == 0 && x4 == 1 && x5 == 1 && x6 == 1 && x7 == 1)
+	{
+		return -5;		
+	}
+	else if(x5 == 0 && x6 == 0 && x2 == 1 && x3 == 1 && x4 == 1 && x7 ==1)
 	{
 		return 3;
 	}
-	if(x2 == 0)
-	{
-		return -5;
-	}
-	if(x7 == 0)
+	else if(x6 == 0 && x7 == 0 && x2 == 1 && x3 == 1 && x4 == 1 && x5 == 1)
 	{
 		return 5;
 	}
 	return 99;
+}
+
+/* 在线修改巡线 PID 参数。
+ *
+ * 支持：
+ * 1. TKP -> Tracking_Turn_Kp
+ * 2. TKI -> Tracking_Turn_Ki
+ * 3. TKD -> Tracking_Turn_Kd
+ */
+int Tracking_SetPidByName(const char *name, float value)
+{
+	if(strcmp(name, "TKP") == 0)
+	{
+		Tracking_Turn_Kp = value;
+		return 1;
+	}
+	if(strcmp(name, "TKI") == 0)
+	{
+		Tracking_Turn_Ki = value;
+		return 1;
+	}
+	if(strcmp(name, "TKD") == 0)
+	{
+		Tracking_Turn_Kd = value;
+		return 1;
+	}
+	return 0;
 }
 
 /* 在线修改巡线 PID 参数。

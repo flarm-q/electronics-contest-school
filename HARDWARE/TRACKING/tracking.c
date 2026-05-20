@@ -19,7 +19,7 @@
  * 当前是负值，表示按照本工程现有编码器/电机方向定义，
  * 巡线前进应当使用这个符号方向。
  */
-#define TRACKING_SPEED -1
+#define TRACKING_SPEED -10
 #define TRACKING_ERROR_MIDDLE 0
 #define TRACKING_INTEGRAL_LIMIT 100.0f
 
@@ -30,16 +30,16 @@
  * 2. Ki 用于累计长期偏差
  * 3. Kd 这里直接利用陀螺仪 Z 轴角速度做阻尼项
  */
-float Tracking_Turn_Kp = 410;
+float Tracking_Turn_Kp = 150;
 float Tracking_Turn_Ki = 0.0f;
 float Tracking_Turn_Kd = 0.0f;
 
 /* 来自主控制模块的全局速度目标。 */
 extern float Target_Speed;
 
-/* 八路巡线数字量数据。
+/* 六路有效巡线数字量数据。
  *
- * 下标 0~7 对应从左到右 8 个探头。
+ * 下标 0~5 对应从左到右 x2~x7 六个探头。
  * 当前协议里：
  * 0 表示检测到黑线
  * 1 表示未检测到黑线
@@ -78,15 +78,15 @@ static volatile u8 tracking_active = 0;
 static int tracking_error = 0;
 static u8 tracking_has_line = 0;
 
-/* 八路探头的权重表。
+/* 六路探头的权重表。
  *
  * 左侧权重为负，右侧权重为正，中间靠近 0。
  * 当某一路探头检测到黑线时，就把该路权重参与平均。
  * 最终得到的平均值越负，说明黑线越偏左；
  * 越正，说明黑线越偏右。
  */
-static const int tracking_core_weights[4] = {-3, -1, 1, 3};
-static int Tracking_GetPriorityError(u8 x3, u8 x4, u8 x5, u8 x6);
+static const int tracking_weights[TRACKING_IR_NUM] = {-5, -3, -1, 1, 3, 5};
+static int Tracking_GetPriorityError(void);
 
 /* 发送单字节到巡线模块。 */
 static void Tracking_SendU8(u8 ch)
@@ -118,25 +118,44 @@ static void Tracking_ParseDigitalData(void)
 {
 	const char *cursor = (const char *)tracking_new_package;
 	u8 index = 0;
+	u8 raw_count = 0;
+	u8 raw_data[8];
 
 	if(tracking_new_package[1] != 'D')
 	{
 		return;
 	}
 
-	while((*cursor != '\0') && (*cursor != '#') && (index < TRACKING_IR_NUM))
+	while((*cursor != '\0') && (*cursor != '#'))
 	{
 		if((*cursor == ':') && ((cursor[1] == '0') || (cursor[1] == '1')))
 		{
-			Tracking_IR_Data[index++] = (u8)(cursor[1] - '0');
+			if(raw_count < sizeof(raw_data))
+			{
+				raw_data[raw_count++] = (u8)(cursor[1] - '0');
+			}
 			cursor += 2;
 			continue;
 		}
 		cursor++;
 	}
 
-	/* 少于 8 路则认为该帧不完整，不更新有效状态。 */
-	if(index < TRACKING_IR_NUM)
+	/* 8 路帧忽略 x1/x8，只保留 x2~x7；6 路帧则直接使用 6 路数据。 */
+	if(raw_count >= 8)
+	{
+		for(index = 0; index < TRACKING_IR_NUM; index++)
+		{
+			Tracking_IR_Data[index] = raw_data[index + 1];
+		}
+	}
+	else if(raw_count == TRACKING_IR_NUM)
+	{
+		for(index = 0; index < TRACKING_IR_NUM; index++)
+		{
+			Tracking_IR_Data[index] = raw_data[index];
+		}
+	}
+	else
 	{
 		return;
 	}
@@ -146,7 +165,7 @@ static void Tracking_ParseDigitalData(void)
 	memset(tracking_new_package, 0, TRACKING_PACKAGE_SIZE);
 }
 
-/* 初始化 USART2，用于连接八路巡线模块。 */
+/* 初始化 USART2，用于连接巡线模块。 */
 void Tracking_Usart2_Init(u32 baudrate)
 {
 	GPIO_InitTypeDef GPIO_InitStructure;
@@ -285,7 +304,7 @@ void Tracking_SetSpeed(void)
 	Target_Speed = TRACKING_SPEED;
 }
 
-/* 根据八路数字量状态计算巡线偏差。
+/* 根据六路数字量状态计算巡线偏差。
  *
  * 处理方法：
  * 1. 找出所有“检测到黑线”的探头
@@ -300,21 +319,11 @@ int Tracking_GetError(void)
 	u8 i;
 	int weighted_sum = 0;
 	u8 hit_count = 0;
-	u8 x3 = Tracking_IR_Data[2];
-	u8 x4 = Tracking_IR_Data[3];
-	u8 x5 = Tracking_IR_Data[4];
-	u8 x6 = Tracking_IR_Data[5];
-	u8 core_data[4];
-
-	core_data[0] = x3;
-	core_data[1] = x4;
-	core_data[2] = x5;
-	core_data[3] = x6;
 
 	tracking_has_line = 0;
-	for(i = 0; i < 4; i++)
+	for(i = 0; i < TRACKING_IR_NUM; i++)
 	{
-		if(core_data[i] == 0)
+		if(Tracking_IR_Data[i] == 0)
 		{
 			tracking_has_line = 1;
 			break;
@@ -326,17 +335,17 @@ int Tracking_GetError(void)
 		return tracking_error;
 	}
 
-	tracking_error = Tracking_GetPriorityError(x3, x4, x5, x6);
+	tracking_error = Tracking_GetPriorityError();
 	if(tracking_error != 99)
 	{
 		return tracking_error;
 	}
 
-	for(i = 0; i < 4; i++)
+	for(i = 0; i < TRACKING_IR_NUM; i++)
 	{
-		if(core_data[i] == 0)
+		if(Tracking_IR_Data[i] == 0)
 		{
-			weighted_sum += tracking_core_weights[i];
+			weighted_sum += tracking_weights[i];
 			hit_count++;
 		}
 	}
@@ -383,12 +392,18 @@ int Tracking_TurnPD(int gyro_z)
 		integral = -TRACKING_INTEGRAL_LIMIT;
 	}
 
-	/* 当前车体混控方向与巡线误差正负定义相反，这里统一反相输出。 */
-	return (int)(-(err * Tracking_Turn_Kp + integral * Tracking_Turn_Ki + gyro_z * Tracking_Turn_Kd));
+	return (int)(err * Tracking_Turn_Kp + integral * Tracking_Turn_Ki + gyro_z * Tracking_Turn_Kd);
 }
 
-static int Tracking_GetPriorityError(u8 x3, u8 x4, u8 x5, u8 x6)
+static int Tracking_GetPriorityError(void)
 {
+	u8 x2 = Tracking_IR_Data[0];
+	u8 x3 = Tracking_IR_Data[1];
+	u8 x4 = Tracking_IR_Data[2];
+	u8 x5 = Tracking_IR_Data[3];
+	u8 x6 = Tracking_IR_Data[4];
+	u8 x7 = Tracking_IR_Data[5];
+
 	if(x4 == 0 && x5 == 0)
 	{
 		return 0;
@@ -416,6 +431,14 @@ static int Tracking_GetPriorityError(u8 x3, u8 x4, u8 x5, u8 x6)
 	if(x6 == 0)
 	{
 		return 3;
+	}
+	if(x2 == 0)
+	{
+		return -5;
+	}
+	if(x7 == 0)
+	{
+		return 5;
 	}
 	return 99;
 }

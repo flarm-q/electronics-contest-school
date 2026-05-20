@@ -27,7 +27,7 @@ float Med_Angle = 0.5;
  *
  * 无论目标来自哪一种上层行为：
  * 1. K230 视觉避障
- * 2. 八路巡线
+ * 2. 六路有效巡线
  * 3. 原始手动控制兜底
  *
  * 最终都统一进入后面的三环控制：
@@ -230,7 +230,7 @@ static void K230_ApplyAvoidance(void)
  *
  * 行为优先级固定为：
  * 1. K230 视觉避障
- * 2. 八路巡线
+ * 2. 六路有效巡线
  * 3. 原始手动控制兜底
  */
 void EXTI9_5_IRQHandler(void)
@@ -351,7 +351,7 @@ void EXTI9_5_IRQHandler(void)
 			}
 			else if(Tracking_IsActive())
 			{
-				/* 巡线模式：根据八路数字量/偏差结果输出转向。 */
+				/* 巡线模式：根据六路有效数字量/偏差结果输出转向。 */
 				Turn_out = Tracking_TurnPD(gyroz);
 			}
 			else

@@ -3,7 +3,7 @@
 
 #include "stm32f10x.h"
 
-#define TRACKING_IR_NUM 8
+#define TRACKING_IR_NUM 6
 
 extern volatile u8 Tracking_IR_Data[TRACKING_IR_NUM];
 extern volatile u8 Tracking_New_Package_Flag;

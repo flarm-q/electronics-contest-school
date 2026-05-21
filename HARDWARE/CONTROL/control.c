@@ -111,6 +111,24 @@ float Turn_Kp = 20;
 #define K230_AVOID_TURN_STRONG 45
 #define K230_AVOID_TURN_MID 30
 
+/* 视觉功能开关。
+ * 当前先完成 K230 基础巡线：关闭色块避障控制，关闭旧八路传感器巡线接管。
+ * 旧代码仍保留，后续需要回退时只需要切换这些宏和 main.c 中被注释的初始化入口。
+ */
+#define ENABLE_K230_COLOR_AVOIDANCE 0
+#define ENABLE_SENSOR_TRACKING 0
+#define ENABLE_K230_LINE_TRACKING 1
+
+/* K230 视觉巡线控制参数。
+ * BASE_SPEED 沿用当前工程电机方向；MIN_CONFIDENCE 用于过滤内圆、短横线和噪声误识别；
+ * ERROR_KP 负责当前横向纠偏，ANGLE_KD 用路线趋势提前处理圆角。
+ */
+#define K230_LINE_BASE_SPEED -10
+#define K230_LINE_MIN_CONFIDENCE 35
+#define K230_LINE_TURN_LIMIT 100
+#define K230_LINE_ERROR_KP 0.32f
+#define K230_LINE_ANGLE_KD 0.18f
+
 /* 目标面积阈值。
  *
  * K230 识别到的目标如果面积太小，通常意味着：
@@ -147,6 +165,7 @@ int Turn(int gyro_Z, int RC);
  */
 static u8 K230_AvoidanceActive(void)
 {
+#if ENABLE_K230_COLOR_AVOIDANCE
 	K230_ColorFrame_t frame = K230_GetColorFrame();
 
 	/* active=0 表示：
@@ -173,6 +192,9 @@ static u8 K230_AvoidanceActive(void)
 	}
 
 	return 1;
+#else
+	return 0;
+#endif
 }
 
 /* 根据 K230 识别结果生成高层避障目标。
@@ -189,6 +211,7 @@ static u8 K230_AvoidanceActive(void)
  */
 static void K230_ApplyAvoidance(void)
 {
+#if ENABLE_K230_COLOR_AVOIDANCE
 	K230_ColorFrame_t frame = K230_GetColorFrame();
 
 	Target_Speed = K230_AVOID_BASE_SPEED;
@@ -215,6 +238,60 @@ static void K230_ApplyAvoidance(void)
 		Target_Speed = K230_AVOID_BASE_SPEED / 2;
 		Turn_Speed = -K230_AVOID_TURN_MID;
 	}
+#endif
+}
+
+static u8 K230_LineTrackingActive(void)
+{
+#if ENABLE_K230_LINE_TRACKING
+	K230_LineFrame_t frame = K230_GetLineFrame();
+
+	/* 串口层先判断 $L 帧是否未超时、未丢线。
+	 * 控制层再判断 confidence，是为了把“通信有效”和“识别可靠”分开。
+	 */
+	if(K230_LineFrameAvailable() == 0)
+	{
+		return 0;
+	}
+	if(frame.confidence < K230_LINE_MIN_CONFIDENCE)
+	{
+		return 0;
+	}
+	return 1;
+#else
+	return 0;
+#endif
+}
+
+static void K230_ApplyLineTracking(void)
+{
+	/* 视觉巡线只设置高层前进目标，不直接改 PWM。
+	 * 平衡车仍通过原有速度环和直立环把 Target_Speed 转成车体动作。
+	 */
+	Target_Speed = K230_LINE_BASE_SPEED;
+	Turn_Speed = 0;
+}
+
+static int K230_LineTurnPD(void)
+{
+	float turn;
+	K230_LineFrame_t frame = K230_GetLineFrame();
+
+	/* 新视觉巡线逻辑使用连续图像误差，不复用八路传感器状态表。
+	 * error 负责当前纠偏，angle 负责圆角提前转向。
+	 */
+	turn = frame.error * K230_LINE_ERROR_KP + frame.angle * K230_LINE_ANGLE_KD;
+
+	if(turn > K230_LINE_TURN_LIMIT)
+	{
+		turn = K230_LINE_TURN_LIMIT;
+	}
+	else if(turn < -K230_LINE_TURN_LIMIT)
+	{
+		turn = -K230_LINE_TURN_LIMIT;
+	}
+
+	return (int)turn;
 }
 
 /* PB5 外部中断服务函数。
@@ -255,14 +332,18 @@ void EXTI9_5_IRQHandler(void)
 			 * 如果 K230 长时间没有发送新帧，这里会自动让旧结果失效，
 			 * 避免小车一直沿用过期的视觉判断。
 			 */
-			K230_ColorFrameHeartbeat();
+			K230_FrameHeartbeat();
 
 			/* 3. 高层行为仲裁。 */
 			if(K230_AvoidanceActive())
 			{
 				K230_ApplyAvoidance();
 			}
-			else if(Tracking_IsActive())
+			else if(K230_LineTrackingActive())
+			{
+				K230_ApplyLineTracking();
+			}
+			else if(ENABLE_SENSOR_TRACKING && Tracking_IsActive())
 			{
 				/* 没有颜色障碍时，由巡线模块接管前进目标。 */
 				Tracking_SetSpeed();
@@ -296,7 +377,11 @@ void EXTI9_5_IRQHandler(void)
 			{
 				/* Turn_Speed 已在 K230_ApplyAvoidance() 中设置。 */
 			}
-			else if(Tracking_IsActive())
+			else if(K230_LineTrackingActive())
+			{
+				Turn_Speed = 0;
+			}
+			else if(ENABLE_SENSOR_TRACKING && Tracking_IsActive())
 			{
 				Turn_Speed = 0;
 			}
@@ -327,7 +412,11 @@ void EXTI9_5_IRQHandler(void)
 			{
 				Turn_Kd = 0;
 			}
-			else if(Tracking_IsActive())
+			else if(K230_LineTrackingActive())
+			{
+				Turn_Kd = 0;
+			}
+			else if(ENABLE_SENSOR_TRACKING && Tracking_IsActive())
 			{
 				Turn_Kd = 0;
 			}
@@ -349,7 +438,12 @@ void EXTI9_5_IRQHandler(void)
 				/* 视觉避障模式：根据目标位置做差速绕行。 */
 				Turn_out = Turn(gyroz, Turn_Speed);
 			}
-			else if(Tracking_IsActive())
+			else if(K230_LineTrackingActive())
+			{
+				/* K230 视觉巡线模式：使用图像连续误差和路线趋势。 */
+				Turn_out = K230_LineTurnPD();
+			}
+			else if(ENABLE_SENSOR_TRACKING && Tracking_IsActive())
 			{
 				/* 巡线模式：根据八路数字量/偏差结果输出转向。 */
 				Turn_out = Tracking_TurnPD(gyroz);

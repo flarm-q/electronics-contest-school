@@ -3,6 +3,7 @@
 #include "oled.h"
 #include "usart.h"
 #include "tracking.h"
+#include "usart3.h"
 
 /* 巡线模块启动前的等待时间。
  *
@@ -97,8 +98,12 @@ int main(void)
 	 * USART2：八路巡线模块
 	 */
 	uart1_init(9600);
-	uart3_init(9600);
-	Tracking_Usart2_Init(115200);
+	uart3_init(115200);
+	/* 旧八路传感器巡线入口暂时关闭。
+	 * 本阶段 K230D 通过 USART3 发送 $L,error,angle,confidence,flags#。
+	 * 如果继续初始化 USART2，两套巡线结果会同时影响控制判断，不利于实车调试。
+	 */
+	/* Tracking_Usart2_Init(115200); */
 
 	/* 3. 初始化 OLED，用于现场观察关键状态。 */
 	OLED_Init();
@@ -125,8 +130,9 @@ int main(void)
 	OLED_ShowString(0,3,"sd:",12);
 
 	/* 7. 等待系统稳定后，再通知巡线模块开始回传数字量数据。 */
-	delay_ms(TRACKING_START_DELAY_MS);
-	Tracking_SendControlData(0,1);
+	/* 旧巡线传感器启动命令暂时关闭。K230D 会主动发送 USART3 $L 帧。 */
+	/* delay_ms(TRACKING_START_DELAY_MS); */
+	/* Tracking_SendControlData(0,1); */
 
 	while(1)
 	{
@@ -134,14 +140,15 @@ int main(void)
 		 * USART2 中断只负责把字节塞进 FIFO，
 		 * 真正的组包和解析放在主循环里做，减少中断负担。
 		 */
-		Tracking_ProcessRx();
+		/* 旧 USART2 巡线解析暂时关闭。K230D 的 USART3 解析在中断中完成。 */
+		/* Tracking_ProcessRx(); */
 
 		/* 9. 处理 USART1 的在线调参命令。 */
 		USART1_ProcessCommand();
 
 		/* 10. OLED 实时显示核心状态。 */
 		OLED_Float(1,70,Pitch,1);
-		OLED_Num3(8,2,Tracking_GetError());
+		OLED_Num3(8,2,K230_GetLineError());
 		OLED_Num3(5,3,(int)((Encoder_Left+Encoder_Right)*2.38));
 
 		/* 11. 周期性向上位机打印调试信息，便于串口观察：
@@ -153,16 +160,14 @@ int main(void)
 		if(print_elapsed_ms >= USART1_PRINT_PERIOD_MS)
 		{
 			print_elapsed_ms = 0;
-			printf("Pitch=%.2f Roll=%.2f Yaw=%.2f\nTrackError=%d EncoderLeft=%d EncoderRight=%d SpeedDisplay=%.2f\nDigital=[%u,%u,%u,%u,%u,%u,%u,%u]\r\n",
+			printf("Pitch=%.2f Roll=%.2f Yaw=%.2f\nVisionError=%d EncoderLeft=%d EncoderRight=%d SpeedDisplay=%.2f\r\n",
 			       Pitch,
 			       Roll,
 			       Yaw,
-			       Tracking_GetError(),
+			       K230_GetLineError(),
 			       Encoder_Left,
 			       Encoder_Right,
-			       (Encoder_Left + Encoder_Right) * 2.38f,
-			       Tracking_IR_Data[0], Tracking_IR_Data[1], Tracking_IR_Data[2], Tracking_IR_Data[3],
-			       Tracking_IR_Data[4], Tracking_IR_Data[5], Tracking_IR_Data[6], Tracking_IR_Data[7]);
+			       (Encoder_Left + Encoder_Right) * 2.38f);
 		}
 
 		/* 12. 主循环固定节拍。 */

@@ -8,7 +8,7 @@
  *
  * 上电后先给整车一点稳定时间，避免：
  * 1. MPU6050 和 DMP 刚初始化完成时姿态还没完全稳定
- * 2. 六路有效巡线模块刚上电时串口数据还没准备好
+ * 2. 八路巡线模块刚上电时串口数据还没准备好
  * 3. 小车刚通电就立刻进入巡线导致误动作
  */
 #define TRACKING_START_DELAY_MS 10000
@@ -94,7 +94,7 @@ int main(void)
 	/* 2. 初始化串口。
 	 * USART1：上位机调试、在线调参
 	 * USART3：K230 视觉颜色识别
-	 * USART2：六路有效巡线模块
+	 * USART2：八路巡线模块
 	 */
 	uart1_init(9600);
 	uart3_init(9600);
@@ -148,12 +148,12 @@ int main(void)
 		 * 1. 当前姿态角
 		 * 2. 巡线偏差
 		 * 3. 左右编码器速度
-		 * 4. 六路有效数字量巡线状态
+		 * 4. 八路数字量巡线状态
 		 */
 		if(print_elapsed_ms >= USART1_PRINT_PERIOD_MS)
 		{
 			print_elapsed_ms = 0;
-			printf("Pitch=%.2f Roll=%.2f Yaw=%.2f\nTrackError=%d EncoderLeft=%d EncoderRight=%d SpeedDisplay=%.2f\nDigital=[%u,%u,%u,%u,%u,%u]\r\n",
+			printf("Pitch=%.2f Roll=%.2f Yaw=%.2f\nTrackError=%d EncoderLeft=%d EncoderRight=%d SpeedDisplay=%.2f\nDigital=[%u,%u,%u,%u,%u,%u,%u,%u]\r\n",
 			       Pitch,
 			       Roll,
 			       Yaw,
@@ -162,7 +162,7 @@ int main(void)
 			       Encoder_Right,
 			       (Encoder_Left + Encoder_Right) * 2.38f,
 			       Tracking_IR_Data[0], Tracking_IR_Data[1], Tracking_IR_Data[2], Tracking_IR_Data[3],
-			       Tracking_IR_Data[4], Tracking_IR_Data[5]);
+			       Tracking_IR_Data[4], Tracking_IR_Data[5], Tracking_IR_Data[6], Tracking_IR_Data[7]);
 		}
 
 		/* 12. 主循环固定节拍。 */

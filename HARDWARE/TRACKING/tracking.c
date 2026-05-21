@@ -30,16 +30,16 @@
  * 2. Ki 用于累计长期偏差
  * 3. Kd 这里直接利用陀螺仪 Z 轴角速度做阻尼项
  */
-float Tracking_Turn_Kp = 150;
+float Tracking_Turn_Kp = 600;
 float Tracking_Turn_Ki = 0.0f;
 float Tracking_Turn_Kd = 0.0f;
 
 /* 来自主控制模块的全局速度目标。 */
 extern float Target_Speed;
 
-/* 六路有效巡线数字量数据。
+/* 八路巡线数字量数据。
  *
- * 下标 0~5 对应从左到右 x2~x7 六个探头。
+ * 下标 0~7 对应从左到右 x1~x8 八个探头。
  * 当前协议里：
  * 0 表示检测到黑线
  * 1 表示未检测到黑线
@@ -78,14 +78,14 @@ static volatile u8 tracking_active = 0;
 static int tracking_error = 0;
 static u8 tracking_has_line = 0;
 
-/* 六路探头的权重表。
+/* 八路探头的权重表。
  *
  * 左侧权重为负，右侧权重为正，中间靠近 0。
  * 当某一路探头检测到黑线时，就把该路权重参与平均。
  * 最终得到的平均值越负，说明黑线越偏左；
  * 越正，说明黑线越偏右。
  */
-static const int tracking_weights[TRACKING_IR_NUM] = {-5, -3, -1, 1, 3, 5};
+static const int tracking_weights[TRACKING_IR_NUM] = {-35, -25, -15, -5, 5, 15, 25, 35};
 static int Tracking_GetPriorityError(void);
 
 /* 发送单字节到巡线模块。 */
@@ -118,8 +118,6 @@ static void Tracking_ParseDigitalData(void)
 {
 	const char *cursor = (const char *)tracking_new_package;
 	u8 index = 0;
-	u8 raw_count = 0;
-	u8 raw_data[8];
 
 	if(tracking_new_package[1] != 'D')
 	{
@@ -130,9 +128,9 @@ static void Tracking_ParseDigitalData(void)
 	{
 		if((*cursor == ':') && ((cursor[1] == '0') || (cursor[1] == '1')))
 		{
-			if(raw_count < sizeof(raw_data))
+			if(index < TRACKING_IR_NUM)
 			{
-				raw_data[raw_count++] = (u8)(cursor[1] - '0');
+				Tracking_IR_Data[index++] = (u8)(cursor[1] - '0');
 			}
 			cursor += 2;
 			continue;
@@ -140,22 +138,8 @@ static void Tracking_ParseDigitalData(void)
 		cursor++;
 	}
 
-	/* 8 路帧忽略 x1/x8，只保留 x2~x7；6 路帧则直接使用 6 路数据。 */
-	if(raw_count >= 8)
-	{
-		for(index = 0; index < TRACKING_IR_NUM; index++)
-		{
-			Tracking_IR_Data[index] = raw_data[index + 1];
-		}
-	}
-	else if(raw_count == TRACKING_IR_NUM)
-	{
-		for(index = 0; index < TRACKING_IR_NUM; index++)
-		{
-			Tracking_IR_Data[index] = raw_data[index];
-		}
-	}
-	else
+	/* 少于 8 路则认为该帧不完整，不更新有效状态。 */
+	if(index < TRACKING_IR_NUM)
 	{
 		return;
 	}
@@ -165,7 +149,7 @@ static void Tracking_ParseDigitalData(void)
 	memset(tracking_new_package, 0, TRACKING_PACKAGE_SIZE);
 }
 
-/* 初始化 USART2，用于连接巡线模块。 */
+/* 初始化 USART2，用于连接八路巡线模块。 */
 void Tracking_Usart2_Init(u32 baudrate)
 {
 	GPIO_InitTypeDef GPIO_InitStructure;
@@ -304,7 +288,7 @@ void Tracking_SetSpeed(void)
 	Target_Speed = TRACKING_SPEED;
 }
 
-/* 根据六路数字量状态计算巡线偏差。
+/* 根据八路数字量状态计算巡线偏差。
  *
  * 处理方法：
  * 1. 找出所有“检测到黑线”的探头
@@ -397,62 +381,100 @@ int Tracking_TurnPD(int gyro_z)
 
 static int Tracking_GetPriorityError(void)
 {
-	u8 x2 = Tracking_IR_Data[0];
-	u8 x3 = Tracking_IR_Data[1];
-	u8 x4 = Tracking_IR_Data[2];
-	u8 x5 = Tracking_IR_Data[3];
-	u8 x6 = Tracking_IR_Data[4];
-	u8 x7 = Tracking_IR_Data[5];
+	u8 x1 = Tracking_IR_Data[0];
+	u8 x2 = Tracking_IR_Data[1];
+	u8 x3 = Tracking_IR_Data[2];
+	u8 x4 = Tracking_IR_Data[3];
+	u8 x5 = Tracking_IR_Data[4];
+	u8 x6 = Tracking_IR_Data[5];
+	u8 x7 = Tracking_IR_Data[6];
+	u8 x8 = Tracking_IR_Data[7];
 
-	if(x3 == 0 || x4 == 0 && x5 == 0 || x6 == 0)
+  if(x1 == 0 &&  x3 == 0 && x4 == 0 && x5 == 0 && x8 == 0 )
 	{
 		return 0;
 	}
-	else if(x3 == 0 && x4 == 0 && x2 == 1 && x5 == 1 && x6 == 1 && x7 == 1)
+	//添加直角
+	else if((x1 == 0 || x2 == 0 ) && x8 == 1)  
+	{
+		return -5; 
+	}
+	//添加直角
+	else if((x7 == 0 ||  x8 == 0) && x1 == 1) 
+	{
+		return 5 ;
+	}
+	
+	else if(x1 == 1 && x2 == 1  && x3 == 1&& x4 == 0 && x5 == 1 && x6 == 1  && x7 == 1 && x8 == 1) // 1110 1111
 	{
 		return -3;
 	}
-	else if(x2 == 0 && x3 == 0 && x4 == 1 && x5 == 1 && x6 == 1 && x7 == 1)
+	else if(x1 == 1 && x2 == 1  && x3 == 0&& x4 == 0 && x5 == 1 && x6 == 1  && x7 == 1 && x8 == 1) // 1100 1111
 	{
-		return -5;		
+		return -4;
 	}
-	else if(x5 == 0 && x6 == 0 && x2 == 1 && x3 == 1 && x4 == 1 && x7 ==1)
+	else if(x1 == 1 && x2 == 1  && x3 == 0&& x4 == 1 && x5 == 1 && x6 == 1  && x7 == 1 && x8 == 1) // 1101 1111
+	{
+		return -4;
+	}
+	
+	else if(x1 == 1 && x2 == 0  && x3 == 1&& x4 == 1 && x5 == 1 && x6 == 1  && x7 == 1 && x8 == 1) // 1011 1111
+	{
+		return -5;
+	}
+	else if(x1 == 1 && x2 == 0  && x3 == 0&& x4 == 1 && x5 == 1 && x6 == 1  && x7 == 1 && x8 == 1) // 1001 1111
+	{
+		return -5;
+	}
+	
+	
+	else if(x1 == 0 && x2 == 1  && x3 == 1&& x4 == 1 && x5 == 1 && x6 == 1  && x7 == 1 && x8 == 1) // 0111 1111
+	{
+		return -6;  
+	}
+	else if(x1 == 0 && x2 == 0  && x3 == 1&& x4 == 1 && x5 == 1 && x6 == 1  && x7 == 1 && x8 == 1) // 0011 1111
+	{
+		return -6; 
+	}
+	
+	
+	else if(x1 == 1 && x2 == 1  && x3 == 1&& x4 == 1 && x5 == 0 && x6 == 1  && x7 == 1 && x8 == 1) // 1111 0111
 	{
 		return 3;
 	}
-	else if(x6 == 0 && x7 == 0 && x2 == 1 && x3 == 1 && x4 == 1 && x5 == 1)
+	else if(x1 == 1 && x2 == 1  && x3 == 1&& x4 == 1 && x5 == 0 && x6 == 0  && x7 == 1 && x8 == 1) // 1111 0011
+	{
+		return 4;
+	}
+	else if(x1 == 1 && x2 == 1  && x3 == 1&& x4 == 1 && x5 == 1 && x6 == 0  && x7 == 1 && x8 == 1) // 1111 1011
+	{
+		return 4;
+	}
+	else if(x1 == 1 && x2 == 1  && x3 == 1&& x4 == 1 && x5 == 1 && x6 == 0  && x7 == 0 && x8 == 1) // 1111 1001
 	{
 		return 5;
 	}
-	return 99;
+	else if(x1 == 1 && x2 == 1  && x3 == 1&& x4 == 1 && x5 == 1 && x6 == 1  && x7 == 0 && x8 == 1) // 1111 1101
+	{
+		return 5;
+	}
+	
+	else if(x1 == 1 && x2 == 1  && x3 == 1&& x4 == 1 && x5 == 1 && x6 == 1  && x7 == 0 && x8 == 0) // 1111 1100
+	{
+		return 6; 
+	}
+		else if(x1 == 1 && x2 == 1  && x3 == 1&& x4 == 1 && x5 == 1 && x6 == 1  && x7 == 1 && x8 == 0) // 1111 1110
+	{
+		return 6; 
+	}
+
+	else if(x1 == 1 && x3 == 1 && x4 == 0 && x5 == 0  && x6 == 1 && x8 == 1) //直走
+	{
+		return 0;
+	}
 }
 
-/* 在线修改巡线 PID 参数。
- *
- * 支持：
- * 1. TKP -> Tracking_Turn_Kp
- * 2. TKI -> Tracking_Turn_Ki
- * 3. TKD -> Tracking_Turn_Kd
- */
-int Tracking_SetPidByName(const char *name, float value)
-{
-	if(strcmp(name, "TKP") == 0)
-	{
-		Tracking_Turn_Kp = value;
-		return 1;
-	}
-	if(strcmp(name, "TKI") == 0)
-	{
-		Tracking_Turn_Ki = value;
-		return 1;
-	}
-	if(strcmp(name, "TKD") == 0)
-	{
-		Tracking_Turn_Kd = value;
-		return 1;
-	}
-	return 0;
-}
+
 
 /* 在线修改巡线 PID 参数。
  *

@@ -6,10 +6,10 @@
 ..\obj\inv_mpu_dmp_motion_driver.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 ..\obj\inv_mpu_dmp_motion_driver.o: ..\HARDWARE\MPU6050\eMPL\inv_mpu.h
 ..\obj\inv_mpu_dmp_motion_driver.o: ..\USER\stm32f10x.h
-..\obj\inv_mpu_dmp_motion_driver.o: D:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\core_cm3.h
-..\obj\inv_mpu_dmp_motion_driver.o: D:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_version.h
-..\obj\inv_mpu_dmp_motion_driver.o: D:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_compiler.h
-..\obj\inv_mpu_dmp_motion_driver.o: D:\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_armcc.h
+..\obj\inv_mpu_dmp_motion_driver.o: D:\Keil_v5\ARM\PACK\ARM\CMSIS\5.9.0\CMSIS\Core\Include\core_cm3.h
+..\obj\inv_mpu_dmp_motion_driver.o: D:\Keil_v5\ARM\PACK\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_version.h
+..\obj\inv_mpu_dmp_motion_driver.o: D:\Keil_v5\ARM\PACK\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_compiler.h
+..\obj\inv_mpu_dmp_motion_driver.o: D:\Keil_v5\ARM\PACK\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_armcc.h
 ..\obj\inv_mpu_dmp_motion_driver.o: ..\USER\system_stm32f10x.h
 ..\obj\inv_mpu_dmp_motion_driver.o: ..\USER\stm32f10x_conf.h
 ..\obj\inv_mpu_dmp_motion_driver.o: ..\STM32F10x_FWLib\inc\stm32f10x_adc.h

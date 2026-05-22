@@ -106,8 +106,8 @@ int main(void)
 	/* Tracking_Usart2_Init(115200); */
 
 	/* 3. 初始化 OLED，用于现场观察关键状态。 */
-	OLED_Init();
-	OLED_Clear();
+//	OLED_Init();
+//	OLED_Clear();
 
 	/* 4. 初始化姿态传感器与对应中断。 */
 	MPU_Init();
@@ -125,9 +125,7 @@ int main(void)
 	 * 第二行显示巡线偏差
 	 * 第三行显示速度估计值
 	 */
-	OLED_ShowString(0,1,"jiao du:",12);
-	OLED_ShowString(0,2,"track:",12);
-	OLED_ShowString(0,3,"sd:",12);
+//	/owString(0,3,"sd:",12);
 
 	/* 7. 等待系统稳定后，再通知巡线模块开始回传数字量数据。 */
 	/* 旧巡线传感器启动命令暂时关闭。K230D 会主动发送 USART3 $L 帧。 */
@@ -147,9 +145,9 @@ int main(void)
 		USART1_ProcessCommand();
 
 		/* 10. OLED 实时显示核心状态。 */
-		OLED_Float(1,70,Pitch,1);
-		OLED_Num3(8,2,K230_GetLineError());
-		OLED_Num3(5,3,(int)((Encoder_Left+Encoder_Right)*2.38));
+//		OLED_Float(1,70,Pitch,1);
+//		OLED_Num3(8,2,K230_GetLineError());
+//		OLED_Num3(5,3,(int)((Encoder_Left+Encoder_Right)*2.38));
 
 		/* 11. 周期性向上位机打印调试信息，便于串口观察：
 		 * 1. 当前姿态角

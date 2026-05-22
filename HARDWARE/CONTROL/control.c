@@ -112,10 +112,12 @@ float Turn_Kp = 20;
 #define K230_AVOID_TURN_MID 30
 
 /* 视觉功能开关。
- * 当前先完成 K230 基础巡线：关闭色块避障控制，关闭旧八路传感器巡线接管。
- * 旧代码仍保留，后续需要回退时只需要切换这些宏和 main.c 中被注释的初始化入口。
+ * 当前使用视觉巡线 + 色块避障：
+ * 1. 视觉巡线负责持续输出前进方向偏差。
+ * 2. 色块避障在识别到足够大的红/绿/蓝障碍物时优先接管转向。
+ * 3. 旧八路传感器巡线暂时关闭，需要回退时再打开对应宏和 main.c 中的初始化入口。
  */
-#define ENABLE_K230_COLOR_AVOIDANCE 0
+#define ENABLE_K230_COLOR_AVOIDANCE 1
 #define ENABLE_SENSOR_TRACKING 0
 #define ENABLE_K230_LINE_TRACKING 1
 

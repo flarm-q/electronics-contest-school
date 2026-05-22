@@ -4,7 +4,7 @@
  * 当前颜色协议帧很短，例如 "$C,1,L,356#"，32 字节已经足够，
  * 同时也能限制异常数据导致的越界风险。
  */
-#define K230_USART3_FRAME_MAX_LEN 32
+#define K230_USART3_FRAME_MAX_LEN 64
 
 /* 视觉帧超时计数。
  * 该值不是“毫秒”，而是“控制周期计数”。
@@ -22,10 +22,16 @@ u8 Fore, Back, Left, Right;
 /* 最近一次收到并成功解析的 K230 颜色识别结果。 */
 static volatile K230_ColorFrame_t g_k230_color = {0, 'N', 0, 0};
 
+/* 最近一次收到并成功解析的 K230 视觉巡线结果。默认 lost，避免上电误接管。 */
+static volatile K230_LineFrame_t g_k230_line = {0, 0, 0, 0x02, 0, 1};
+
 /* 视觉结果“保活”倒计时。
  * 每收到一帧新的合法数据就重装为 K230_FRAME_TIMEOUT_TICKS。
  */
 static volatile u8 g_k230_frame_counter = 0;
+
+/* 巡线帧保活倒计时，与颜色帧分开，避免色块帧给丢失的巡线帧续命。 */
+static volatile u8 g_k230_line_counter = 0;
 
 /* USART3 原始字节接收缓冲区。 */
 static u8 g_k230_rx_buf[K230_USART3_FRAME_MAX_LEN];
@@ -57,7 +63,7 @@ static u16 K230_ParseU16(const char *text)
 	return value;
 }
 
-static void K230_ParseFrame(void)
+static void K230_ParseColorFrame(void)
 {
 	char color_text[4] = {0};
 	char pos_text[4] = {0};
@@ -104,6 +110,56 @@ static void K230_ParseFrame(void)
 	Back = 0;
 	Left = 0;
 	Right = 0;
+}
+
+static void K230_ParseLineFrame(void)
+{
+	char error_text[8] = {0};
+	char angle_text[8] = {0};
+	char confidence_text[4] = {0};
+	char flags_text[4] = {0};
+	int matched;
+	K230_LineFrame_t frame;
+
+	/* 解析巡线帧：$L,error,angle,confidence,flags#。
+	 * STM32 不参与图像处理，只缓存 K230 计算好的控制摘要。
+	 */
+	matched = sscanf((char *)g_k230_rx_buf, "$L,%7[^,],%7[^,],%3[^,],%3[^#]#",
+	                 error_text, angle_text, confidence_text, flags_text);
+	if(matched != 4)
+	{
+		return;
+	}
+
+	frame.error = atoi(error_text);
+	frame.angle = atoi(angle_text);
+	frame.confidence = (u8)atoi(confidence_text);
+	frame.flags = (u8)atoi(flags_text);
+	frame.active = ((frame.flags & 0x01) != 0) ? 1 : 0;
+	frame.lost = ((frame.flags & 0x02) != 0) ? 1 : 0;
+	if(frame.confidence > 100)
+	{
+		frame.confidence = 100;
+	}
+
+	g_k230_line = frame;
+	g_k230_line_counter = K230_FRAME_TIMEOUT_TICKS;
+	Fore = 0;
+	Back = 0;
+	Left = 0;
+	Right = 0;
+}
+
+static void K230_ParseFrame(void)
+{
+	if(g_k230_rx_buf[1] == 'C')
+	{
+		K230_ParseColorFrame();
+	}
+	else if(g_k230_rx_buf[1] == 'L')
+	{
+		K230_ParseLineFrame();
+	}
 }
 
 void uart3_init(u32 bound)
@@ -176,6 +232,47 @@ void K230_ColorFrameHeartbeat(void)
 			g_k230_color.active = 0;
 		}
 	}
+}
+
+void K230_FrameHeartbeat(void)
+{
+	K230_ColorFrameHeartbeat();
+	if(g_k230_line_counter > 0)
+	{
+		g_k230_line_counter--;
+		if(g_k230_line_counter == 0)
+		{
+			g_k230_line.error = 0;
+			g_k230_line.angle = 0;
+			g_k230_line.confidence = 0;
+			g_k230_line.flags = 0x02;
+			g_k230_line.active = 0;
+			g_k230_line.lost = 1;
+		}
+	}
+}
+
+u8 K230_LineFrameAvailable(void)
+{
+	if(g_k230_line.active == 0)
+	{
+		return 0;
+	}
+	if(g_k230_line.lost != 0)
+	{
+		return 0;
+	}
+	return 1;
+}
+
+K230_LineFrame_t K230_GetLineFrame(void)
+{
+	return *(K230_LineFrame_t *)&g_k230_line;
+}
+
+int K230_GetLineError(void)
+{
+	return g_k230_line.error;
 }
 
 void USART3_IRQHandler(void)

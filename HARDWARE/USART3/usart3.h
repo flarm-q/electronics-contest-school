@@ -27,6 +27,20 @@ typedef struct
 	u8 active;
 } K230_ColorFrame_t;
 
+/* K230 发送给 STM32 的视觉巡线结果。
+ * 协议格式：$L,error,angle,confidence,flags#。
+ * K230 负责图像处理，STM32 只保存连续偏差、路线趋势和可信度。
+ */
+typedef struct
+{
+	int error;          /* 黑线中心相对图像中心的偏差，左负右正。 */
+	int angle;          /* 路线方向趋势，左负右正，用于圆角提前转向。 */
+	u8 confidence;      /* 识别可信度，低可信度时控制层不接管。 */
+	u8 flags;           /* bit0=valid, bit1=lost, bit2=curve, bit3=marker。 */
+	u8 active;          /* 由 valid 位派生，便于控制层快速判断。 */
+	u8 lost;            /* 由 lost 位派生，避免长期使用旧误差。 */
+} K230_LineFrame_t;
+
 void USART3_Send_String(char *String);
 void uart3_init(u32 bound);
 void USART3_IRQHandler(void);
@@ -34,5 +48,10 @@ void USART3_IRQHandler(void);
 u8 K230_ColorFrameAvailable(void);
 K230_ColorFrame_t K230_GetColorFrame(void);
 void K230_ColorFrameHeartbeat(void);
+
+u8 K230_LineFrameAvailable(void);
+K230_LineFrame_t K230_GetLineFrame(void);
+int K230_GetLineError(void);
+void K230_FrameHeartbeat(void);
 
 #endif

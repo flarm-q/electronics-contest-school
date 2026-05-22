@@ -26,7 +26,7 @@ float Med_Angle = 0.5;
  * 2. Turn_Speed   表示左右转向目标
  *
  * 无论目标来自哪一种上层行为：
- * 1. K230 视觉避障
+ * 1. K210 视觉避障
  * 2. 八路巡线
  * 3. 原始手动控制兜底
  *
@@ -58,7 +58,7 @@ float Turn_Speed = 0;
  * 三、转向环：
  * 1. Turn_Kp 根据外部给定的转向目标控制左右差速
  * 2. Turn_Kd 根据陀螺仪 Z 轴角速度抑制转向摆动
- * 3. 它既服务于手动左右转，也服务于 K230 避障和巡线模式
+ * 3. 它既服务于手动左右转，也服务于 K210 避障和巡线模式
  *
  * 注意：
  * 1. 这几个参数之间是耦合的，不能孤立地只看一个数值
@@ -88,23 +88,23 @@ float Turn_Kp = 20;
 #define SPEED_Y 40
 #define SPEED_Z 100
 
-/* K230 视觉避障参数。
+/* K210 视觉避障参数。
  *
- * K230 通过 USART3 向 STM32 发送颜色识别结果帧：
+ * K210 通过 USART3 向 STM32 发送颜色识别结果帧：
  *   $C,color_id,pos,size#
  *
- * 当前策略里，K230 不直接改电机 PWM，而是只修改：
+ * 当前策略里，K210 不直接改电机 PWM，而是只修改：
  * 1. Target_Speed
  * 2. Turn_Speed
  *
  * 然后仍然交给底层三环控制处理，这样能保留平衡车原本的稳定性。
  *
  * 各参数含义：
- * 1. K230_AVOID_BASE_SPEED
+ * 1. 避障基础速度
  *    发现障碍物时的基础前进速度，通常会比正常巡线更慢
- * 2. K230_AVOID_TURN_STRONG
+ * 2. 强转向量
  *    障碍明确在左或右时使用的较强转向量
- * 3. K230_AVOID_TURN_MID
+ * 3. 中等转向量
  *    障碍在正前方时使用的中等转向量
  */
 #define K230_AVOID_BASE_SPEED 8
@@ -121,9 +121,10 @@ float Turn_Kp = 20;
 #define ENABLE_SENSOR_TRACKING 0
 #define ENABLE_K230_LINE_TRACKING 1
 
-/* K230 视觉巡线控制参数。
+/* K210 视觉巡线控制参数。
  * BASE_SPEED 沿用当前工程电机方向；MIN_CONFIDENCE 用于过滤内圆、短横线和噪声误识别；
  * ERROR_KP 负责当前横向纠偏，ANGLE_KD 用路线趋势提前处理圆角。
+ * 这里的宏名仍保留旧视觉模块前缀，是为了兼容现有 USART3 解析模块和控制函数命名。
  */
 #define K230_LINE_BASE_SPEED -10
 #define K230_LINE_MIN_CONFIDENCE 35
@@ -133,7 +134,7 @@ float Turn_Kp = 20;
 
 /* 目标面积阈值。
  *
- * K230 识别到的目标如果面积太小，通常意味着：
+ * K210 识别到的目标如果面积太小，通常意味着：
  * 1. 目标很远
  * 2. 只是噪点
  * 3. 或者出现误检
@@ -155,7 +156,7 @@ int Vertical(float Med, float Angle, float gyro_Y);
 int Velocity(int Target, int encoder_left, int encoder_right);
 int Turn(int gyro_Z, int RC);
 
-/* 判断 K230 视觉避障是否当前生效。
+/* 判断 K210 视觉避障是否当前生效。
  *
  * 返回 1 代表当前视觉结果足以接管高层行为；
  * 返回 0 代表应该交回巡线或原始兜底控制。
@@ -171,7 +172,7 @@ static u8 K230_AvoidanceActive(void)
 	K230_ColorFrame_t frame = K230_GetColorFrame();
 
 	/* active=0 表示：
-	 * 1. K230 明确上报“当前没有目标”
+	 * 1. K210 明确上报“当前没有目标”
 	 * 2. 或者这份视觉数据已经超时失效
 	 */
 	if(frame.active == 0)
@@ -199,7 +200,7 @@ static u8 K230_AvoidanceActive(void)
 #endif
 }
 
-/* 根据 K230 识别结果生成高层避障目标。
+/* 根据 K210 识别结果生成高层避障目标。
  *
  * 这个函数只负责决定“怎么绕”，不直接碰电机。
  * 规则非常直接：
@@ -308,7 +309,7 @@ static int K230_LineTurnPD(void)
  * 6. 执行倾倒保护
  *
  * 行为优先级固定为：
- * 1. K230 视觉避障
+ * 1. K210 视觉避障
  * 2. 八路巡线
  * 3. 原始手动控制兜底
  */
@@ -331,7 +332,7 @@ void EXTI9_5_IRQHandler(void)
 			MPU_Get_Accelerometer(&aacx, &aacy, &aacz);
 
 			/* 2. 视觉结果保活。
-			 * 如果 K230 长时间没有发送新帧，这里会自动让旧结果失效，
+			 * 如果 K210 长时间没有发送新帧，这里会自动让旧结果失效，
 			 * 避免小车一直沿用过期的视觉判断。
 			 */
 			K230_FrameHeartbeat();
@@ -377,7 +378,7 @@ void EXTI9_5_IRQHandler(void)
 			 */
 			if(K230_AvoidanceActive())
 			{
-				/* Turn_Speed 已在 K230_ApplyAvoidance() 中设置。 */
+				/* Turn_Speed 已在视觉避障处理函数中设置。 */
 			}
 			else if(K230_LineTrackingActive())
 			{
@@ -442,7 +443,7 @@ void EXTI9_5_IRQHandler(void)
 			}
 			else if(K230_LineTrackingActive())
 			{
-				/* K230 视觉巡线模式：使用图像连续误差和路线趋势。 */
+				/* K210 视觉巡线模式：使用图像连续误差和路线趋势。 */
 				Turn_out = K230_LineTurnPD();
 			}
 			else if(ENABLE_SENSOR_TRACKING && Tracking_IsActive())
@@ -543,7 +544,7 @@ int Velocity(int Target, int encoder_left, int encoder_right)
  * 说明：
  * 1. gyro_Z 项抑制车体自身转向摆动
  * 2. RC 项来自上层目标
- * 3. RC 既可能来自原始手动控制，也可能来自 K230 或巡线模块
+ * 3. RC 既可能来自原始手动控制，也可能来自 K210 或巡线模块
  */
 int Turn(int gyro_Z, int RC)
 {

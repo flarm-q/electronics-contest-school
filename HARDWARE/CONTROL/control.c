@@ -94,11 +94,11 @@ float Turn_Kp = 20;
  * BASE_SPEED 沿用当前工程电机方向；MIN_CONFIDENCE 用于过滤低可信结果；
  * ERROR_KP 负责当前横向纠偏，ANGLE_KD 用路线趋势提前处理弯道。
  */
-#define K210_LINE_BASE_SPEED -10
+#define K210_LINE_BASE_SPEED -15
 #define K210_LINE_MIN_CONFIDENCE 10
-#define K210_LINE_TURN_LIMIT 100
-#define K210_LINE_ERROR_KP 0.40f
-#define K210_LINE_ANGLE_KD 0.80f
+#define K210_LINE_TURN_LIMIT 200
+#define K210_LINE_ERROR_KP 0.50f
+#define K210_LINE_ANGLE_KD 17.00f
 
 /* K210 颜色避障参数。
  *

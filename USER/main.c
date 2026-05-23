@@ -1,4 +1,4 @@
-﻿#include "stm32f10x.h"
+#include "stm32f10x.h"
 #include "sys.h"
 #include "oled.h"
 #include "usart.h"
@@ -87,6 +87,7 @@ int main(void)
 	/* 用于主循环里的定时打印累计。 */
 	u16 print_elapsed_ms = 0;
 	K210_LineFrame_t line_frame;
+	K210_ColorFrame_t color_frame;
 
 	/* 1. 基础时基与中断配置。 */
 	delay_init();
@@ -124,7 +125,7 @@ int main(void)
 	OLED_ShowString(0,3,"sd:",12);
 
 	/* 7. 等待系统和 K210 视觉数据稳定。 */
-	delay_ms(K210_START_DELAY_MS);
+	// delay_ms(K210_START_DELAY_MS);
 
 	while(1)
 	{
@@ -132,6 +133,7 @@ int main(void)
 		USART1_ProcessCommand();
 
 		line_frame = K210_GetLineFrame();
+		color_frame = K210_GetColorFrame();
 
 		/* 9. OLED 实时显示核心状态。 */
 		OLED_Float(1,70,Pitch,1);
@@ -141,16 +143,21 @@ int main(void)
 		/* 10. 周期性向上位机打印调试信息，便于串口观察：
 		 * 1. 当前姿态角
 		 * 2. K210 巡线偏差、趋势和可信度
-		 * 3. 左右编码器速度
+		 * 3. K210 颜色识别结果
+		 * 4. 左右编码器速度
 		 */
 		if(print_elapsed_ms >= USART1_PRINT_PERIOD_MS)
 		{
 			print_elapsed_ms = 0;
-			printf("VisionError=%d VisionAngle=%d VisionConfidence=%u VisionFlags=0x%02X EncoderLeft=%d EncoderRight=%d SpeedDisplay=%.2f\r\n",
+			printf("VisionError=%d VisionAngle=%d VisionConfidence=%u VisionFlags=0x%02X ColorID=%u ColorPos=%c ColorSize=%u ColorActive=%u EncoderLeft=%d EncoderRight=%d SpeedDisplay=%.2f\r\n",
 			       line_frame.error,
 			       line_frame.angle,
 			       line_frame.confidence,
 			       line_frame.flags,
+			       color_frame.color_id,
+			       color_frame.pos,
+			       color_frame.size,
+			       color_frame.active,
 			       Encoder_Left,
 			       Encoder_Right,
 			       (Encoder_Left + Encoder_Right) * 2.38f);

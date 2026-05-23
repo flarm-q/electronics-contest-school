@@ -27,13 +27,13 @@ UART1_TX_PIN = 7
 UART1_RX_PIN = 9
 
 # 图像与 ROI
-FRAME_WIDTH = 640
-FRAME_HEIGHT = 480
+FRAME_WIDTH = 320
+FRAME_HEIGHT = 240
 
 ROI_LIST = [
-    #{"name": "far", "roi": (100, 150, 440, 60), "weight": 0.3},
-    {"name": "mid", "roi": (100, 250, 440, 80), "weight": 0.5},
-    {"name": "near", "roi": (100, 350, 440, 100), "weight": 0.6},
+    {"name": "far", "roi": (0, 75, 320, 40), "weight": 1.0},
+    {"name": "mid", "roi": (0, 125, 320, 50), "weight": 0.6},
+    {"name": "near", "roi": (0, 175, 320, 60), "weight": 0.8},
 ]
 
 # 黑线提取阈值，按 LAB 空间做黑色区域筛选
@@ -226,12 +226,12 @@ def init_sensor():
 
     这里统一设置：
     1. RGB565 作为图像格式，便于黑线和颜色块处理
-    2. VGA 分辨率，兼顾视野和计算量
+    2. QVGA 分辨率，兼顾视野和计算量
     3. 画面翻转参数，适配当前摄像头安装方向
     """
     sensor.reset()
     sensor.set_pixformat(sensor.RGB565)
-    sensor.set_framesize(sensor.VGA)
+    sensor.set_framesize(sensor.QVGA)
     sensor.set_hmirror(IMAGE_HMIRROR)
     sensor.set_vflip(IMAGE_VFLIP)
     sensor.skip_frames(time=2000)

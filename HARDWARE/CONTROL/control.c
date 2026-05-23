@@ -1,4 +1,4 @@
-﻿#include "control.h"
+#include "control.h"
 #include "string.h"
 #include "usart3.h"
 
@@ -26,7 +26,8 @@ float Med_Angle = 0.5;
  * 1. Target_Speed 表示前后运动目标
  * 2. Turn_Speed   表示左右转向目标
  *
- * 当前上层行为保留 K210 色块避障和 K210 视觉巡线。
+ * 当前上层行为只保留 K210 视觉巡线。
+ * 色块帧仍保留在串口链路里，后续可接 LED；
  * 八路传感器巡线不再参与控制。
  *
  * 最终都统一进入后面的三环控制：
@@ -57,7 +58,7 @@ float Turn_Speed = 0;
  * 三、转向环：
  * 1. Turn_Kp 根据外部给定的转向目标控制左右差速
  * 2. Turn_Kd 根据陀螺仪 Z 轴角速度抑制转向摆动
- * 3. 当前主要服务于 K210 视觉巡线和色块避障模式
+ * 3. 当前主要服务于 K210 视觉巡线
  *
  * 注意：
  * 1. 这几个参数之间是耦合的，不能孤立地只看一个数值
@@ -94,21 +95,11 @@ float Turn_Kp = 20;
  * BASE_SPEED 沿用当前工程电机方向；MIN_CONFIDENCE 用于过滤低可信结果；
  * ERROR_KP 负责当前横向纠偏，ANGLE_KD 用路线趋势提前处理弯道。
  */
-#define K210_LINE_BASE_SPEED -10
+#define K210_LINE_BASE_SPEED -15
 #define K210_LINE_MIN_CONFIDENCE 10
 #define K210_LINE_TURN_LIMIT 200
-#define K210_LINE_ERROR_KP 0.50f
-#define K210_LINE_ANGLE_KD 50.00f
-
-/* K210 颜色避障参数。
- *
- * K210 通过 USART3 向 STM32 发送颜色识别结果帧：
- *   $C,color_id,pos,size#
- */
-#define K210_AVOID_BASE_SPEED -10
-#define K210_AVOID_TURN_STRONG 45
-#define K210_AVOID_TURN_MID 30
-#define K210_AVOID_MIN_SIZE 200
+#define K210_LINE_ERROR_KP 0.70f
+#define K210_LINE_ANGLE_KD 45.00f
 
 /* 三环输出。
  *
@@ -122,49 +113,6 @@ int Vertical_out, Velocity_out, Turn_out;
 int Vertical(float Med, float Angle, float gyro_Y);
 int Velocity(int Target, int encoder_left, int encoder_right);
 int Turn(int gyro_Z, int RC);
-
-static u8 K210_AvoidanceActive(void)
-{
-	K210_ColorFrame_t frame = K210_GetColorFrame();
-
-	if(K210_ColorFrameAvailable() == 0)
-	{
-		return 0;
-	}
-
-	if(frame.color_id < 1 || frame.color_id > 3)
-	{
-		return 0;
-	}
-
-	if(frame.size < K210_AVOID_MIN_SIZE)
-	{
-		return 0;
-	}
-
-	return 1;
-}
-
-static void K210_ApplyAvoidance(void)
-{
-	K210_ColorFrame_t frame = K210_GetColorFrame();
-
-	Target_Speed = K210_AVOID_BASE_SPEED;
-
-	if(frame.pos == 'L')
-	{
-		Turn_Speed = -K210_AVOID_TURN_STRONG;
-	}
-	else if(frame.pos == 'R')
-	{
-		Turn_Speed = K210_AVOID_TURN_STRONG;
-	}
-	else
-	{
-		Target_Speed = K210_AVOID_BASE_SPEED / 2;
-		Turn_Speed = -K210_AVOID_TURN_MID;
-	}
-}
 
 static u8 K210_LineTrackingActive(void)
 {
@@ -224,8 +172,9 @@ static int K210_LineTurnPD(void)
  * 5. 合成左右电机 PWM
  * 6. 执行倾倒保护
  *
- * 当前只允许 K210 色块避障和 K210 视觉巡线接管。
- * 两者都无效时，停止前进，只保持平衡。
+ * 当前只允许 K210 视觉巡线接管。
+ * 色块帧仍然保留在串口链路里，后面可以接 LED 逻辑；
+ * 但它不再直接参与底盘控制。
  */
 void EXTI9_5_IRQHandler(void)
 {
@@ -250,11 +199,7 @@ void EXTI9_5_IRQHandler(void)
 			K210_LineFrameHeartbeat();
 
 			/* 3. 高层行为仲裁。 */
-			if(K210_AvoidanceActive())
-			{
-				K210_ApplyAvoidance();
-			}
-			else if(K210_LineTrackingActive())
+			if(K210_LineTrackingActive())
 			{
 				K210_ApplyLineTracking();
 			}
@@ -269,11 +214,7 @@ void EXTI9_5_IRQHandler(void)
 			Turn_Speed = Turn_Speed > SPEED_Z ? SPEED_Z : (Turn_Speed < (-SPEED_Z) ? (-SPEED_Z) : Turn_Speed);
 
 			/* 5. 转向环阻尼约束。 */
-			if(K210_AvoidanceActive())
-			{
-				Turn_Kd = 0;
-			}
-			else if(K210_LineTrackingActive())
+			if(K210_LineTrackingActive())
 			{
 				Turn_Kd = 0;
 			}
@@ -286,12 +227,7 @@ void EXTI9_5_IRQHandler(void)
 			Velocity_out = Velocity(Target_Speed, Encoder_Left, Encoder_Right);
 			Vertical_out = Vertical(Velocity_out + Med_Angle, Pitch, gyroy);
 
-			if(K210_AvoidanceActive())
-			{
-				/* 视觉避障模式：根据目标位置做差速绕行。 */
-				Turn_out = Turn(gyroz, Turn_Speed);
-			}
-			else if(K210_LineTrackingActive())
+			if(K210_LineTrackingActive())
 			{
 				Turn_out = K210_LineTurnPD();
 			}

@@ -98,8 +98,8 @@ float Turn_Kp = 20;
 #define K210_LINE_BASE_SPEED -15
 #define K210_LINE_MIN_CONFIDENCE 10
 #define K210_LINE_TURN_LIMIT 200
-#define K210_LINE_ERROR_KP 0.70f
-#define K210_LINE_ANGLE_KD 45.00f
+#define K210_LINE_ERROR_KP 0.80f
+#define K210_LINE_ANGLE_KD 40.00f
 
 /* 三环输出。
  *

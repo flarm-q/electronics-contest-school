@@ -2,16 +2,16 @@
 #include "sys.h"
 #include "oled.h"
 #include "usart.h"
-#include "tracking.h"
+#include "usart3.h"
 
-/* 巡线模块启动前的等待时间。
+/* K210 巡线接管前的等待时间。
  *
  * 上电后先给整车一点稳定时间，避免：
  * 1. MPU6050 和 DMP 刚初始化完成时姿态还没完全稳定
- * 2. 八路巡线模块刚上电时串口数据还没准备好
+ * 2. K210 摄像头和串口刚启动时数据还没完全稳定
  * 3. 小车刚通电就立刻进入巡线导致误动作
  */
-#define TRACKING_START_DELAY_MS 10000
+#define K210_START_DELAY_MS 2000
 
 /* 主循环的节拍延时。
  *
@@ -86,6 +86,7 @@ int main(void)
 {
 	/* 用于主循环里的定时打印累计。 */
 	u16 print_elapsed_ms = 0;
+	K210_LineFrame_t line_frame;
 
 	/* 1. 基础时基与中断配置。 */
 	delay_init();
@@ -93,12 +94,10 @@ int main(void)
 
 	/* 2. 初始化串口。
 	 * USART1：上位机调试、在线调参
-	 * USART3：K230 视觉颜色识别
-	 * USART2：八路巡线模块
+	 * USART3：K210 视觉巡线
 	 */
 	uart1_init(9600);
-	uart3_init(9600);
-	Tracking_Usart2_Init(115200);
+	uart3_init(115200);
 
 	/* 3. 初始化 OLED，用于现场观察关键状态。 */
 	OLED_Init();
@@ -121,51 +120,46 @@ int main(void)
 	 * 第三行显示速度估计值
 	 */
 	OLED_ShowString(0,1,"jiao du:",12);
-	OLED_ShowString(0,2,"track:",12);
+	OLED_ShowString(0,2,"vision:",12);
 	OLED_ShowString(0,3,"sd:",12);
 
-	/* 7. 等待系统稳定后，再通知巡线模块开始回传数字量数据。 */
-	delay_ms(TRACKING_START_DELAY_MS);
-	Tracking_SendControlData(0,1);
+	/* 7. 等待系统和 K210 视觉数据稳定。 */
+	delay_ms(K210_START_DELAY_MS);
 
 	while(1)
 	{
-		/* 8. 处理巡线串口接收缓存。
-		 * USART2 中断只负责把字节塞进 FIFO，
-		 * 真正的组包和解析放在主循环里做，减少中断负担。
-		 */
-		Tracking_ProcessRx();
-
-		/* 9. 处理 USART1 的在线调参命令。 */
+		/* 8. 处理 USART1 的在线调参命令。 */
 		USART1_ProcessCommand();
 
-		/* 10. OLED 实时显示核心状态。 */
+		line_frame = K210_GetLineFrame();
+
+		/* 9. OLED 实时显示核心状态。 */
 		OLED_Float(1,70,Pitch,1);
-		OLED_Num3(8,2,Tracking_GetError());
+		OLED_Num3(8,2,line_frame.error);
 		OLED_Num3(5,3,(int)((Encoder_Left+Encoder_Right)*2.38));
 
-		/* 11. 周期性向上位机打印调试信息，便于串口观察：
+		/* 10. 周期性向上位机打印调试信息，便于串口观察：
 		 * 1. 当前姿态角
-		 * 2. 巡线偏差
+		 * 2. K210 巡线偏差、趋势和可信度
 		 * 3. 左右编码器速度
-		 * 4. 八路数字量巡线状态
 		 */
 		if(print_elapsed_ms >= USART1_PRINT_PERIOD_MS)
 		{
 			print_elapsed_ms = 0;
-			printf("Pitch=%.2f Roll=%.2f Yaw=%.2f\nTrackError=%d EncoderLeft=%d EncoderRight=%d SpeedDisplay=%.2f\nDigital=[%u,%u,%u,%u,%u,%u,%u,%u]\r\n",
+			printf("Pitch=%.2f Roll=%.2f Yaw=%.2f\nVisionError=%d VisionAngle=%d VisionConfidence=%u VisionFlags=0x%02X EncoderLeft=%d EncoderRight=%d SpeedDisplay=%.2f\r\n",
 			       Pitch,
 			       Roll,
 			       Yaw,
-			       Tracking_GetError(),
+			       line_frame.error,
+			       line_frame.angle,
+			       line_frame.confidence,
+			       line_frame.flags,
 			       Encoder_Left,
 			       Encoder_Right,
-			       (Encoder_Left + Encoder_Right) * 2.38f,
-			       Tracking_IR_Data[0], Tracking_IR_Data[1], Tracking_IR_Data[2], Tracking_IR_Data[3],
-			       Tracking_IR_Data[4], Tracking_IR_Data[5], Tracking_IR_Data[6], Tracking_IR_Data[7]);
+			       (Encoder_Left + Encoder_Right) * 2.38f);
 		}
 
-		/* 12. 主循环固定节拍。 */
+		/* 11. 主循环固定节拍。 */
 		delay_ms(MAIN_LOOP_DELAY_MS);
 		print_elapsed_ms += MAIN_LOOP_DELAY_MS;
 	}

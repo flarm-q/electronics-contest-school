@@ -1,105 +1,147 @@
 #include "usart3.h"
 
-/* USART3 ½ÓÊÕ»º³åÇø×î´ó³¤¶È¡£
- * µ±Ç°ÑÕÉ«Ğ­ÒéÖ¡ºÜ¶Ì£¬ÀıÈç "$C,1,L,356#"£¬32 ×Ö½ÚÒÑ¾­×ã¹»£¬
- * Í¬Ê±Ò²ÄÜÏŞÖÆÒì³£Êı¾İµ¼ÖÂµÄÔ½½ç·çÏÕ¡£
+/* USART3 æ¥æ”¶ç¼“å†²åŒºæœ€å¤§é•¿åº¦ã€‚
+ * å½“å‰ K210 å·¡çº¿å¸§å¾ˆçŸ­ï¼Œä¾‹å¦‚ "$L,-23,5,86,1#"ï¼Œ
+ * 48 å­—èŠ‚å·²ç»è¶³å¤Ÿï¼Œä¹Ÿèƒ½é™åˆ¶å¼‚å¸¸æ•°æ®å¯¼è‡´çš„è¶Šç•Œé£é™©ã€‚
  */
-#define K230_USART3_FRAME_MAX_LEN 32
+#define K210_USART3_FRAME_MAX_LEN 48
 
-/* ÊÓ¾õÖ¡³¬Ê±¼ÆÊı¡£
- * ¸ÃÖµ²»ÊÇ¡°ºÁÃë¡±£¬¶øÊÇ¡°¿ØÖÆÖÜÆÚ¼ÆÊı¡±¡£
- * Ã¿´Î EXTI9_5_IRQHandler() ½øÈë¶¼»áµ÷ÓÃÒ»´Î K230_ColorFrameHeartbeat() µİ¼õ¡£
- * Èç¹û³¤Ê±¼äÃ»ÓĞÊÕµ½ĞÂµÄÓĞĞ§ÑÕÉ«Ö¡£¬Ôò×Ô¶¯°ÑÊÓ¾õÄ¿±êÇå¿Õ£¬·ÀÖ¹¾ÉÊı¾İÒ»Ö±¿ØÖÆĞ¡³µ¡£
+/* å·¡çº¿/é¢œè‰²ç»“æœè¶…æ—¶è®¡æ•°ã€‚
+ * è¯¥å€¼ä¸æ˜¯æ¯«ç§’ï¼Œè€Œæ˜¯æ§åˆ¶å‘¨æœŸè®¡æ•°ã€‚
  */
-#define K230_FRAME_TIMEOUT_TICKS 40
+#define K210_COLOR_FRAME_TIMEOUT_TICKS 40
+#define K210_LINE_FRAME_TIMEOUT_TICKS 40
 
-/* ¼æÈİ±£ÁôµÄÔ­À¶ÑÀ·½Ïò±äÁ¿¡£
- * µ±Ç°ÒÑ¾­²»ÔÙÓÉ USART3 À¶ÑÀĞ­Òé¸üĞÂ£¬µ«¹¤³ÌÆäËûÄ£¿éÈÔÍ¨¹ı extern ÒıÓÃËüÃÇ£¬
- * Òò´ËÕâÀï±£Áô¶¨Òå£¬²¢ÔÚÊÕµ½ K230 ÊÓ¾õÖ¡Ê±Ç¿ÖÆÇåÁã£¬±ÜÃâ¾ÉÂß¼­²ĞÁô¸ÉÈÅ¡£
- */
+/* å…¼å®¹ä¿ç•™çš„åŸè“ç‰™æ–¹å‘å˜é‡ã€‚ */
 u8 Fore, Back, Left, Right;
 
-/* ×î½üÒ»´ÎÊÕµ½²¢³É¹¦½âÎöµÄ K230 ÑÕÉ«Ê¶±ğ½á¹û¡£ */
-static volatile K230_ColorFrame_t g_k230_color = {0, 'N', 0, 0};
+/* æœ€è¿‘ä¸€æ¬¡æ”¶åˆ°å¹¶æˆåŠŸè§£æçš„ K210 é¢œè‰²è¯†åˆ«ç»“æœã€‚ */
+static volatile K210_ColorFrame_t g_k210_color = {0, 'N', 0, 0};
 
-/* ÊÓ¾õ½á¹û¡°±£»î¡±µ¹¼ÆÊ±¡£
- * Ã¿ÊÕµ½Ò»Ö¡ĞÂµÄºÏ·¨Êı¾İ¾ÍÖØ×°Îª K230_FRAME_TIMEOUT_TICKS¡£
- */
-static volatile u8 g_k230_frame_counter = 0;
+/* æœ€è¿‘ä¸€æ¬¡æ”¶åˆ°å¹¶æˆåŠŸè§£æçš„ K210 å·¡çº¿ç»“æœã€‚ */
+static volatile K210_LineFrame_t g_k210_line = {0, 0, 0, 0x02, 0, 1};
 
-/* USART3 Ô­Ê¼×Ö½Ú½ÓÊÕ»º³åÇø¡£ */
-static u8 g_k230_rx_buf[K230_USART3_FRAME_MAX_LEN];
+/* å·¡çº¿/é¢œè‰²ç»“æœä¿æ´»å€’è®¡æ—¶ã€‚ */
+static volatile u8 g_k210_color_frame_counter = 0;
+static volatile u8 g_k210_line_frame_counter = 0;
 
-static void K230_ResetRxState(u8 *start, u8 *index)
+/* USART3 åŸå§‹å­—èŠ‚æ¥æ”¶ç¼“å†²åŒºã€‚ */
+static u8 g_k210_rx_buf[K210_USART3_FRAME_MAX_LEN];
+
+static void K210_ResetRxState(u8 *start, u8 *index)
 {
-	/* start ±íÊ¾µ±Ç°ÊÇ·ñÒÑ¾­µÈµ½Ö¡Í· '$'¡£
-	 * index ±íÊ¾µ±Ç°ÒÑ¾­Ğ´Èë¶àÉÙ¸ö×Ö½Ú¡£
-	 * Ã¿´ÎÒ»Ö¡ÊÕÍê»ò¼ì²âµ½Òì³£Ê±£¬¶¼°Ñ½ÓÊÕ×´Ì¬ÇåÁã£¬µÈ´ıÏÂÒ»Ö¡ÖØĞÂ¿ªÊ¼¡£
-	 */
 	*start = 0;
 	*index = 0;
-	memset(g_k230_rx_buf, 0, sizeof(g_k230_rx_buf));
+	memset(g_k210_rx_buf, 0, sizeof(g_k210_rx_buf));
 }
 
-static u16 K230_ParseU16(const char *text)
+static void K210_ParseColorFrame(void)
 {
-	u16 value = 0;
-
-	/* °Ñ ASCII Êı×Ö´®×ª³ÉÎŞ·ûºÅÕûÊı¡£
-	 * ÕâÀïÖ»½âÎöÁ¬ĞøÊı×Ö£¬µ½·ÇÊı×Ö×Ö·û¾ÍÍ£Ö¹¡£
-	 * ¶Ôµ±Ç°Ğ­ÒéÖĞµÄ size ×Ö¶ÎÒÑ¾­×ã¹»¡£
-	 */
-	while((*text >= '0') && (*text <= '9'))
-	{
-		value = value * 10 + (u16)(*text - '0');
-		text++;
-	}
-	return value;
-}
-
-static void K230_ParseFrame(void)
-{
-	char color_text[4] = {0};
-	char pos_text[4] = {0};
-	char size_text[8] = {0};
+	int color_id;
+	char pos;
+	int size;
 	int matched;
-	K230_ColorFrame_t frame;
+	K210_ColorFrame_t frame;
 
-	/* Ğ­Òé¸ñÊ½£º
-	 *   $C,color_id,pos,size#
-	 * ÓÃ sscanf °ÑÈı¸ö×Ö¶Î²ğ³öÀ´¡£
-	 *
-	 * ÀıÈç£º
-	 *   "$C,1,L,356#"
-	 * ½âÎöºó£º
-	 *   color_text = "1"
-	 *   pos_text   = "L"
-	 *   size_text  = "356"
-	 */
-	matched = sscanf((char *)g_k230_rx_buf, "$C,%3[^,],%3[^,],%7[^#]#", color_text, pos_text, size_text);
+	matched = sscanf((char *)g_k210_rx_buf, "$C,%d,%c,%d#", &color_id, &pos, &size);
 	if(matched != 3)
 	{
-		/* ²»ÊÇÍêÕûºÏ·¨Ö¡ÔòÖ±½Ó¶ªÆú£¬²»¸üĞÂ¿ØÖÆ×´Ì¬¡£ */
 		return;
 	}
 
-	/* °Ñ×Ö·û´®×Ö¶Î×ª»»³É¿ØÖÆÂß¼­¿ÉÖ±½ÓÊ¹ÓÃµÄÊıÖµ/×Ö·û¡£ */
-	frame.color_id = (u8)atoi(color_text);
-	frame.pos = pos_text[0];
-	frame.size = K230_ParseU16(size_text);
+	if(color_id < 0)
+	{
+		color_id = 0;
+	}
+	else if(color_id > 255)
+	{
+		color_id = 255;
+	}
 
-	/* Ö»ÓĞ color_id ·Ç 0 ²ÅÊÓÎª¡°Ê¶±ğµ½ÁËÄ¿±ê¡±¡£ */
+	if(size < 0)
+	{
+		size = 0;
+	}
+	else if(size > 65535)
+	{
+		size = 65535;
+	}
+
+	frame.color_id = (u8)color_id;
+	frame.pos = pos;
+	frame.size = (u16)size;
 	frame.active = (frame.color_id != 0) ? 1 : 0;
 
-	/* ¸üĞÂÈ«¾Ö×îĞÂÊÓ¾õ½á¹û¡£ */
-	g_k230_color = frame;
+	g_k210_color = frame;
+	g_k210_color_frame_counter = K210_COLOR_FRAME_TIMEOUT_TICKS;
 
-	/* Ö»ÒªÊÕµ½Ò»´ÎĞÂÖ¡£¬¾Í°Ñ±£»î¼ÆÊıÆ÷ÖØĞÂ×°ÔØ¡£ */
-	g_k230_frame_counter = K230_FRAME_TIMEOUT_TICKS;
+	Fore = 0;
+	Back = 0;
+	Left = 0;
+	Right = 0;
+}
 
-	/* ¹Ø±ÕÔ­À¶ÑÀ·½Ïò¿ØÖÆ£¬±ÜÃâºÍ K230 ÊÓ¾õ±ÜÕÏ²¢ĞĞÊ±»¥ÏàÇÀÕ¼¡£
-	 * ÕâÀïÏàµ±ÓÚÃ÷È·ÉùÃ÷£ºUSART3 ÏÖÔÚÖ»ÓÃÓÚ K230 ÊÓ¾õ½á¹ûÊäÈë£¬²»ÔÙ×÷ÎªÀ¶ÑÀÒ£¿ØÈë¿Ú¡£
-	 */
+static void K210_ParseLineFrame(void)
+{
+	int error;
+	int angle;
+	int confidence;
+	int flags;
+	int matched;
+	K210_LineFrame_t frame;
+
+	matched = sscanf((char *)g_k210_rx_buf, "$L,%d,%d,%d,%d#", &error, &angle, &confidence, &flags);
+	if(matched != 4)
+	{
+		return;
+	}
+
+	if(error > 32767)
+	{
+		error = 32767;
+	}
+	else if(error < -32768)
+	{
+		error = -32768;
+	}
+
+	if(angle > 32767)
+	{
+		angle = 32767;
+	}
+	else if(angle < -32768)
+	{
+		angle = -32768;
+	}
+
+	if(confidence > 100)
+	{
+		confidence = 100;
+	}
+	else if(confidence < 0)
+	{
+		confidence = 0;
+	}
+
+	if(flags > 255)
+	{
+		flags = 255;
+	}
+	else if(flags < 0)
+	{
+		flags = 0;
+	}
+
+	frame.error = (s16)error;
+	frame.angle = (s16)angle;
+	frame.confidence = (u8)confidence;
+	frame.flags = (u8)flags;
+	frame.lost = (frame.flags & 0x02) ? 1 : 0;
+	frame.active = ((frame.flags & 0x01) && (frame.lost == 0)) ? 1 : 0;
+
+	g_k210_line = frame;
+	g_k210_line_frame_counter = K210_LINE_FRAME_TIMEOUT_TICKS;
+
 	Fore = 0;
 	Back = 0;
 	Left = 0;
@@ -114,17 +156,13 @@ void uart3_init(u32 bound)
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART3, ENABLE);
 
-	/* PB10 -> USART3_TX¡£
-	 * µ±Ç°Ö÷ÒªĞèÇóÊÇ½ÓÊÕ K230 Êı¾İ£¬µ«ÒÀÈ»±£Áô TX£¬ºóĞøÈç¹ûÒª¸ø K230 »Ø·¢Ó¦´ğ»òµ÷ÊÔĞÅÏ¢»á¸ü·½±ã¡£
-	 */
+	/* PB10 -> USART3_TX */
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
 	GPIO_Init(GPIOB, &GPIO_InitStructure);
 
-	/* PB11 -> USART3_RX¡£
-	 * K230 Ó¦°ÑÆä UART_TX ½Óµ½ STM32 µÄ PB11(USART3_RX)¡£
-	 */
+	/* PB11 -> USART3_RX */
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_11;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
 	GPIO_Init(GPIOB, &GPIO_InitStructure);
@@ -141,51 +179,60 @@ void uart3_init(u32 bound)
 	USART_Cmd(USART3, ENABLE);
 }
 
-u8 K230_ColorFrameAvailable(void)
+u8 K210_ColorFrameAvailable(void)
 {
-	/* ¶ÔÍâÌá¹©Ò»¸ö¼ò»¯²éÑ¯½Ó¿Ú¡£
-	 * Ä¿Ç° control.c ¸üÖ±½ÓÊ¹ÓÃ K230_GetColorFrame()£¬Õâ¸öº¯Êı±£Áô¸øÆäËûÄ£¿éÀ©Õ¹¡£
-	 */
-	return g_k230_color.active;
+	return g_k210_color.active;
 }
 
-K230_ColorFrame_t K230_GetColorFrame(void)
+K210_ColorFrame_t K210_GetColorFrame(void)
 {
-	/* ·µ»Øµ±Ç°»º´æµÄ×î½üÒ»Ö¡ÊÓ¾õ½á¹û¡£
-	 * ÓÉÓÚ½á¹¹ÌåºÜĞ¡£¬Ö±½Ó°´Öµ·µ»Ø¼´¿É¡£
-	 */
-	return *(K230_ColorFrame_t *)&g_k230_color;
+	return *(K210_ColorFrame_t *)&g_k210_color;
 }
 
-void K230_ColorFrameHeartbeat(void)
+void K210_ColorFrameHeartbeat(void)
 {
-	/* ĞÄÌø³¬Ê±»úÖÆ£º
-	 * Ã¿´Î¿ØÖÆÖÜÆÚ°Ñ¼ÆÊıÆ÷¼õ 1¡£
-	 * Èç¹ûÁ¬Ğø¶à¸ö¿ØÖÆÖÜÆÚ¶¼Ã»ÓĞÊÕµ½ĞÂµÄºÏ·¨ÑÕÉ«Ö¡£¬
-	 * Ôò×Ô¶¯ÈÏÎªÊÓ¾õÄ¿±êÒÑ¾­ÏûÊ§»ò´®¿Ú¶Ï¿ª£¬Çå³ıµ±Ç°ÊÓ¾õ±ÜÕÏ×´Ì¬¡£
-	 */
-	if(g_k230_frame_counter > 0)
+	if(g_k210_color_frame_counter > 0)
 	{
-		g_k230_frame_counter--;
-		if(g_k230_frame_counter == 0)
+		g_k210_color_frame_counter--;
+		if(g_k210_color_frame_counter == 0)
 		{
-			/* ³¬Ê±ºó»Ö¸´Îª¿ÕÄ¿±ê×´Ì¬£¬±ÜÃâ¡°×îºóÒ»Ö¡¡±ÓÀ¾ÃÉúĞ§¡£ */
-			g_k230_color.color_id = 0;
-			g_k230_color.pos = 'N';
-			g_k230_color.size = 0;
-			g_k230_color.active = 0;
+			g_k210_color.color_id = 0;
+			g_k210_color.pos = 'N';
+			g_k210_color.size = 0;
+			g_k210_color.active = 0;
+		}
+	}
+}
+
+u8 K210_LineFrameAvailable(void)
+{
+	return g_k210_line.active;
+}
+
+K210_LineFrame_t K210_GetLineFrame(void)
+{
+	return *(K210_LineFrame_t *)&g_k210_line;
+}
+
+void K210_LineFrameHeartbeat(void)
+{
+	if(g_k210_line_frame_counter > 0)
+	{
+		g_k210_line_frame_counter--;
+		if(g_k210_line_frame_counter == 0)
+		{
+			g_k210_line.error = 0;
+			g_k210_line.angle = 0;
+			g_k210_line.confidence = 0;
+			g_k210_line.flags = 0x02;
+			g_k210_line.active = 0;
+			g_k210_line.lost = 1;
 		}
 	}
 }
 
 void USART3_IRQHandler(void)
 {
-	/* ¼òµ¥´®¿ÚÖ¡×´Ì¬»ú£º
-	 * 1. Óöµ½ '$' ÈÏÎªÒ»Ö¡¿ªÊ¼
-	 * 2. ³ÖĞø»º´æºóĞø×Ö½Ú
-	 * 3. Óöµ½ '#' ÈÏÎªÒ»Ö¡½áÊø
-	 * 4. ¶ÔÍêÕûÖ¡½øĞĞ½âÎö
-	 */
 	static u8 start = 0;
 	static u8 index = 0;
 	u8 rx_temp;
@@ -195,44 +242,46 @@ void USART3_IRQHandler(void)
 		USART_ClearITPendingBit(USART3, USART_IT_RXNE);
 		rx_temp = (u8)USART_ReceiveData(USART3);
 
-		/* ĞÂÖ¡Ö¡Í·¡£ÎŞÂÛÖ®Ç°ÊÇ·ñÊÕ²Ğ£¬¶¼Ö±½Ó´ÓÕâÀïÖØĞÂ¿ªÊ¼¡£ */
 		if(rx_temp == '$')
 		{
 			start = 1;
 			index = 0;
-			memset(g_k230_rx_buf, 0, sizeof(g_k230_rx_buf));
-			g_k230_rx_buf[index++] = rx_temp;
+			memset(g_k210_rx_buf, 0, sizeof(g_k210_rx_buf));
+			g_k210_rx_buf[index++] = rx_temp;
 			return;
 		}
 
 		if(start == 0)
 		{
-			/* ÔÚÓöµ½ '$' Ö®Ç°µÄÔÓÉ¢Êı¾İÒ»ÂÉºöÂÔ¡£ */
 			return;
 		}
 
-		if(index >= K230_USART3_FRAME_MAX_LEN - 1)
+		if(index >= K210_USART3_FRAME_MAX_LEN - 1)
 		{
-			/* ½ÓÊÕ³¤¶ÈÒì³££¬ËµÃ÷ÕâÒ»Ö¡´ó¸ÅÂÊÒÑ¾­Ëğ»µ£¬Ö±½Ó¶ªÆúÖØÀ´¡£ */
-			K230_ResetRxState(&start, &index);
+			K210_ResetRxState(&start, &index);
 			return;
 		}
 
-		g_k230_rx_buf[index++] = rx_temp;
+		g_k210_rx_buf[index++] = rx_temp;
 
-		/* '#' ÊÇÒ»Ö¡½áÊø·û¡£ */
 		if(rx_temp == '#')
 		{
-			g_k230_rx_buf[index] = '\0';
-			K230_ParseFrame();
-			K230_ResetRxState(&start, &index);
+			g_k210_rx_buf[index] = '\0';
+			if(g_k210_rx_buf[1] == 'C')
+			{
+				K210_ParseColorFrame();
+			}
+			else if(g_k210_rx_buf[1] == 'L')
+			{
+				K210_ParseLineFrame();
+			}
+			K210_ResetRxState(&start, &index);
 		}
 	}
 }
 
 void USART3_Send_Data(char data)
 {
-	/* ÈÔ±£Áô»ù±¾·¢ËÍ½Ó¿Ú£¬·½±ãºóĞø´®¿ÚÁªµ÷¡£ */
 	USART_SendData(USART3, data);
 	while(USART_GetFlagStatus(USART3, USART_FLAG_TC) != SET);
 }
@@ -241,7 +290,6 @@ void USART3_Send_String(char *String)
 {
 	u16 len, j;
 
-	/* ·¢ËÍÒ»¸ö C ×Ö·û´®£¬²»º¬¶îÍâĞ­Òé´¦Àí¡£ */
 	len = strlen(String);
 	for(j = 0; j < len; j++)
 	{

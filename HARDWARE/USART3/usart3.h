@@ -3,21 +3,20 @@
 
 #include "sys.h"
 
-/* K230 ·¢ËÍ¸ø STM32 µÄÑÕÉ«Ê¶±ğ½á¹û¡£
+/* K210 è§†è§‰ç»“æœå¸§ã€‚
  *
- * ´®¿ÚĞ­Òé¸ñÊ½¹Ì¶¨Îª£º
+ * ä¸²å£åè®®æ ¼å¼ï¼š
  *   $C,color_id,pos,size#
+ *   $L,error,angle,confidence,flags#
  *
- * ÀıÈç£º
- *   $C,1,L,356#
- *
- * ¸÷×Ö¶Îº¬Òå£º
- *   color_id : ÑÕÉ«±àºÅ£¬0=ÎŞÄ¿±ê£¬1=ºìÉ«£¬2=ÂÌÉ«£¬3=À¶É«
- *   pos      : Ä¿±êºáÏòÎ»ÖÃ£¬L=×ó£¬C=ÖĞ£¬R=ÓÒ£¬N=ÎŞÄ¿±ê
- *   size     : Ä¿±êÃæ»ı/ÏñËØÊıÁ¿£¬ÓÃÓÚÅĞ¶ÏÄ¿±êÊÇ·ñ×ã¹»´ó£¬±ÜÃâÔ¶´¦ÔëµãÎó´¥·¢±ÜÕÏ
- *   active   : STM32 ²àÅÉÉú³öµÄÓĞĞ§±êÖ¾£¬1 ±íÊ¾µ±Ç°Ö¡¿É²ÎÓë¿ØÖÆ£¬0 ±íÊ¾ÎŞÓĞĞ§Ä¿±ê
- *
- * ÕâÀï°Ñ K230 µÄÊÓ¾õ½á¹ûÍ³Ò»»º´æ³ÉÒ»¸ö½á¹¹Ìå£¬¹© control.c ÔÚ×ËÌ¬ÖĞ¶ÏÖĞÖ±½Ó¶ÁÈ¡¡£
+ * å„å­—æ®µå«ä¹‰ï¼š
+ *   color_id   : é¢œè‰²ç¼–å·ï¼Œ1=çº¢ï¼Œ2=ç»¿ï¼Œ3=è“ï¼Œ0=æ— ç›®æ ‡
+ *   pos        : ç›®æ ‡æ¨ªå‘ä½ç½®ï¼ŒL=å·¦ï¼ŒC=ä¸­ï¼ŒR=å³ï¼ŒN=æ— ç›®æ ‡
+ *   size       : ç›®æ ‡é¢ç§¯/åƒç´ æ•°é‡
+ *   error      : é»‘çº¿ä¸­å¿ƒç›¸å¯¹ç”»é¢ä¸­å¿ƒçš„åå·®ï¼Œå·¦è´Ÿå³æ­£
+ *   angle      : è·¯çº¿è¶‹åŠ¿ï¼Œå·¦è´Ÿå³æ­£
+ *   confidence : å¯ä¿¡åº¦ï¼Œ0~100
+ *   flags      : bit0=valid, bit1=lost, bit2=curve, bit3=marker
  */
 typedef struct
 {
@@ -25,14 +24,28 @@ typedef struct
 	char pos;
 	u16 size;
 	u8 active;
-} K230_ColorFrame_t;
+} K210_ColorFrame_t;
+
+typedef struct
+{
+	s16 error;
+	s16 angle;
+	u8 confidence;
+	u8 flags;
+	u8 active;
+	u8 lost;
+} K210_LineFrame_t;
 
 void USART3_Send_String(char *String);
 void uart3_init(u32 bound);
 void USART3_IRQHandler(void);
 
-u8 K230_ColorFrameAvailable(void);
-K230_ColorFrame_t K230_GetColorFrame(void);
-void K230_ColorFrameHeartbeat(void);
+u8 K210_ColorFrameAvailable(void);
+K210_ColorFrame_t K210_GetColorFrame(void);
+void K210_ColorFrameHeartbeat(void);
+
+u8 K210_LineFrameAvailable(void);
+K210_LineFrame_t K210_GetLineFrame(void);
+void K210_LineFrameHeartbeat(void);
 
 #endif

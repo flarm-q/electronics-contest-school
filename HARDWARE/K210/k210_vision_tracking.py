@@ -32,7 +32,7 @@ FRAME_HEIGHT = 240
 
 ROI_LIST = [
     # 远近两层前瞻：far 提前看弯道，near 负责当前纠偏。
-    {"name": "far", "roi": (0, 40, 320, 50), "weight": 0.35},
+    {"name": "far", "roi": (0, 40, 320, 50), "weight": 0.25},
     {"name": "near", "roi": (0, 100, 320, 80), "weight": 0.65},
 ]
 

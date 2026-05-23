@@ -98,7 +98,7 @@ float Turn_Kp = 20;
 #define K210_LINE_MIN_CONFIDENCE 10
 #define K210_LINE_TURN_LIMIT 200
 #define K210_LINE_ERROR_KP 0.50f
-#define K210_LINE_ANGLE_KD 17.00f
+#define K210_LINE_ANGLE_KD 50.00f
 
 /* K210 颜色避障参数。
  *

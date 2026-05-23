@@ -31,13 +31,22 @@ FRAME_WIDTH = 320
 FRAME_HEIGHT = 240
 
 ROI_LIST = [
-    {"name": "far", "roi": (0, 65, 320, 50), "weight": 1.0},
-    {"name": "mid", "roi": (0, 125, 320, 60), "weight": 0.6},
-    {"name": "near", "roi": (0, 175, 320, 70), "weight": 0.8},
+    # 单 ROI 方案：只保留下方主检测区，减少多区域之间的误判和切换。
+    {"name": "near", "roi": (0, 175, 320, 70), "weight": 1.0},
 ]
 
 # 黑线提取阈值，按 LAB 空间做黑色区域筛选
 BLACK_THRESHOLD = (0, 65, -27, 79, -59, 127)
+
+# 弯道判定滞回。
+# 进入 CURVE 的阈值高一些，退出 CURVE 的阈值低一些，
+# 再配合连续帧计数，可以避免单帧噪声把状态来回切换。
+CURVE_ENTER_ANGLE = 28
+CURVE_ENTER_ERROR = 65
+CURVE_EXIT_ANGLE = 18
+CURVE_EXIT_ERROR = 45
+CURVE_ENTER_FRAMES = 2
+CURVE_EXIT_FRAMES = 4
 
 # 颜色块识别阈值，顺序为红、绿、蓝
 COLOR_THRESHOLDS = [
@@ -86,6 +95,8 @@ g_line_state = {
     "marker": 0,
     "center_x": FRAME_WIDTH // 2,
     "last_update_ms": 0,
+    "curve_enter_count": 0,
+    "curve_exit_count": 0,
 }
 
 
@@ -167,6 +178,50 @@ def classify_pos(cx):
     if cx > FRAME_WIDTH * 2 // 3:
         return "R"
     return "C"
+
+
+def reset_curve_state():
+    """丢线时清空弯道状态计数，避免恢复识别后沿用旧状态。"""
+    g_line_state["curve_enter_count"] = 0
+    g_line_state["curve_exit_count"] = 0
+
+
+def update_curve_flag(error, angle, sample_count):
+    """根据连续帧结果稳定 CURVE/TRACK。
+
+    单 ROI 之后，弯道状态主要由 error 的变化来反映。
+    这里保留 angle 条件是为了兼容后续再扩展多 ROI 的情况。
+    """
+    enter_candidate = (
+        sample_count >= 1
+        and (abs(angle) >= CURVE_ENTER_ANGLE or abs(error) >= CURVE_ENTER_ERROR)
+    )
+    exit_candidate = (
+        sample_count == 0
+        or (abs(angle) <= CURVE_EXIT_ANGLE and abs(error) <= CURVE_EXIT_ERROR)
+    )
+
+    if g_line_state["curve"]:
+        g_line_state["curve_enter_count"] = 0
+        if exit_candidate:
+            g_line_state["curve_exit_count"] += 1
+            if g_line_state["curve_exit_count"] >= CURVE_EXIT_FRAMES:
+                g_line_state["curve_exit_count"] = 0
+                return 0
+        else:
+            g_line_state["curve_exit_count"] = 0
+        return 1
+
+    g_line_state["curve_exit_count"] = 0
+    if enter_candidate:
+        g_line_state["curve_enter_count"] += 1
+        if g_line_state["curve_enter_count"] >= CURVE_ENTER_FRAMES:
+            g_line_state["curve_enter_count"] = 0
+            return 1
+    else:
+        g_line_state["curve_enter_count"] = 0
+
+    return 0
 
 
 def configure_uart1_pins():
@@ -318,9 +373,8 @@ def analyze_line(img):
 
     处理流程：
     1. 逐个 ROI 找黑线候选
-    2. 选出每个 ROI 的最优 blob
-    3. 按近中远权重融合中心位置
-    4. 计算 error / angle / confidence / flags
+    2. 选出 ROI 内的最优 blob
+    3. 计算 error / angle / confidence / flags
     """
     image_center_x = FRAME_WIDTH // 2
     expected_x = g_line_state["center_x"] if g_line_state["valid"] else image_center_x
@@ -351,6 +405,7 @@ def analyze_line(img):
 
     if not samples:
         # 没找到任何候选线段，直接视为丢线。
+        reset_curve_state()
         return {
             "error": 0,
             "angle": 0,
@@ -419,7 +474,7 @@ def analyze_line(img):
 
     valid = 1
     lost = 0
-    curve = 1 if (abs(angle) >= 18 or abs(error) >= 60) else 0
+    curve = update_curve_flag(error, angle, len(samples))
     marker = 0
     flags = (valid << 0) | (lost << 1) | (curve << 2) | (marker << 3)
 

@@ -31,9 +31,9 @@ FRAME_WIDTH = 640
 FRAME_HEIGHT = 480
 
 ROI_LIST = [
-    {"name": "far", "roi": (0, 110, 640, 60), "weight": 0.2},
-    {"name": "mid", "roi": (0, 210, 640, 70), "weight": 0.3},
-    {"name": "near", "roi": (0, 310, 640, 100), "weight": 0.5},
+    # {"name": "far", "roi": (0, 110, 500, 50), "weight": 0.1},
+    {"name": "mid", "roi": (0, 210, 500, 60), "weight": 0.3},
+    {"name": "near", "roi": (0, 310, 500, 80), "weight": 0.5},
 ]
 
 # 黑线提取阈值，按 LAB 空间做黑色区域筛选

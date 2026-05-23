@@ -1,4 +1,4 @@
-#include "stm32f10x.h"
+﻿#include "stm32f10x.h"
 #include "sys.h"
 #include "oled.h"
 #include "usart.h"
@@ -146,10 +146,7 @@ int main(void)
 		if(print_elapsed_ms >= USART1_PRINT_PERIOD_MS)
 		{
 			print_elapsed_ms = 0;
-			printf("Pitch=%.2f Roll=%.2f Yaw=%.2f\nVisionError=%d VisionAngle=%d VisionConfidence=%u VisionFlags=0x%02X EncoderLeft=%d EncoderRight=%d SpeedDisplay=%.2f\r\n",
-			       Pitch,
-			       Roll,
-			       Yaw,
+			printf("VisionError=%d VisionAngle=%d VisionConfidence=%u VisionFlags=0x%02X EncoderLeft=%d EncoderRight=%d SpeedDisplay=%.2f\r\n",
 			       line_frame.error,
 			       line_frame.angle,
 			       line_frame.confidence,

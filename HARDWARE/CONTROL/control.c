@@ -1,4 +1,4 @@
-#include "control.h"
+﻿#include "control.h"
 #include "string.h"
 #include "usart3.h"
 
@@ -94,8 +94,8 @@ float Turn_Kp = 20;
  * BASE_SPEED 沿用当前工程电机方向；MIN_CONFIDENCE 用于过滤低可信结果；
  * ERROR_KP 负责当前横向纠偏，ANGLE_KD 用路线趋势提前处理弯道。
  */
-#define K210_LINE_BASE_SPEED -10
-#define K210_LINE_MIN_CONFIDENCE 35
+#define K210_LINE_BASE_SPEED -5
+#define K210_LINE_MIN_CONFIDENCE 10
 #define K210_LINE_TURN_LIMIT 100
 #define K210_LINE_ERROR_KP 0.32f
 #define K210_LINE_ANGLE_KD 0.18f
@@ -105,7 +105,7 @@ float Turn_Kp = 20;
  * K210 通过 USART3 向 STM32 发送颜色识别结果帧：
  *   $C,color_id,pos,size#
  */
-#define K210_AVOID_BASE_SPEED 8
+#define K210_AVOID_BASE_SPEED -10
 #define K210_AVOID_TURN_STRONG 45
 #define K210_AVOID_TURN_MID 30
 #define K210_AVOID_MIN_SIZE 200

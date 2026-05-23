@@ -31,13 +31,13 @@ FRAME_WIDTH = 640
 FRAME_HEIGHT = 480
 
 ROI_LIST = [
-    # {"name": "far", "roi": (0, 110, 500, 50), "weight": 0.1},
-    {"name": "mid", "roi": (0, 210, 500, 60), "weight": 0.3},
-    {"name": "near", "roi": (0, 310, 500, 80), "weight": 0.5},
+    #{"name": "far", "roi": (100, 150, 440, 60), "weight": 0.3},
+    {"name": "mid", "roi": (100, 250, 440, 80), "weight": 0.5},
+    {"name": "near", "roi": (100, 350, 440, 100), "weight": 0.6},
 ]
 
 # 黑线提取阈值，按 LAB 空间做黑色区域筛选
-BLACK_THRESHOLD = (0, 45, -20, 20, -20, 20)
+BLACK_THRESHOLD = (0, 60, -27, 79, -59, 127)
 
 # 颜色块识别阈值，顺序为红、绿、蓝
 COLOR_THRESHOLDS = [

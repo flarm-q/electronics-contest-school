@@ -1,0 +1,17 @@
+VisionError=0 VisionAnle=0 VisionConfience=0 VisionFlags=0x02 EcoderLeft=0 EncoderRight=-5 SedDiplay=1.90VisionError=0 isionAngle=0 VisionConfidence=0 VisionFlags=0x02 EncoderLeft EncoderRight=-20 SpeedDisplay=-47.60
+VisionError=0 VisionAngle=0 VisionConfidence=0 VisionFlags=0x02 EncodrLeft=0 EncoderRight=-11 SpeedDisplay=-26.18
+VisionError=0 VisionAngle=0 VisionConfience=0 VisionFlag=0x02 EncoderLeft= EncoderRight=2 SpeedDisplay=4.76
+VisinError=0 VisionAngle=0 VisionConfidence=0 VisionFlags=0x02 noderLeft=0 Encoderight=0 SpeedDisplay=0.00
+VisionError=-108 VisionAngle=140 VisionConfidence=80 VisionFlags=0x05 Encoderft=0 EncoderRight=4 SpeedDisplay=9.52
+VisionError=0 VisionAngle=0 VisionConfidence=0 VisionFlags=0x02 EcoderLeft=0 EncoderRight=1 SpeedDisplay=2.38
+VisionError=0 VisionAngle=0 VisionConfidence=0 VisionFlags=0x02 EncoderLeft=0 EncoderRight8 SpeedDisplay=19.04
+VisionError=0 VisionAngle=0 VisionConfidence=0 VisionFlags=0x02 EncoderLeft=0 EncoderRight=11 SpeedDisplay=26.18
+VisionError=-174 VisionAngle=209 isionConfidece=94 VisionFlags=0x05 EncoerLeft=0EncoderRight=-2 SpeedDisplay=-4.7
+ior=sgCoVsodVisionError=0 VisionAngle=0 VisionConfidence=0 VisionFlags=0x02 EncoderLeft=0 ncoderRight=-18 SpedDiplay=-42.84
+VsionEror=0 VionAnge=0 VisionConfidence=0 VisionFlgs=0x02 EncodrLeft=0 Encderight=-14 SpeedDisplay=-33.32
+VisionEror=0 VisionAngle=0 VisionCoidence=0 ViionFlags=0x02 EncoeLeft=0 EcoderRight=0 Speedisplay=0.00
+VisionEror=0 VisionAngle=0 VisionCnfidence=0 VisionFlags=0x02 EncoderLeft=0 EncoderRight=-2 SpeedDisply=-4.76
+VisionErrr=-92 Viiongle=207 VisionConfidence=99 isionFlags=0x05 EncoderLeft=0 EncoderRight=2 SpeedDisplay=4.76
+VisionError=-12 VisionAngle57 VisionConfidence=92isionFlags=0x05 EncoerLeft=0 EncoderRight=-11 SpeedDisplay=-26.18
+VisionError=0 VisionAngle=0 VisionConfidence= VisionFlags=0x02 EncoderLeft=0 EncoderRight=0 SpeedDisplay=0.00
+VisionError=0 VisionAngle=0 Visiononfidence=0 VisionFlags=0x02 ncdeLeft=0 EncoderRight=14 SpeedDsplay=3.32

@@ -31,8 +31,9 @@ FRAME_WIDTH = 320
 FRAME_HEIGHT = 240
 
 ROI_LIST = [
-    # 单 ROI 方案：只保留屏幕中间主检测区，减少多区域之间的误判和切换。
-    {"name": "near", "roi": (0, 90, 320, 80), "weight": 1.0},
+    # 远近两层前瞻：far 提前看弯道，near 负责当前纠偏。
+    {"name": "far", "roi": (0, 40, 320, 50), "weight": 0.35},
+    {"name": "near", "roi": (0, 100, 320, 80), "weight": 0.65},
 ]
 
 # 黑线提取阈值，按 LAB 空间做黑色区域筛选。

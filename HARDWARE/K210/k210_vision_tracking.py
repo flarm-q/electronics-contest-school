@@ -31,12 +31,13 @@ FRAME_WIDTH = 320
 FRAME_HEIGHT = 240
 
 ROI_LIST = [
-    # 单 ROI 方案：只保留下方主检测区，减少多区域之间的误判和切换。
-    {"name": "near", "roi": (0, 175, 320, 70), "weight": 1.0},
+    # 单 ROI 方案：只保留屏幕中间主检测区，减少多区域之间的误判和切换。
+    {"name": "near", "roi": (0, 90, 320, 80), "weight": 1.0},
 ]
 
-# 黑线提取阈值，按 LAB 空间做黑色区域筛选
-BLACK_THRESHOLD = (0, 65, -27, 79, -59, 127)
+# 黑线提取阈值，按 LAB 空间做黑色区域筛选。
+# 灵敏度优先时，可以适当放宽 L 上限，让偏灰的黑线也能进来。
+BLACK_THRESHOLD = (0, 80, -27, 79, -59, 127)
 
 # 弯道判定滞回。
 # 进入 CURVE 的阈值高一些，退出 CURVE 的阈值低一些，
@@ -64,8 +65,8 @@ COLOR_DRAW_COLORS = [
 COLOR_NAMES = ("NONE", "RED", "GREEN", "BLUE")
 
 # blob 过滤阈值
-MIN_PIXELS = 120
-MIN_AREA = 120
+MIN_PIXELS = 80
+MIN_AREA = 80
 MIN_COLOR_PIXELS = 200
 MIN_COLOR_AREA = 200
 
@@ -160,13 +161,13 @@ def blob_score(blob, expected_x, roi_h):
     aspect = long_side / short_side
 
     # 过于接近正方形的区域更像圆块、噪声或内圆边缘，不适合当主线。
-    if aspect < 1.3:
+    if aspect < 1.15:
         return -1
 
     # 黑线通常细长，圆块或噪声一般更接近正方形。
     shape_bonus = int(max(0.0, aspect - 1.0) * 120)
-    distance_penalty = int(abs(cx - expected_x) * 6)
-    height_penalty = int(max(0.0, h - roi_h * 0.85) * 6)
+    distance_penalty = int(abs(cx - expected_x) * 5)
+    height_penalty = int(max(0.0, h - roi_h * 0.85) * 5)
 
     return pixels + shape_bonus - distance_penalty - height_penalty
 

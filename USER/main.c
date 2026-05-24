@@ -1,8 +1,20 @@
-#include "stm32f10x.h"
+﻿#include "stm32f10x.h"
 #include "sys.h"
 #include "oled.h"
 #include "usart.h"
 #include "usart3.h"
+
+/*
+！！！！！！！
+燃尽了
+！！！！！！！
+*/
+
+
+
+// 燃尽了  !!!!!!!!!!
+
+
 
 /* K210 巡线接管前的等待时间。
  *

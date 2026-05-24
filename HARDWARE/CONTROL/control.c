@@ -96,9 +96,9 @@ float Turn_Kp = 20;
  * ERROR_KP 负责当前横向纠偏，ANGLE_KD 用路线趋势提前处理弯道。
  */
 #define K210_LINE_BASE_SPEED -15
-#define K210_LINE_MIN_CONFIDENCE 10
-#define K210_LINE_TURN_LIMIT 330
-#define K210_LINE_ERROR_KP 3.2f
+#define K210_LINE_MIN_CONFIDENCE 1
+#define K210_LINE_TURN_LIMIT 250
+#define K210_LINE_ERROR_KP 5.0f
 #define K210_LINE_ANGLE_KD 40.00f
 
 /* 三环输出。

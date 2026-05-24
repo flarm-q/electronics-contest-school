@@ -49,9 +49,6 @@ void Load(int moto1,int moto2)//moto1=-200£º·´×ª200¸öÂö³å
 char PWM_Zero=0,stop=0;
 void Stop(float *Med_Jiaodu,float *Jiaodu)
 {
-	if(GFP_abs(*Jiaodu-*Med_Jiaodu)>60)
-	{
-		Load(PWM_Zero,PWM_Zero);
-		stop=1;
-	}
+	(void)Med_Jiaodu;
+	(void)Jiaodu;
 }

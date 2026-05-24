@@ -3,7 +3,7 @@
 <title>Static Call Graph - [..\OBJ\UpStanding_Car.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image ..\OBJ\UpStanding_Car.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Sun May 24 06:03:57 2026
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Sun May 24 12:18:30 2026
 <BR><P>
 <H3>Maximum Stack Usage =        448 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -1524,8 +1524,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[114]"></a>GFP_abs</STRONG> (Thumb, 16 bytes, Stack size 0 bytes, motor.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Stop
-<LI><a href="#[103]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Load
+<BR><BR>[Called By]<UL><LI><a href="#[103]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Load
 </UL>
 
 <P><STRONG><a name="[103]"></a>Load</STRONG> (Thumb, 112 bytes, Stack size 16 bytes, motor.o(.text))
@@ -1535,19 +1534,11 @@ Global Symbols
 <LI><a href="#[115]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_SetCompare1
 <LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GFP_abs
 </UL>
-<BR>[Called By]<UL><LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Stop
-<LI><a href="#[21]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EXTI9_5_IRQHandler
+<BR>[Called By]<UL><LI><a href="#[21]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EXTI9_5_IRQHandler
 </UL>
 
-<P><STRONG><a name="[104]"></a>Stop</STRONG> (Thumb, 52 bytes, Stack size 24 bytes, motor.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 44<LI>Call Chain = Stop &rArr; __aeabi_fsub &rArr; __aeabi_fadd &rArr; _float_epilogue
-</UL>
-<BR>[Calls]<UL><LI><a href="#[9a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fsub
-<LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2iz
-<LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GFP_abs
-<LI><a href="#[103]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Load
-</UL>
-<BR>[Called By]<UL><LI><a href="#[21]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EXTI9_5_IRQHandler
+<P><STRONG><a name="[104]"></a>Stop</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, motor.o(.text))
+<BR><BR>[Called By]<UL><LI><a href="#[21]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EXTI9_5_IRQHandler
 </UL>
 
 <P><STRONG><a name="[4b]"></a>PWM_Init_TIM1</STRONG> (Thumb, 162 bytes, Stack size 48 bytes, pwm.o(.text))
@@ -2531,7 +2522,6 @@ Global Symbols
 <LI><a href="#[98]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu_get_temperature
 <LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gyro_self_test
 <LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;accel_self_test
-<LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Stop
 <LI><a href="#[fb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Velocity
 <LI><a href="#[f9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Vertical
 </UL>
@@ -2693,7 +2683,6 @@ Global Symbols
 <LI><a href="#[98]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu_get_temperature
 <LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MPU_Get_Temperature
 <LI><a href="#[130]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Tracking_TurnPD
-<LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Stop
 <LI><a href="#[21]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EXTI9_5_IRQHandler
 <LI><a href="#[fb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Velocity
 <LI><a href="#[f9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Vertical
